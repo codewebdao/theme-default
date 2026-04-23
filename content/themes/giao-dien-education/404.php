@@ -10,9 +10,9 @@ use System\Libraries\Render\View;
 
 Flang::load('CMS', APP_LANG);
 
-// functions.php chỉ enqueue home-index.css — thiếu class header (bg-white/95, rounded-home-*, …) nằm trong index.css
-// (index.php / page.php gọi addCss('home-index', 'css/index.css') để thay/ghi đè; 404 không qua các file đó).
-View::addCss('cmsfullform-404-page', 'css/404-page.css', ['cmsfullform-404-shell'], THEME_VER, 'all', false, false, false);
+// 404 không qua index.php/page.php — cần enqueue `home-index` (css/index.css) trước 404-page (giống các trang khác của theme).
+View::addCss('home-index', 'css/index.css', [], THEME_VER, 'all', false, false, false);
+View::addCss('cmsfullform-404-page', 'css/404-page.css', ['home-index'], THEME_VER, 'all', false, false, false);
 
 view_header(['layout' => $layout ?? '404']);
 ?>

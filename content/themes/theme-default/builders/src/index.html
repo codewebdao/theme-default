@@ -1,13 +1,69 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Theme default</title>
-    <meta name="description"
-    content="Theme default">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Theme Default</title>
+	<meta name="description" content="">
+
+	<!-- all css -->
+	<link rel="stylesheet" href="../../assets/css/index.css" />
+
+	<!-- 1. CAC THU VIEN CAN SU DUNG -->
+	<!-- Notification Library -->
+	<script src="assets/js/libs/notification.js" defer></script>
+	<!-- Initialize FastNotice -->
+	<script>
+		// Khởi tạo FastNotice với cấu hình tùy chỉnh sau khi DOM sẵn sàng
+		document.addEventListener('DOMContentLoaded', function () {
+			window.fastNotice = new FastNotice({
+				position: 'top-center',    // Vị trí mặc định
+				duration: 3000,              // Thời gian hiển thị (ms)
+				maxNotifications: 3          // Số notification tối đa
+			});
+		});
+	</script>
+	<!-- Lucide Icons - Custom Build -->
+	<script src="assets/js/lucide-custom.min.js" defer></script>
+	<!-- jModal manager -->
+	<script src="assets/js/libs/jmodal.1.1.0.js" defer></script>
+	<!-- Load BlazeSlider Library -->
+	<script src="assets/js/libs/blaze-slider.js" defer></script>
+	<!-- Libs Tabs JS Thuần -->
+	<script src="assets/js/libs/tabs.js" defer></script>
+	<!-- Image Fallback Utility -->
+	<script src="assets/js/libs/image-fallback.js" defer></script>
+
+
+	<!-- 2. CAC CODE JS TU VIET. -->
+
+	<!-- Header Component JS. Vi no goi Cart nen nam sau Cart -->
+	<script src="assets/js/header.js" defer></script>
+	<!-- Homepage Component JS -->
+	<script src="assets/js/home.js" defer></script>
+	<!-- Run BlazeSlider -->
+	<script src="assets/js/sliders.js" defer></script>
+
+	<!-- Alpine.js CDN. Nam duoi cung vi chay Defer va vi no AutoRun nen can load sau cung truoc -->
+	<script src="assets/js/libs/alpinejs.3.15.0.js" defer></script>
+
+
 </head>
-<body>
-    ffbsrbdrb
+
+<body class="w-full min-h-screen">
+	<!-- header -->
+	<!-- include:parts/header.html -->
+
+	<!-- Main Content Area -->
+	<main class="bg-white content-stretch flex flex-col items-start size-full">
+		<!-- Hero Section (includes brand intro inside) -->
+		<!-- include:parts/sections/home/hero.html -->
+
+	</main>
+
+	<!-- Footer -->
+	<!-- include:parts/footer.html -->
 </body>
+
 </html>

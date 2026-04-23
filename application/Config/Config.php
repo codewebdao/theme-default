@@ -16,7 +16,7 @@ return [
     'app_timezone' => $app_timezone, //Timezone of the application (Default is Asia/Ho_Chi_Minh)
     'app_id' => '123456', //App ID for JWT (Default is 123456)
     'app_secret' => 'MoviesApiSecretKey@2024', //App Secret for JWT (Default is MoviesApiSecretKey@2024)
-    'app_theme' => 'giao-dien-education', //App Theme Default if can not call to DB)
+    'app_theme' => 'theme-default', //App Theme Default if can not call to DB)
 
     // DATABASE Configuration
     // Option 1: Simple Single DB (default - uncomment below)

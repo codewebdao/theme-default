@@ -30,7 +30,7 @@ if (!is_array($usage_guide_posts)) {
 }
 
 View::addCss('home-index', 'css/index.css', [], null, 'all', false, false, false);
-View::addCss('usage-guide', 'css/usage-guide.css', [], null, 'all', false, false, false);
+// View::addCss('usage-guide', 'css/usage-guide.css', [], null, 'all', false, false, false);
 
 $layout = $layout ?? 'usage-guide';
 view_header(['layout' => $layout]);
