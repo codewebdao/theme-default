@@ -1,0 +1,7 @@
+/**
+ * Usage Guide — bundle bổ sung (cùng `index.css` trên trang).
+ * Build: `npm run build` — content rộng. Preview: `THEME_CSS_PREVIEW=1 npm run build` + URL dưới.
+ *
+ * @page-url https://laragon.net/usage-guide/
+ */
+@import '../partials/_tailwind-standalone.css';

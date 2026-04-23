@@ -1,0 +1,30 @@
+{
+    "name": "cmsfullform/cmsfullform",
+    "description": "CMS Full Form",
+    "license": "GPL",
+    "version": "2.1.2",
+    "autoload": {
+        "psr-4": {
+            "App\\": "application/",
+            "System\\": "system/",
+            "Plugins\\": "content/plugins/",
+            "Themes\\": "content/themes/"
+        }
+    },
+    "authors": [
+        {
+            "name": "cmsfullform.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "firebase/php-jwt": "6.11",
+        "phpmailer/phpmailer": "^6.10",
+        "phpseclib/phpseclib": "^3.0",
+        "respect/validation": "2.4",
+        "google/apiclient": "^2.15",
+        "brick/math": "^0.10",
+        "brick/money": "^0.8",
+        "symfony/intl": "^6.4"
+    }
+}

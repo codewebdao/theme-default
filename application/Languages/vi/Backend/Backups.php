@@ -1,0 +1,126 @@
+<?php
+return [
+    // General
+    'Backup Management' => 'Quản lý Backup',
+    'Backup Settings' => 'Cài đặt Backup',
+    'Backups' => 'Backup',
+    'Settings' => 'Cài đặt',
+    'Create Backup' => 'Tạo Backup',
+    'Create Manual Backup' => 'Tạo Backup Thủ công',
+    'Full Backup' => 'Backup Đầy đủ',
+    'Database Only' => 'Chỉ Database',
+    'Files Only' => 'Chỉ Files',
+    'Manual Backup' => 'Backup Thủ công',
+    'Automatic Backup' => 'Backup Tự động',
+    
+    // Backup Types
+    'Full' => 'Đầy đủ',
+    'Database' => 'Cơ sở dữ liệu',
+    'Files' => 'Tệp tin',
+    
+    // Status
+    'Completed' => 'Hoàn thành',
+    'Pending' => 'Đang chờ',
+    'Failed' => 'Thất bại',
+    
+    // Actions
+    'Download Backup' => 'Tải xuống Backup',
+    'Restore Backup' => 'Khôi phục Backup',
+    'Delete Backup' => 'Xóa Backup',
+    'Delete Selected' => 'Xóa đã chọn',
+    'Deleting...' => 'Đang xóa...',
+    'Creating...' => 'Đang tạo...',
+    'Save Settings' => 'Lưu cài đặt',
+    'View All Backups' => 'Xem tất cả Backup',
+    
+    // Settings
+    'Automatic Backup Configuration' => 'Cấu hình Backup Tự động',
+    'Enable Automatic Backup' => 'Bật Backup Tự động',
+    'Automatically create backups based on schedule' => 'Tự động tạo backup theo lịch trình',
+    'Backup Frequency' => 'Tần suất Backup',
+    'Hourly' => 'Hàng giờ',
+    'Daily' => 'Hàng ngày',
+    'Weekly' => 'Hàng tuần',
+    'Monthly' => 'Hàng tháng',
+    'Backup Time' => 'Thời gian Backup',
+    'Time when automatic backup should run (24-hour format)' => 'Thời gian chạy backup tự động (định dạng 24 giờ)',
+    'Maximum Backups to Keep' => 'Số lượng Backup tối đa',
+    'Oldest backups will be automatically deleted when this limit is reached' => 'Các backup cũ nhất sẽ được tự động xóa khi đạt giới hạn này',
+    'What to Backup' => 'Backup cái gì',
+    'Include database in backup' => 'Bao gồm cơ sở dữ liệu trong backup',
+    'Include application files in backup' => 'Bao gồm tệp ứng dụng trong backup',
+    'Backup Storage Path' => 'Đường dẫn lưu trữ Backup',
+    'Directory where backup files will be stored' => 'Thư mục lưu trữ các tệp backup',
+    'Email Notifications' => 'Thông báo Email',
+    'Email Address' => 'Địa chỉ Email',
+    'Email address to receive backup notifications' => 'Địa chỉ email nhận thông báo backup',
+    
+    // Quick Actions
+    'Quick Actions' => 'Thao tác nhanh',
+    'System Information' => 'Thông tin Hệ thống',
+    'PHP Version' => 'Phiên bản PHP',
+    'Available Space' => 'Dung lượng khả dụng',
+    'Backup Directory' => 'Thư mục Backup',
+    'Backup Size' => 'Kích thước Backup',
+    
+    // Help & Tips
+    'Help & Tips' => 'Trợ giúp & Mẹo',
+    'Automatic backups run in the background and don\'t affect your website performance.' => 'Backup tự động chạy nền và không ảnh hưởng đến hiệu suất website.',
+    'Backups are stored securely and can be restored at any time.' => 'Backup được lưu trữ an toàn và có thể khôi phục bất cứ lúc nào.',
+    'Choose backup time when your website has low traffic.' => 'Chọn thời gian backup khi website có ít truy cập.',
+    
+    // Messages
+    'Backup created successfully' => 'Tạo backup thành công',
+    'Backup settings updated successfully' => 'Cập nhật cài đặt backup thành công',
+    'Backup restored successfully' => 'Khôi phục backup thành công',
+    'Backups deleted successfully' => 'Xóa backup thành công',
+    'Failed to create backup' => 'Tạo backup thất bại',
+    'Failed to update backup settings' => 'Cập nhật cài đặt backup thất bại',
+    'Failed to restore backup' => 'Khôi phục backup thất bại',
+    'Failed to delete backup' => 'Xóa backup thất bại',
+    'Error creating backup' => 'Lỗi tạo backup',
+    'Error deleting items' => 'Lỗi xóa mục',
+    'Network error occurred' => 'Lỗi mạng xảy ra',
+    'No backups found.' => 'Không tìm thấy backup nào.',
+    'Please select items to delete' => 'Vui lòng chọn mục để xóa',
+    'Are you sure you want to delete selected items?' => 'Bạn có chắc chắn muốn xóa các mục đã chọn?',
+    'Are you sure you want to delete this backup?' => 'Bạn có chắc chắn muốn xóa backup này?',
+    'Are you sure you want to restore this backup? This will overwrite current data.' => 'Bạn có chắc chắn muốn khôi phục backup này? Điều này sẽ ghi đè dữ liệu hiện tại.',
+    
+    // Validation Messages
+    'Invalid auto backup setting' => 'Cài đặt backup tự động không hợp lệ',
+    'Invalid backup frequency' => 'Tần suất backup không hợp lệ',
+    'Invalid backup time format' => 'Định dạng thời gian backup không hợp lệ',
+    'Max backups must be between 1 and 100' => 'Số backup tối đa phải từ 1 đến 100',
+    'Invalid database backup setting' => 'Cài đặt backup database không hợp lệ',
+    'Invalid files backup setting' => 'Cài đặt backup files không hợp lệ',
+    'Backup path is required' => 'Đường dẫn backup là bắt buộc',
+    'Invalid email notification setting' => 'Cài đặt thông báo email không hợp lệ',
+    'Invalid email address' => 'Địa chỉ email không hợp lệ',
+    'Invalid backup type' => 'Loại backup không hợp lệ',
+    'Backup name is required' => 'Tên backup là bắt buộc',
+    'Backup name must be between 3 and 100 characters' => 'Tên backup phải từ 3 đến 100 ký tự',
+    'Description too long' => 'Mô tả quá dài',
+    'Invalid request' => 'Yêu cầu không hợp lệ',
+    'Validation failed' => 'Xác thực thất bại',
+    'Backup not found' => 'Không tìm thấy backup',
+    'Cannot open backup file' => 'Không thể mở tệp backup',
+    'Backup file not found' => 'Không tìm thấy tệp backup',
+    'Please correct the following errors:' => 'Vui lòng sửa các lỗi sau:',
+    
+    // Table Headers
+    'Name' => 'Tên',
+    'Type' => 'Loại',
+    'Size' => 'Kích thước',
+    'Status' => 'Trạng thái',
+    'Created' => 'Ngày tạo',
+    'Actions' => 'Thao tác',
+    'All Types' => 'Tất cả loại',
+    'All Status' => 'Tất cả trạng thái',
+    
+    // Descriptions
+    'Manage system backups and restore points' => 'Quản lý backup hệ thống và điểm khôi phục',
+    'Configure automatic backup settings for your system' => 'Cấu hình cài đặt backup tự động cho hệ thống',
+    'Manual backup created from settings page' => 'Backup thủ công được tạo từ trang cài đặt',
+    'Manual backup created from management page' => 'Backup thủ công được tạo từ trang quản lý',
+];

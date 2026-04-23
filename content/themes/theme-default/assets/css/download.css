@@ -1,0 +1,3523 @@
+*, ::before, ::after {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}
+
+::backdrop {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}
+
+/*
+! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com
+*/
+
+/*
+1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
+2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
+*/
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  /* 1 */
+  border-width: 0;
+  /* 2 */
+  border-style: solid;
+  /* 2 */
+  border-color: #e5e7eb;
+  /* 2 */
+}
+
+::before,
+::after {
+  --tw-content: '';
+}
+
+/*
+1. Use a consistent sensible line-height in all browsers.
+2. Prevent adjustments of font size after orientation changes in iOS.
+3. Use a more readable tab size.
+4. Use the user's configured `sans` font-family by default.
+5. Use the user's configured `sans` font-feature-settings by default.
+6. Use the user's configured `sans` font-variation-settings by default.
+7. Disable tap highlights on iOS
+*/
+
+html,
+:host {
+  line-height: 1.5;
+  /* 1 */
+  -webkit-text-size-adjust: 100%;
+  /* 2 */
+  -moz-tab-size: 4;
+  /* 3 */
+  -o-tab-size: 4;
+     tab-size: 4;
+  /* 3 */
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  /* 4 */
+  font-feature-settings: normal;
+  /* 5 */
+  font-variation-settings: normal;
+  /* 6 */
+  -webkit-tap-highlight-color: transparent;
+  /* 7 */
+}
+
+/*
+1. Remove the margin in all browsers.
+2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.
+*/
+
+body {
+  margin: 0;
+  /* 1 */
+  line-height: inherit;
+  /* 2 */
+}
+
+/*
+1. Add the correct height in Firefox.
+2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)
+3. Ensure horizontal rules are visible by default.
+*/
+
+hr {
+  height: 0;
+  /* 1 */
+  color: inherit;
+  /* 2 */
+  border-top-width: 1px;
+  /* 3 */
+}
+
+/*
+Add the correct text decoration in Chrome, Edge, and Safari.
+*/
+
+abbr:where([title]) {
+  -webkit-text-decoration: underline dotted;
+          text-decoration: underline dotted;
+}
+
+/*
+Remove the default font size and weight for headings.
+*/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/*
+Reset links to optimize for opt-in styling instead of opt-out.
+*/
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+/*
+Add the correct font weight in Edge and Safari.
+*/
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+/*
+1. Use the user's configured `mono` font-family by default.
+2. Use the user's configured `mono` font-feature-settings by default.
+3. Use the user's configured `mono` font-variation-settings by default.
+4. Correct the odd `em` font sizing in all browsers.
+*/
+
+code,
+kbd,
+samp,
+pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  /* 1 */
+  font-feature-settings: normal;
+  /* 2 */
+  font-variation-settings: normal;
+  /* 3 */
+  font-size: 1em;
+  /* 4 */
+}
+
+/*
+Add the correct font size in all browsers.
+*/
+
+small {
+  font-size: 80%;
+}
+
+/*
+Prevent `sub` and `sup` elements from affecting the line height in all browsers.
+*/
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+
+/*
+1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)
+2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)
+3. Remove gaps between table borders by default.
+*/
+
+table {
+  text-indent: 0;
+  /* 1 */
+  border-color: inherit;
+  /* 2 */
+  border-collapse: collapse;
+  /* 3 */
+}
+
+/*
+1. Change the font styles in all browsers.
+2. Remove the margin in Firefox and Safari.
+3. Remove default padding in all browsers.
+*/
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  /* 1 */
+  font-feature-settings: inherit;
+  /* 1 */
+  font-variation-settings: inherit;
+  /* 1 */
+  font-size: 100%;
+  /* 1 */
+  font-weight: inherit;
+  /* 1 */
+  line-height: inherit;
+  /* 1 */
+  letter-spacing: inherit;
+  /* 1 */
+  color: inherit;
+  /* 1 */
+  margin: 0;
+  /* 2 */
+  padding: 0;
+  /* 3 */
+}
+
+/*
+Remove the inheritance of text transform in Edge and Firefox.
+*/
+
+button,
+select {
+  text-transform: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Remove default button styles.
+*/
+
+button,
+input:where([type='button']),
+input:where([type='reset']),
+input:where([type='submit']) {
+  -webkit-appearance: button;
+  /* 1 */
+  background-color: transparent;
+  /* 2 */
+  background-image: none;
+  /* 2 */
+}
+
+/*
+Use the modern Firefox focus style for all focusable elements.
+*/
+
+:-moz-focusring {
+  outline: auto;
+}
+
+/*
+Remove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)
+*/
+
+:-moz-ui-invalid {
+  box-shadow: none;
+}
+
+/*
+Add the correct vertical alignment in Chrome and Firefox.
+*/
+
+progress {
+  vertical-align: baseline;
+}
+
+/*
+Correct the cursor style of increment and decrement buttons in Safari.
+*/
+
+::-webkit-inner-spin-button,
+::-webkit-outer-spin-button {
+  height: auto;
+}
+
+/*
+1. Correct the odd appearance in Chrome and Safari.
+2. Correct the outline style in Safari.
+*/
+
+[type='search'] {
+  -webkit-appearance: textfield;
+  /* 1 */
+  outline-offset: -2px;
+  /* 2 */
+}
+
+/*
+Remove the inner padding in Chrome and Safari on macOS.
+*/
+
+::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Change font properties to `inherit` in Safari.
+*/
+
+::-webkit-file-upload-button {
+  -webkit-appearance: button;
+  /* 1 */
+  font: inherit;
+  /* 2 */
+}
+
+/*
+Add the correct display in Chrome and Safari.
+*/
+
+summary {
+  display: list-item;
+}
+
+/*
+Removes the default spacing and border for appropriate elements.
+*/
+
+blockquote,
+dl,
+dd,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+figure,
+p,
+pre {
+  margin: 0;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+}
+
+legend {
+  padding: 0;
+}
+
+ol,
+ul,
+menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+Reset default styling for dialogs.
+*/
+
+dialog {
+  padding: 0;
+}
+
+/*
+Prevent resizing textareas horizontally by default.
+*/
+
+textarea {
+  resize: vertical;
+}
+
+/*
+1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)
+2. Set the default placeholder color to the user's configured gray 400 color.
+*/
+
+input::-moz-placeholder, textarea::-moz-placeholder {
+  opacity: 1;
+  /* 1 */
+  color: #9ca3af;
+  /* 2 */
+}
+
+input::placeholder,
+textarea::placeholder {
+  opacity: 1;
+  /* 1 */
+  color: #9ca3af;
+  /* 2 */
+}
+
+/*
+Set the default cursor for buttons.
+*/
+
+button,
+[role="button"] {
+  cursor: pointer;
+}
+
+/*
+Make sure disabled buttons don't get the pointer cursor.
+*/
+
+:disabled {
+  cursor: default;
+}
+
+/*
+1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)
+2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)
+   This can trigger a poorly considered lint error in some tools but is included by design.
+*/
+
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block;
+  /* 1 */
+  vertical-align: middle;
+  /* 2 */
+}
+
+/*
+Constrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)
+*/
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Make elements with the HTML hidden attribute stay hidden by default */
+
+[hidden]:where(:not([hidden="until-found"])) {
+  display: none;
+}
+
+/* CSS Variables */
+
+:root {
+  /* Background Colors */
+  --background: #fff;
+  --foreground: #111827;
+  --card: #fff;
+  --card-foreground: #111827;
+  --popover: #fff;
+  --popover-foreground: #111827;
+  /* Primary Colors */
+  --primary: #059669;
+  --primary-foreground: #fff;
+  /* Title Colors */
+  --title: #047857;
+  --title-foreground: #fff;
+  /* Secondary Colors */
+  --secondary: #f3f4f6;
+  --secondary-foreground: #111827;
+  /* Muted Colors */
+  --muted: #f3f4f6;
+  --muted-foreground: #6b7280;
+  /* Accent Colors */
+  --accent: #f3f4f6;
+  --accent-foreground: #111827;
+  /* Status Colors */
+  --destructive: #ef4444;
+  --destructive-foreground: #fff;
+  /* Border & Input Colors */
+  --border: #e5e7eb;
+  --input: #e5e7eb;
+  --ring: #059669;
+  /* Border Radius */
+  --radius: 0.5rem;
+}
+
+/* Base Element Styles */
+
+* {
+  --tw-border-opacity: 1;
+  border-color: rgb(229 231 235 / var(--tw-border-opacity, 1));
+}
+
+body {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity, 1));
+  font-family: 'Roboto', sans-serif;
+}
+
+.container {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 1rem;
+  padding-left: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1240px) {
+  .container {
+    max-width: 1240px;
+    padding-right: 2rem;
+    padding-left: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1536px;
+  }
+}
+
+/* Fix Container Response Theo Y Muon */
+
+/* Container */
+
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .container {
+    max-width: 1240px;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1536px;
+  }
+}
+
+/* ========================================================================
+       BUTTON GROUP: Các thuộc tính cho Button
+       ======================================================================== */
+
+/* Button additional sizes */
+
+/* Button variants */
+
+/* ========================================================================
+       INPUT GROUP: Các thuộc tính cho Input
+       ======================================================================== */
+
+.input {
+  display: flex;
+  height: 2.5rem;
+  width: 100%;
+  border-radius: var(--radius);
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(229 231 235 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1));
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  animation-duration: 150ms;
+}
+
+.input::-moz-placeholder {
+  --tw-text-opacity: 1;
+  color: rgb(107 114 128 / var(--tw-text-opacity, 1));
+}
+
+.input::placeholder {
+  --tw-text-opacity: 1;
+  color: rgb(107 114 128 / var(--tw-text-opacity, 1));
+}
+
+.input:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(16 185 129 / var(--tw-border-opacity, 1));
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(16 185 129 / var(--tw-ring-opacity, 1));
+}
+
+.input:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.input:focus::-moz-placeholder {
+  --tw-text-opacity: 1;
+  color: rgb(16 185 129 / var(--tw-text-opacity, 1));
+}
+
+.input:focus::placeholder {
+  --tw-text-opacity: 1;
+  color: rgb(16 185 129 / var(--tw-text-opacity, 1));
+}
+
+.input-icon .icon {
+  pointer-events: none;
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  height: 1.25rem;
+  width: 1.25rem;
+  --tw-translate-y: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity, 1));
+}
+
+.input-icon input:focus + .icon {
+  --tw-text-opacity: 1;
+  color: rgb(16 185 129 / var(--tw-text-opacity, 1));
+}
+
+/* ========================================================================
+       CARD GROUP: Các thuộc tính cho Card
+       ======================================================================== */
+
+.card {
+  border-radius: var(--radius);
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(229 231 235 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  transition-property: box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+  animation-duration: 300ms;
+}
+
+.card:hover {
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+  --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+/* ========================================================================
+       BADGE GROUP: Các thuộc tính cho Badge
+       ======================================================================== */
+
+/* ========================================================================
+       SECTION GROUP: Các thuộc tính cho Section
+       ======================================================================== */
+
+.section {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+@media (min-width: 1024px) {
+  .section {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+}
+
+/* ========================================================================
+       TAB GROUP: Các thuộc tính cho Tab
+       ======================================================================== */
+
+/* ========================================================================
+       JMODAL GROUP: jModal library styles (Optimized for performance & INP)
+       ======================================================================== */
+
+/* Base jModal container */
+
+
+    body:has(.jmodal:not(.hidden)) header.jmodal {
+  /* Compensate for body padding by adjusting header width */
+  width: 100%;
+  /* Box-sizing ensures padding doesn't affect layout */
+  box-sizing: border-box;
+}
+
+.jmodal {
+  position: fixed;
+  inset: 0px;
+  z-index: 50;
+  background-color: rgb(0 0 0 / 0.5);
+  --tw-backdrop-blur: blur(4px);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* Center content modal (auth, dialogs, etc) */
+
+/* jModal slide animations (GPU-accelerated for better INP) */
+
+/* Slide from right (for cart, mobile menu) */
+
+/* Slide from left */
+
+
+    body:has(.jmodal:not(.hidden)) header.jmodal-slide-left {
+  /* Compensate for body padding by adjusting header width */
+  width: 100%;
+  /* Box-sizing ensures padding doesn't affect layout */
+  box-sizing: border-box;
+}
+
+.jmodal-slide-left {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 20rem;
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  height: 100vh;
+  height: 100dvh;
+  transform: translateX(-100%) translateZ(0);
+  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.jmodal-slide-left.jmodal-active {
+  transform: translateX(0) translateZ(0);
+}
+
+/* Slide from top (full width or centered) */
+
+/* Slide from bottom (sheet style - full width or centered) */
+
+/* Prevent header CLS when modal opens (body gets padding-right) */
+
+body:has(.jmodal:not(.hidden)) header.sticky,
+    body:has(.jmodal:not(.hidden)) header.fixed {
+  /* Compensate for body padding by adjusting header width */
+  width: 100%;
+  /* Box-sizing ensures padding doesn't affect layout */
+  box-sizing: border-box;
+}
+
+/* ========================================================================
+       LOADING GROUP: Các thuộc tính cho Loading
+       ======================================================================== */
+
+/* ========================================================================
+       TEXT UTILITIES GROUP: Các thuộc tính cho Text
+       ======================================================================== */
+
+/* Text color utilities (ported from initial CSS) */
+
+/* ========================================================================
+       HOVER EFFECTS GROUP: Các thuộc tính cho Hover Effects
+       ======================================================================== */
+
+/* ========================================================================
+       FORM ELEMENTS GROUP: Các thuộc tính cho Form Elements
+       ======================================================================== */
+
+/* ========================================================================
+       LINK GROUP: Các thuộc tính cho Link
+       ======================================================================== */
+
+.link {
+  --tw-text-opacity: 1;
+  color: rgb(5 150 105 / var(--tw-text-opacity, 1));
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  animation-duration: 150ms;
+}
+
+.link:hover {
+  --tw-text-opacity: 1;
+  color: rgb(74 222 128 / var(--tw-text-opacity, 1));
+}
+
+/* ========================================================================
+       ICON BACKGROUND GROUP: Các thuộc tính cho Icon Background
+       ======================================================================== */
+
+/* ========================================================================
+       TOGGLE GROUP: Các thuộc tính cho Toggle
+       ======================================================================== */
+
+/* ========================================================================
+       TEXT TRUNCATION GROUP: Các thuộc tính cho Text Truncation
+       ======================================================================== */
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ========================================================================
+       IMAGE FALLBACK GROUP: Các thuộc tính cho Image Fallback
+       ======================================================================== */
+
+img {
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+  animation-duration: 300ms;
+}
+
+/* ========================================================================
+       LAYOUT UTILITIES GROUP: Các thuộc tính cho Layout Utilities
+       ======================================================================== */
+
+/* Grid auto layout utilities */
+
+/* ========================================================================
+       SIZE UTILITIES GROUP: Các thuộc tính cho Size Utilities
+       ======================================================================== */
+
+/* Fit utilities */
+
+/* Gradient helpers */
+
+/* Shadow helpers */
+
+/* ========================================================================
+       CUSTOM SCROLLBAR GROUP: Các thuộc tính cho Custom Scrollbar
+       ======================================================================== */
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 0.25rem;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity, 1));
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  border-radius: calc(var(--radius) - 4px);
+  --tw-bg-opacity: 1;
+  background-color: rgb(203 213 225 / var(--tw-bg-opacity, 1));
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(148 163 184 / var(--tw-bg-opacity, 1));
+}
+
+/* Hide scrollbar */
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ========================================================================
+       ITEM GROUP: Các thuộc tính cho Item Components
+       ======================================================================== */
+
+/* ========================================================================
+       PAGINATION GROUP
+       ======================================================================== */
+
+/* ========================================================================
+       ALERT GROUP
+       ======================================================================== */
+
+/* ========================================================================
+       LOADING SIZES
+       ======================================================================== */
+
+/* ========================================================================
+       SKELETON GROUP
+       ======================================================================== */
+
+/* ========================================================================
+       RATING GROUP
+       ======================================================================== */
+
+/* ========================================================================
+       PROGRESS GROUP
+       ======================================================================== */
+
+/* ========================================================================
+       STATUS GROUP
+       ======================================================================== */
+
+/* ========================================================================
+       TOOLTIP GROUP
+       ======================================================================== */
+
+/* ========================================================================
+       BREADCRUMB GROUP
+       ======================================================================== */
+
+/* ========================================================================
+       TEXT TRUNCATION EXTRAS & BREAK UTILITIES
+       ======================================================================== */
+
+/* ========================================================================
+       IMAGE FALLBACK
+       ======================================================================== */
+
+/* ========================================================================
+       TOGGLE TRACK (chi tiết)
+       ======================================================================== */
+
+/* ========================================================================
+       HEADER LAYOUT GROUP: Các thuộc tính cho Header Layout
+       ======================================================================== */
+
+body:has(.jmodal:not(.hidden)) header.header {
+  /* Compensate for body padding by adjusting header width */
+  width: 100%;
+  /* Box-sizing ensures padding doesn't affect layout */
+  box-sizing: border-box;
+}
+
+.header {
+  position: sticky;
+  top: 0px;
+  z-index: 50;
+  width: 100%;
+  border-bottom-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(229 231 235 / var(--tw-border-opacity, 1));
+  background-color: rgb(255 255 255 / 0.95);
+  --tw-backdrop-blur: blur(8px);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+
+@supports (backdrop-filter: var(--tw)) {
+  .header {
+    background-color: rgb(255 255 255 / 0.6);
+  }
+}
+
+/* ========================================================================
+       NAVIGATION GROUP: Các thuộc tính cho Navigation
+       ======================================================================== */
+
+/* ========================================================================
+       BLAZE SLIDER CORE GROUP: Các thuộc tính cơ bản cho Blaze Slider
+       ======================================================================== */
+
+/* ========================================================================
+       HOT PRODUCTS SLIDER GROUP: Các thuộc tính cho Hot Products Slider
+       ======================================================================== */
+
+/* ========================================================================
+       TESTIMONIALS SLIDER GROUP: Các thuộc tính cho Testimonials Slider
+       ======================================================================== */
+
+/* ========================================================================
+       RESPONSIVE NAVIGATION GROUP: Các thuộc tính responsive cho Navigation
+       ======================================================================== */
+
+/* ========================================================================
+       RELATED PRODUCTS SLIDER GROUP: Các thuộc tính cho Related Products Slider
+       ======================================================================== */
+
+/* ========================================================================
+       SLIDER ANIMATIONS GROUP: Các thuộc tính cho Slider Animations
+       ======================================================================== */
+
+/* ========================================================================
+       SLIDER ACCESSIBILITY GROUP: Các thuộc tính cho Slider Accessibility
+       ======================================================================== */
+
+/* ========================================================================
+       SLIDER LOADING GROUP: Các thuộc tính cho Slider Loading States
+       ======================================================================== */
+
+/* ========================================================================
+       SLIDER CUSTOM STYLES GROUP: Các thuộc tính tùy chỉnh cho Slider
+       ======================================================================== */
+
+/* ========================================================================
+       FOOTER LAYOUT GROUP: Các thuộc tính cho Footer Layout
+       ======================================================================== */
+
+.footer {
+  border-top-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(229 231 235 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+
+/* ========================================================================
+       FOOTER LINKS GROUP: Các thuộc tính cho Footer Links
+       ======================================================================== */
+
+/* ========================================================================
+       FOOTER SOCIAL GROUP: Các thuộc tính cho Footer Social
+       ======================================================================== */
+
+/* ========================================================================
+       FOOTER BOTTOM GROUP: Các thuộc tính cho Footer Bottom
+       ======================================================================== */
+
+/* ========================================================================
+       FOOTER NEWSLETTER GROUP: Các thuộc tính cho Footer Newsletter
+       ======================================================================== */
+
+/* ========================================================================
+       FOOTER CONTACT GROUP: Các thuộc tính cho Footer Contact
+       ======================================================================== */
+
+.pointer-events-none {
+  pointer-events: none;
+}
+
+.fixed {
+  position: fixed;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.relative {
+  position: relative;
+}
+
+.sticky {
+  position: sticky;
+}
+
+.inset-0 {
+  inset: 0px;
+}
+
+.bottom-8 {
+  bottom: 2rem;
+}
+
+.right-0 {
+  right: 0px;
+}
+
+.right-3 {
+  right: 0.75rem;
+}
+
+.top-0 {
+  top: 0px;
+}
+
+.top-1\/2 {
+  top: 50%;
+}
+
+.z-10 {
+  z-index: 10;
+}
+
+.z-50 {
+  z-index: 50;
+}
+
+.-mx-4 {
+  margin-left: -1rem;
+  margin-right: -1rem;
+}
+.-mx-6 {
+  margin-left: -1.5rem;
+  margin-right: -1.5rem;
+}
+
+.mx-4 {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-3 {
+  margin-bottom: 0.75rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+
+.mb-8 {
+  margin-bottom: 2rem;
+}
+
+.ml-3 {
+  margin-left: 0.75rem;
+}
+
+.ml-5 {
+  margin-left: 1.25rem;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.mt-auto {
+  margin-top: auto;
+}
+
+.block {
+  display: block;
+}
+
+.flex {
+  display: flex;
+}
+
+.inline-flex {
+  display: inline-flex;
+}
+
+.grid {
+  display: grid;
+}
+
+.hidden {
+  display: none;
+}
+
+.h-12 {
+  height: 3rem;
+}
+
+.h-20 {
+  height: 5rem;
+}
+
+.h-\[22px\] {
+  height: 22px;
+}
+.h-\[24px\] {
+  height: 24px;
+}
+
+.h-\[36px\] {
+  height: 36px;
+}
+
+.h-full {
+  height: 100%;
+}
+
+.min-h-\[52px\] {
+  min-height: 52px;
+}
+
+.min-h-screen {
+  min-height: 100vh;
+}
+
+.w-12 {
+  width: 3rem;
+}
+
+.w-32 {
+  width: 8rem;
+}
+
+.w-\[22px\] {
+  width: 22px;
+}
+.w-\[24px\] {
+  width: 24px;
+}
+
+.w-\[280px\] {
+  width: 280px;
+}
+
+.w-\[322px\] {
+  width: 322px;
+}
+
+.w-\[74px\] {
+  width: 74px;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.max-w-3xl {
+  max-width: 48rem;
+}
+
+.max-w-4xl {
+  max-width: 56rem;
+}
+
+.max-w-5xl {
+  max-width: 64rem;
+}
+
+.max-w-md {
+  max-width: 28rem;
+}
+
+.flex-1 {
+  flex: 1 1 0%;
+}
+
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+.-translate-y-1\/2 {
+  --tw-translate-y: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.scale-100 {
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.scale-95 {
+  --tw-scale-x: .95;
+  --tw-scale-y: .95;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.transform {
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.resize {
+  resize: both;
+}
+
+.snap-center {
+  scroll-snap-align: center;
+}
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.items-stretch {
+  align-items: stretch;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.gap-1\.5 {
+  gap: 0.375rem;
+}
+
+.gap-12 {
+  gap: 3rem;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.gap-3 {
+  gap: 0.75rem;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.gap-6 {
+  gap: 1.5rem;
+}
+
+.gap-8 {
+  gap: 2rem;
+}
+
+.space-x-2 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.5rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.space-x-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.75rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.75rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.space-x-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(1rem * var(--tw-space-x-reverse));
+  margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.space-x-6 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(1.5rem * var(--tw-space-x-reverse));
+  margin-left: calc(1.5rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.space-y-2 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+}
+
+.space-y-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
+
+.space-y-8 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(2rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(2rem * var(--tw-space-y-reverse));
+}
+
+.self-stretch {
+  align-self: stretch;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+
+.rounded-full {
+  border-radius: 9999px;
+}
+
+.rounded-home-lg {
+  border-radius: var(--home-radius-lg);
+}
+.rounded-home-sm {
+  border-radius: var(--home-radius-sm);
+}
+.rounded-home-md {
+  border-radius: var(--home-radius-md);
+}
+
+.rounded-lg {
+  border-radius: var(--radius);
+}
+
+.rounded-b-home-lg {
+  border-bottom-right-radius: var(--home-radius-lg);
+  border-bottom-left-radius: var(--home-radius-lg);
+}
+
+.rounded-t-home-lg {
+  border-top-left-radius: var(--home-radius-lg);
+  border-top-right-radius: var(--home-radius-lg);
+}
+
+.rounded-bl-\[12px\] {
+  border-bottom-left-radius: 12px;
+}
+
+.rounded-bl-xl {
+  border-bottom-left-radius: 0.75rem;
+}
+
+.rounded-tr-\[12px\] {
+  border-top-right-radius: 12px;
+}
+
+.rounded-tr-xl {
+  border-top-right-radius: 0.75rem;
+}
+
+.border {
+  border-width: 1px;
+}
+
+.border-\[1\.5px\] {
+  border-width: 1.5px;
+}
+
+.border-b {
+  border-bottom-width: 1px;
+}
+
+.border-l-4 {
+  border-left-width: 4px;
+}
+
+.border-t {
+  border-top-width: 1px;
+}
+
+.border-\[\#97A4B2\] {
+  --tw-border-opacity: 1;
+  border-color: rgb(151 164 178 / var(--tw-border-opacity, 1));
+}
+
+.border-gray-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(229 231 235 / var(--tw-border-opacity, 1));
+}
+
+.border-home-border {
+  border-color: var(--home-border);
+}
+
+.border-home-primary {
+  border-color: var(--home-primary);
+}
+
+.border-home-success {
+  border-color: var(--home-success);
+}
+
+.border-home-surface {
+  border-color: var(--home-surface);
+}
+
+.border-home-surface-light {
+  border-color: var(--home-surface-light);
+}
+
+.bg-\[\#F3F4F6\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));
+}
+
+.bg-blue-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(59 130 246 / var(--tw-bg-opacity, 1));
+}
+
+.bg-gray-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));
+}
+
+.bg-gray-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1));
+}
+
+.bg-home-primary {
+  background-color: var(--home-primary);
+}
+
+.bg-home-success {
+  background-color: var(--home-success);
+}
+
+.bg-home-surface {
+  background-color: var(--home-surface);
+}
+
+.bg-home-surface-light {
+  background-color: var(--home-surface-light);
+}
+.bg-home-surface-light\/50 {
+  background-color: color-mix(in srgb, var(--home-surface-light) 50%, transparent);
+}
+
+.bg-home-surface-light\/25 {
+  background-color: color-mix(in srgb, var(--home-surface-light) 25%, transparent);
+}
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+
+.bg-white\/90 {
+  background-color: rgb(255 255 255 / 0.9);
+}
+
+.bg-white\/95 {
+  background-color: rgb(255 255 255 / 0.95);
+}
+
+.bg-gradient-to-b {
+  background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
+}
+
+.from-\[\#E8F4FD\]\/60 {
+  --tw-gradient-from: rgb(232 244 253 / 0.6) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(232 244 253 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.from-emerald-500 {
+  --tw-gradient-from: #10b981 var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(16 185 129 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.to-green-600 {
+  --tw-gradient-to: #16a34a var(--tw-gradient-to-position);
+}
+
+.to-white {
+  --tw-gradient-to: #fff var(--tw-gradient-to-position);
+}
+
+.bg-center {
+  background-position: center;
+}
+
+.bg-no-repeat {
+  background-repeat: no-repeat;
+}
+
+.p-1 {
+  padding: 0.25rem;
+}
+
+.p-2 {
+  padding: 0.5rem;
+}
+
+.p-4 {
+  padding: 1rem;
+}
+
+.p-6 {
+  padding: 1.5rem;
+}
+
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.px-24 {
+  padding-left: 6rem;
+  padding-right: 6rem;
+}
+
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+.px-3\.5 {
+  padding-left: 0.875rem;
+  padding-right: 0.875rem;
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.px-6 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.py-1\.5 {
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+}
+.py-2\.5 {
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+}
+
+.py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+.py-12 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.py-16 {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.pb-12 {
+  padding-bottom: 3rem;
+}
+
+.pb-4 {
+  padding-bottom: 1rem;
+}
+
+.pb-6 {
+  padding-bottom: 1.5rem;
+}
+
+.pl-4 {
+  padding-left: 1rem;
+}
+
+.pr-10 {
+  padding-right: 2.5rem;
+}
+
+.pt-12 {
+  padding-top: 3rem;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-start {
+  text-align: start;
+}
+
+.font-plus {
+  font-family: Plus Jakarta Sans, sans-serif;
+}
+
+.font-space {
+  font-family: Space Grotesk, sans-serif;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
+.text-\[10px\] {
+  font-size: 10px;
+}
+
+.text-\[14px\] {
+  font-size: 14px;
+}
+
+.text-\[16px\] {
+  font-size: 16px;
+}
+
+.text-\[24px\] {
+  font-size: 24px;
+}
+.text-\[22px\] {
+  font-size: 22px;
+}
+
+.text-\[28px\] {
+  font-size: 28px;
+}
+
+.text-\[30px\] {
+  font-size: 30px;
+}
+
+.text-\[32px\] {
+  font-size: 32px;
+}
+
+.text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-normal {
+  font-weight: 400;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.leading-6 {
+  line-height: 1.5rem;
+}
+
+.leading-9 {
+  line-height: 2.25rem;
+}
+
+.leading-\[21px\] {
+  line-height: 21px;
+}
+
+.leading-\[22px\] {
+  line-height: 22px;
+}
+
+.leading-\[24px\] {
+  line-height: 24px;
+}
+
+.leading-\[36px\] {
+  line-height: 36px;
+}
+
+.leading-\[40px\] {
+  line-height: 40px;
+}
+
+.leading-normal {
+  line-height: 1.5;
+}
+
+.leading-relaxed {
+  line-height: 1.625;
+}
+
+.leading-tight {
+  line-height: 1.25;
+}
+
+.text-black {
+  --tw-text-opacity: 1;
+  color: rgb(0 0 0 / var(--tw-text-opacity, 1));
+}
+
+.text-emerald-700 {
+  --tw-text-opacity: 1;
+  color: rgb(4 120 87 / var(--tw-text-opacity, 1));
+}
+
+.text-gray-500 {
+  --tw-text-opacity: 1;
+  color: rgb(107 114 128 / var(--tw-text-opacity, 1));
+}
+
+.text-gray-600 {
+  --tw-text-opacity: 1;
+  color: rgb(75 85 99 / var(--tw-text-opacity, 1));
+}
+
+.text-gray-700 {
+  --tw-text-opacity: 1;
+  color: rgb(55 65 81 / var(--tw-text-opacity, 1));
+}
+
+.text-gray-900 {
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity, 1));
+}
+
+.text-home-body {
+  color: var(--home-body);
+}
+
+.text-home-heading {
+  color: var(--home-heading);
+}
+
+.text-home-primary {
+  color: var(--home-primary);
+}
+
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+.opacity-0 {
+  opacity: 0;
+}
+
+.opacity-100 {
+  opacity: 1;
+}
+
+.shadow-\[0_77\.333px_21\.333px_0_rgba\(43\2c 140\2c 238\2c 0\.00\)\2c 0_49\.333px_20px_0_rgba\(43\2c 140\2c 238\2c 0\.01\)\2c 0_28px_17\.333px_0_rgba\(43\2c 140\2c 238\2c 0\.05\)\2c 0_12px_12px_0_rgba\(43\2c 140\2c 238\2c 0\.09\)\2c 0_2\.667px_6\.667px_0_rgba\(43\2c 140\2c 238\2c 0\.10\)\] {
+  --tw-shadow: 0 77.333px 21.333px 0 rgba(43,140,238,0.00),0 49.333px 20px 0 rgba(43,140,238,0.01),0 28px 17.333px 0 rgba(43,140,238,0.05),0 12px 12px 0 rgba(43,140,238,0.09),0 2.667px 6.667px 0 rgba(43,140,238,0.10);
+  --tw-shadow-colored: 0 77.333px 21.333px 0 var(--tw-shadow-color), 0 49.333px 20px 0 var(--tw-shadow-color), 0 28px 17.333px 0 var(--tw-shadow-color), 0 12px 12px 0 var(--tw-shadow-color), 0 2.667px 6.667px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-\[0_58px_16px_0_rgba\(43\2c 140\2c 238\2c 0\)\2c 0_37px_15px_0_rgba\(43\2c 140\2c 238\2c 0\.01\)\2c 0_21px_13px_0_rgba\(43\2c 140\2c 238\2c 0\.05\)\2c 0_9px_9px_0_rgba\(43\2c 140\2c 238\2c 0\.09\)\2c 0_2px_5px_0_rgba\(43\2c 140\2c 238\2c 0\.1\)\] {
+  --tw-shadow: 0 58px 16px 0 rgba(43,140,238,0),0 37px 15px 0 rgba(43,140,238,0.01),0 21px 13px 0 rgba(43,140,238,0.05),0 9px 9px 0 rgba(43,140,238,0.09),0 2px 5px 0 rgba(43,140,238,0.1);
+  --tw-shadow-colored: 0 58px 16px 0 var(--tw-shadow-color), 0 37px 15px 0 var(--tw-shadow-color), 0 21px 13px 0 var(--tw-shadow-color), 0 9px 9px 0 var(--tw-shadow-color), 0 2px 5px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-lg {
+  --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.shadow-md {
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.shadow-sm {
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.backdrop-blur-md {
+  --tw-backdrop-blur: blur(12px);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+
+.backdrop-blur-sm {
+  --tw-backdrop-blur: blur(4px);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+
+.transition {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.transition-colors {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.duration-100 {
+  transition-duration: 100ms;
+}
+
+.duration-200 {
+  transition-duration: 200ms;
+}
+
+.duration-300 {
+  transition-duration: 300ms;
+}
+
+.duration-75 {
+  transition-duration: 75ms;
+}
+
+.ease-in {
+  transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+}
+
+.ease-out {
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
+
+@keyframes enter {
+  from {
+    opacity: var(--tw-enter-opacity, 1);
+    transform: translate3d(var(--tw-enter-translate-x, 0), var(--tw-enter-translate-y, 0), 0) scale3d(var(--tw-enter-scale, 1), var(--tw-enter-scale, 1), var(--tw-enter-scale, 1)) rotate(var(--tw-enter-rotate, 0));
+  }
+}
+
+@keyframes exit {
+  to {
+    opacity: var(--tw-exit-opacity, 1);
+    transform: translate3d(var(--tw-exit-translate-x, 0), var(--tw-exit-translate-y, 0), 0) scale3d(var(--tw-exit-scale, 1), var(--tw-exit-scale, 1), var(--tw-exit-scale, 1)) rotate(var(--tw-exit-rotate, 0));
+  }
+}
+
+.duration-100 {
+  animation-duration: 100ms;
+}
+
+.duration-200 {
+  animation-duration: 200ms;
+}
+
+.duration-300 {
+  animation-duration: 300ms;
+}
+
+.duration-75 {
+  animation-duration: 75ms;
+}
+
+.ease-in {
+  animation-timing-function: cubic-bezier(0.4, 0, 1, 1);
+}
+
+.ease-out {
+  animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
+
+.\[background-blend-mode\:hard-light\] {
+  background-blend-mode: hard-light;
+}
+
+/* Local Fonts - Load first for fast rendering */
+
+/* ========================================================================
+   LOCAL FONTS - Space Grotesk & Plus Jakarta Sans
+   Optimized for Vietnamese + Latin characters
+   ======================================================================== */
+
+/* Space Grotesk - Vietnamese subset (all weights use same variable font file) */
+
+@font-face {
+  font-family: 'Space Grotesk';
+
+  src: url('../fonts/SpaceGrotesk-Vietnamese.woff2') format('woff2');
+
+  font-weight: 300 700;
+
+  font-style: normal;
+
+  font-display: swap;
+
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+
+/* Space Grotesk - Latin subset (all weights use same variable font file) */
+
+@font-face {
+  font-family: 'Space Grotesk';
+
+  src: url('../fonts/SpaceGrotesk-Latin.woff2') format('woff2');
+
+  font-weight: 300 700;
+
+  font-style: normal;
+
+  font-display: swap;
+
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Plus Jakarta Sans - Vietnamese subset (all weights use same variable font file) */
+
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+
+  src: url('../fonts/PlusJakartaSans-Vietnamese.woff2') format('woff2');
+
+  font-weight: 400 700;
+
+  font-style: normal;
+
+  font-display: swap;
+
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+
+/* Plus Jakarta Sans - Latin subset (all weights use same variable font file) */
+
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+
+  src: url('../fonts/PlusJakartaSans-Latin.woff2') format('woff2');
+
+  font-weight: 400 700;
+
+  font-style: normal;
+
+  font-display: swap;
+
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/**
+ * Swiper 11.1.15
+ * Most modern mobile touch slider and framework with hardware accelerated transitions
+ * https://swiperjs.com
+ *
+ * Copyright 2014-2024 Vladimir Kharlampidi
+ *
+ * Released under the MIT License
+ *
+ * Released on: November 18, 2024
+ */
+
+@font-face{
+  font-family:swiper-icons;
+
+  src:url('data:application/font-woff;charset=utf-8;base64, d09GRgABAAAAAAZgABAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABGRlRNAAAGRAAAABoAAAAci6qHkUdERUYAAAWgAAAAIwAAACQAYABXR1BPUwAABhQAAAAuAAAANuAY7+xHU1VCAAAFxAAAAFAAAABm2fPczU9TLzIAAAHcAAAASgAAAGBP9V5RY21hcAAAAkQAAACIAAABYt6F0cBjdnQgAAACzAAAAAQAAAAEABEBRGdhc3AAAAWYAAAACAAAAAj//wADZ2x5ZgAAAywAAADMAAAD2MHtryVoZWFkAAABbAAAADAAAAA2E2+eoWhoZWEAAAGcAAAAHwAAACQC9gDzaG10eAAAAigAAAAZAAAArgJkABFsb2NhAAAC0AAAAFoAAABaFQAUGG1heHAAAAG8AAAAHwAAACAAcABAbmFtZQAAA/gAAAE5AAACXvFdBwlwb3N0AAAFNAAAAGIAAACE5s74hXjaY2BkYGAAYpf5Hu/j+W2+MnAzMYDAzaX6QjD6/4//Bxj5GA8AuRwMYGkAPywL13jaY2BkYGA88P8Agx4j+/8fQDYfA1AEBWgDAIB2BOoAeNpjYGRgYNBh4GdgYgABEMnIABJzYNADCQAACWgAsQB42mNgYfzCOIGBlYGB0YcxjYGBwR1Kf2WQZGhhYGBiYGVmgAFGBiQQkOaawtDAoMBQxXjg/wEGPcYDDA4wNUA2CCgwsAAAO4EL6gAAeNpj2M0gyAACqxgGNWBkZ2D4/wMA+xkDdgAAAHjaY2BgYGaAYBkGRgYQiAHyGMF8FgYHIM3DwMHABGQrMOgyWDLEM1T9/w8UBfEMgLzE////P/5//f/V/xv+r4eaAAeMbAxwIUYmIMHEgKYAYjUcsDAwsLKxc3BycfPw8jEQA/gZBASFhEVExcQlJKWkZWTl5BUUlZRVVNXUNTQZBgMAAMR+E+gAEQFEAAAAKgAqACoANAA+AEgAUgBcAGYAcAB6AIQAjgCYAKIArAC2AMAAygDUAN4A6ADyAPwBBgEQARoBJAEuATgBQgFMAVYBYAFqAXQBfgGIAZIBnAGmAbIBzgHsAAB42u2NMQ6CUAyGW568x9AneYYgm4MJbhKFaExIOAVX8ApewSt4Bic4AfeAid3VOBixDxfPYEza5O+Xfi04YADggiUIULCuEJK8VhO4bSvpdnktHI5QCYtdi2sl8ZnXaHlqUrNKzdKcT8cjlq+rwZSvIVczNiezsfnP/uznmfPFBNODM2K7MTQ45YEAZqGP81AmGGcF3iPqOop0r1SPTaTbVkfUe4HXj97wYE+yNwWYxwWu4v1ugWHgo3S1XdZEVqWM7ET0cfnLGxWfkgR42o2PvWrDMBSFj/IHLaF0zKjRgdiVMwScNRAoWUoH78Y2icB/yIY09An6AH2Bdu/UB+yxopYshQiEvnvu0dURgDt8QeC8PDw7Fpji3fEA4z/PEJ6YOB5hKh4dj3EvXhxPqH/SKUY3rJ7srZ4FZnh1PMAtPhwP6fl2PMJMPDgeQ4rY8YT6Gzao0eAEA409DuggmTnFnOcSCiEiLMgxCiTI6Cq5DZUd3Qmp10vO0LaLTd2cjN4fOumlc7lUYbSQcZFkutRG7g6JKZKy0RmdLY680CDnEJ+UMkpFFe1RN7nxdVpXrC4aTtnaurOnYercZg2YVmLN/d/gczfEimrE/fs/bOuq29Zmn8tloORaXgZgGa78yO9/cnXm2BpaGvq25Dv9S4E9+5SIc9PqupJKhYFSSl47+Qcr1mYNAAAAeNptw0cKwkAAAMDZJA8Q7OUJvkLsPfZ6zFVERPy8qHh2YER+3i/BP83vIBLLySsoKimrqKqpa2hp6+jq6RsYGhmbmJqZSy0sraxtbO3sHRydnEMU4uR6yx7JJXveP7WrDycAAAAAAAH//wACeNpjYGRgYOABYhkgZgJCZgZNBkYGLQZtIJsFLMYAAAw3ALgAeNolizEKgDAQBCchRbC2sFER0YD6qVQiBCv/H9ezGI6Z5XBAw8CBK/m5iQQVauVbXLnOrMZv2oLdKFa8Pjuru2hJzGabmOSLzNMzvutpB3N42mNgZGBg4GKQYzBhYMxJLMlj4GBgAYow/P/PAJJhLM6sSoWKfWCAAwDAjgbRAAB42mNgYGBkAIIbCZo5IPrmUn0hGA0AO8EFTQAA');
+
+  font-weight:400;
+
+  font-style:normal
+}
+
+:root{
+  --swiper-theme-color:#007aff
+}
+
+:host{
+  position:relative;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+  z-index:1
+}
+
+.swiper{
+  margin-left:auto;
+  margin-right:auto;
+  position:relative;
+  overflow:hidden;
+  list-style:none;
+  padding:0;
+  z-index:1;
+  display:block
+}
+
+.swiper-vertical>.swiper-wrapper{
+  flex-direction:column
+}
+
+.swiper-wrapper{
+  position:relative;
+  width:100%;
+  height:100%;
+  z-index:1;
+  display:flex;
+  transition-property:transform;
+  transition-timing-function:var(--swiper-wrapper-transition-timing-function,initial);
+  box-sizing:content-box
+}
+
+.swiper-android .swiper-slide,.swiper-ios .swiper-slide,.swiper-wrapper{
+  transform:translate3d(0px,0,0)
+}
+
+.swiper-horizontal{
+  touch-action:pan-y
+}
+
+.swiper-vertical{
+  touch-action:pan-x
+}
+
+.swiper-slide{
+  flex-shrink:0;
+  width:100%;
+  height:100%;
+  position:relative;
+  transition-property:transform;
+  display:block
+}
+
+.swiper-slide-invisible-blank{
+  visibility:hidden
+}
+
+.swiper-autoheight,.swiper-autoheight .swiper-slide{
+  height:auto
+}
+
+.swiper-autoheight .swiper-wrapper{
+  align-items:flex-start;
+  transition-property:transform,height
+}
+
+.swiper-backface-hidden .swiper-slide{
+  transform:translateZ(0);
+  backface-visibility:hidden
+}
+
+.swiper-3d.swiper-css-mode .swiper-wrapper{
+  perspective:1200px
+}
+
+.swiper-3d .swiper-wrapper{
+  transform-style:preserve-3d
+}
+
+.swiper-3d{
+  perspective:1200px
+}
+
+.swiper-3d .swiper-cube-shadow,.swiper-3d .swiper-slide{
+  transform-style:preserve-3d
+}
+
+.swiper-css-mode>.swiper-wrapper{
+  overflow:auto;
+  scrollbar-width:none;
+  -ms-overflow-style:none
+}
+
+.swiper-css-mode>.swiper-wrapper::-webkit-scrollbar{
+  display:none
+}
+
+.swiper-css-mode>.swiper-wrapper>.swiper-slide{
+  scroll-snap-align:start start
+}
+
+.swiper-css-mode.swiper-horizontal>.swiper-wrapper{
+  scroll-snap-type:x mandatory
+}
+
+.swiper-css-mode.swiper-vertical>.swiper-wrapper{
+  scroll-snap-type:y mandatory
+}
+
+.swiper-css-mode.swiper-free-mode>.swiper-wrapper{
+  scroll-snap-type:none
+}
+
+.swiper-css-mode.swiper-free-mode>.swiper-wrapper>.swiper-slide{
+  scroll-snap-align:none
+}
+
+.swiper-css-mode.swiper-centered>.swiper-wrapper::before{
+  content:'';
+  flex-shrink:0;
+  order:9999
+}
+
+.swiper-css-mode.swiper-centered>.swiper-wrapper>.swiper-slide{
+  scroll-snap-align:center center;
+  scroll-snap-stop:always
+}
+
+.swiper-css-mode.swiper-centered.swiper-horizontal>.swiper-wrapper>.swiper-slide:first-child{
+  margin-inline-start:var(--swiper-centered-offset-before)
+}
+
+.swiper-css-mode.swiper-centered.swiper-horizontal>.swiper-wrapper::before{
+  height:100%;
+  min-height:1px;
+  width:var(--swiper-centered-offset-after)
+}
+
+.swiper-css-mode.swiper-centered.swiper-vertical>.swiper-wrapper>.swiper-slide:first-child{
+  margin-block-start:var(--swiper-centered-offset-before)
+}
+
+.swiper-css-mode.swiper-centered.swiper-vertical>.swiper-wrapper::before{
+  width:100%;
+  min-width:1px;
+  height:var(--swiper-centered-offset-after)
+}
+
+.swiper-3d .swiper-slide-shadow,.swiper-3d .swiper-slide-shadow-bottom,.swiper-3d .swiper-slide-shadow-left,.swiper-3d .swiper-slide-shadow-right,.swiper-3d .swiper-slide-shadow-top{
+  position:absolute;
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  z-index:10
+}
+
+.swiper-3d .swiper-slide-shadow{
+  background:rgba(0,0,0,.15)
+}
+
+.swiper-3d .swiper-slide-shadow-left{
+  background-image:linear-gradient(to left,rgba(0,0,0,.5),rgba(0,0,0,0))
+}
+
+.swiper-3d .swiper-slide-shadow-right{
+  background-image:linear-gradient(to right,rgba(0,0,0,.5),rgba(0,0,0,0))
+}
+
+.swiper-3d .swiper-slide-shadow-top{
+  background-image:linear-gradient(to top,rgba(0,0,0,.5),rgba(0,0,0,0))
+}
+
+.swiper-3d .swiper-slide-shadow-bottom{
+  background-image:linear-gradient(to bottom,rgba(0,0,0,.5),rgba(0,0,0,0))
+}
+
+.swiper-lazy-preloader{
+  width:42px;
+  height:42px;
+  position:absolute;
+  left:50%;
+  top:50%;
+  margin-left:-21px;
+  margin-top:-21px;
+  z-index:10;
+  transform-origin:50%;
+  box-sizing:border-box;
+  border:4px solid var(--swiper-preloader-color,var(--swiper-theme-color));
+  border-radius:50%;
+  border-top-color:transparent
+}
+
+.swiper-watch-progress .swiper-slide-visible .swiper-lazy-preloader,.swiper:not(.swiper-watch-progress) .swiper-lazy-preloader{
+  animation:swiper-preloader-spin 1s infinite linear
+}
+
+.swiper-lazy-preloader-white{
+  --swiper-preloader-color:#fff
+}
+
+.swiper-lazy-preloader-black{
+  --swiper-preloader-color:#000
+}
+
+@keyframes swiper-preloader-spin{
+  0%{
+    transform:rotate(0deg)
+  }
+
+  100%{
+    transform:rotate(360deg)
+  }
+}
+
+.swiper-virtual .swiper-slide{
+  -webkit-backface-visibility:hidden;
+  transform:translateZ(0)
+}
+
+.swiper-virtual.swiper-css-mode .swiper-wrapper::after{
+  content:'';
+  position:absolute;
+  left:0;
+  top:0;
+  pointer-events:none
+}
+
+.swiper-virtual.swiper-css-mode.swiper-horizontal .swiper-wrapper::after{
+  height:1px;
+  width:var(--swiper-virtual-size)
+}
+
+.swiper-virtual.swiper-css-mode.swiper-vertical .swiper-wrapper::after{
+  width:1px;
+  height:var(--swiper-virtual-size)
+}
+
+:root{
+  --swiper-navigation-size:44px
+}
+
+.swiper-button-next,.swiper-button-prev{
+  position:absolute;
+  top:var(--swiper-navigation-top-offset,50%);
+  width:calc(var(--swiper-navigation-size)/ 44 * 27);
+  height:var(--swiper-navigation-size);
+  margin-top:calc(0px - (var(--swiper-navigation-size)/ 2));
+  z-index:10;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--swiper-navigation-color,var(--swiper-theme-color))
+}
+
+.swiper-button-next.swiper-button-disabled,.swiper-button-prev.swiper-button-disabled{
+  opacity:.35;
+  cursor:auto;
+  pointer-events:none
+}
+
+.swiper-button-next.swiper-button-hidden,.swiper-button-prev.swiper-button-hidden{
+  opacity:0;
+  cursor:auto;
+  pointer-events:none
+}
+
+.swiper-navigation-disabled .swiper-button-next,.swiper-navigation-disabled .swiper-button-prev{
+  display:none!important
+}
+
+.swiper-button-next svg,.swiper-button-prev svg{
+  width:100%;
+  height:100%;
+  -o-object-fit:contain;
+     object-fit:contain;
+  transform-origin:center
+}
+
+.swiper-rtl .swiper-button-next svg,.swiper-rtl .swiper-button-prev svg{
+  transform:rotate(180deg)
+}
+
+.swiper-button-prev,.swiper-rtl .swiper-button-next{
+  left:var(--swiper-navigation-sides-offset,10px);
+  right:auto
+}
+
+.swiper-button-next,.swiper-rtl .swiper-button-prev{
+  right:var(--swiper-navigation-sides-offset,10px);
+  left:auto
+}
+
+.swiper-button-lock{
+  display:none
+}
+
+.swiper-button-next:after,.swiper-button-prev:after{
+  font-family:swiper-icons;
+  font-size:var(--swiper-navigation-size);
+  text-transform:none!important;
+  letter-spacing:0;
+  font-variant:initial;
+  line-height:1
+}
+
+.swiper-button-prev:after,.swiper-rtl .swiper-button-next:after{
+  content:'prev'
+}
+
+.swiper-button-next,.swiper-rtl .swiper-button-prev{
+  right:var(--swiper-navigation-sides-offset,10px);
+  left:auto
+}
+
+.swiper-button-next:after,.swiper-rtl .swiper-button-prev:after{
+  content:'next'
+}
+
+.swiper-pagination{
+  position:absolute;
+  text-align:center;
+  transition:.3s opacity;
+  transform:translate3d(0,0,0);
+  z-index:10
+}
+
+.swiper-pagination.swiper-pagination-hidden{
+  opacity:0
+}
+
+.swiper-pagination-disabled>.swiper-pagination,.swiper-pagination.swiper-pagination-disabled{
+  display:none!important
+}
+
+.swiper-horizontal>.swiper-pagination-bullets,.swiper-pagination-bullets.swiper-pagination-horizontal,.swiper-pagination-custom,.swiper-pagination-fraction{
+  bottom:var(--swiper-pagination-bottom,8px);
+  top:var(--swiper-pagination-top,auto);
+  left:0;
+  width:100%
+}
+
+.swiper-pagination-bullets-dynamic{
+  overflow:hidden;
+  font-size:0
+}
+
+.swiper-pagination-bullets-dynamic .swiper-pagination-bullet{
+  transform:scale(.33);
+  position:relative
+}
+
+.swiper-pagination-bullets-dynamic .swiper-pagination-bullet-active{
+  transform:scale(1)
+}
+
+.swiper-pagination-bullets-dynamic .swiper-pagination-bullet-active-main{
+  transform:scale(1)
+}
+
+.swiper-pagination-bullets-dynamic .swiper-pagination-bullet-active-prev{
+  transform:scale(.66)
+}
+
+.swiper-pagination-bullets-dynamic .swiper-pagination-bullet-active-prev-prev{
+  transform:scale(.33)
+}
+
+.swiper-pagination-bullets-dynamic .swiper-pagination-bullet-active-next{
+  transform:scale(.66)
+}
+
+.swiper-pagination-bullets-dynamic .swiper-pagination-bullet-active-next-next{
+  transform:scale(.33)
+}
+
+.swiper-pagination-bullet{
+  width:var(--swiper-pagination-bullet-width,var(--swiper-pagination-bullet-size,8px));
+  height:var(--swiper-pagination-bullet-height,var(--swiper-pagination-bullet-size,8px));
+  display:inline-block;
+  border-radius:var(--swiper-pagination-bullet-border-radius,50%);
+  background:var(--swiper-pagination-bullet-inactive-color,#000);
+  opacity:var(--swiper-pagination-bullet-inactive-opacity, .2)
+}
+
+button.swiper-pagination-bullet{
+  border:none;
+  margin:0;
+  padding:0;
+  box-shadow:none;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+       appearance:none
+}
+
+.swiper-pagination-clickable .swiper-pagination-bullet{
+  cursor:pointer
+}
+
+.swiper-pagination-bullet:only-child{
+  display:none!important
+}
+
+.swiper-pagination-bullet-active{
+  opacity:var(--swiper-pagination-bullet-opacity, 1);
+  background:var(--swiper-pagination-color,var(--swiper-theme-color))
+}
+
+.swiper-pagination-vertical.swiper-pagination-bullets,.swiper-vertical>.swiper-pagination-bullets{
+  right:var(--swiper-pagination-right,8px);
+  left:var(--swiper-pagination-left,auto);
+  top:50%;
+  transform:translate3d(0px,-50%,0)
+}
+
+.swiper-pagination-vertical.swiper-pagination-bullets .swiper-pagination-bullet,.swiper-vertical>.swiper-pagination-bullets .swiper-pagination-bullet{
+  margin:var(--swiper-pagination-bullet-vertical-gap,6px) 0;
+  display:block
+}
+
+.swiper-pagination-vertical.swiper-pagination-bullets.swiper-pagination-bullets-dynamic,.swiper-vertical>.swiper-pagination-bullets.swiper-pagination-bullets-dynamic{
+  top:50%;
+  transform:translateY(-50%);
+  width:8px
+}
+
+.swiper-pagination-vertical.swiper-pagination-bullets.swiper-pagination-bullets-dynamic .swiper-pagination-bullet,.swiper-vertical>.swiper-pagination-bullets.swiper-pagination-bullets-dynamic .swiper-pagination-bullet{
+  display:inline-block;
+  transition:.2s transform,.2s top
+}
+
+.swiper-horizontal>.swiper-pagination-bullets .swiper-pagination-bullet,.swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet{
+  margin:0 var(--swiper-pagination-bullet-horizontal-gap,4px)
+}
+
+.swiper-horizontal>.swiper-pagination-bullets.swiper-pagination-bullets-dynamic,.swiper-pagination-horizontal.swiper-pagination-bullets.swiper-pagination-bullets-dynamic{
+  left:50%;
+  transform:translateX(-50%);
+  white-space:nowrap
+}
+
+.swiper-horizontal>.swiper-pagination-bullets.swiper-pagination-bullets-dynamic .swiper-pagination-bullet,.swiper-pagination-horizontal.swiper-pagination-bullets.swiper-pagination-bullets-dynamic .swiper-pagination-bullet{
+  transition:.2s transform,.2s left
+}
+
+.swiper-horizontal.swiper-rtl>.swiper-pagination-bullets-dynamic .swiper-pagination-bullet{
+  transition:.2s transform,.2s right
+}
+
+.swiper-pagination-fraction{
+  color:var(--swiper-pagination-fraction-color,inherit)
+}
+
+.swiper-pagination-progressbar{
+  background:var(--swiper-pagination-progressbar-bg-color,rgba(0,0,0,.25));
+  position:absolute
+}
+
+.swiper-pagination-progressbar .swiper-pagination-progressbar-fill{
+  background:var(--swiper-pagination-color,var(--swiper-theme-color));
+  position:absolute;
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+  transform:scale(0);
+  transform-origin:left top
+}
+
+.swiper-rtl .swiper-pagination-progressbar .swiper-pagination-progressbar-fill{
+  transform-origin:right top
+}
+
+.swiper-horizontal>.swiper-pagination-progressbar,.swiper-pagination-progressbar.swiper-pagination-horizontal,.swiper-pagination-progressbar.swiper-pagination-vertical.swiper-pagination-progressbar-opposite,.swiper-vertical>.swiper-pagination-progressbar.swiper-pagination-progressbar-opposite{
+  width:100%;
+  height:var(--swiper-pagination-progressbar-size,4px);
+  left:0;
+  top:0
+}
+
+.swiper-horizontal>.swiper-pagination-progressbar.swiper-pagination-progressbar-opposite,.swiper-pagination-progressbar.swiper-pagination-horizontal.swiper-pagination-progressbar-opposite,.swiper-pagination-progressbar.swiper-pagination-vertical,.swiper-vertical>.swiper-pagination-progressbar{
+  width:var(--swiper-pagination-progressbar-size,4px);
+  height:100%;
+  left:0;
+  top:0
+}
+
+.swiper-pagination-lock{
+  display:none
+}
+
+.swiper-scrollbar{
+  border-radius:var(--swiper-scrollbar-border-radius,10px);
+  position:relative;
+  touch-action:none;
+  background:var(--swiper-scrollbar-bg-color,rgba(0,0,0,.1))
+}
+
+.swiper-scrollbar-disabled>.swiper-scrollbar,.swiper-scrollbar.swiper-scrollbar-disabled{
+  display:none!important
+}
+
+.swiper-horizontal>.swiper-scrollbar,.swiper-scrollbar.swiper-scrollbar-horizontal{
+  position:absolute;
+  left:var(--swiper-scrollbar-sides-offset,1%);
+  bottom:var(--swiper-scrollbar-bottom,4px);
+  top:var(--swiper-scrollbar-top,auto);
+  z-index:50;
+  height:var(--swiper-scrollbar-size,4px);
+  width:calc(100% - 2 * var(--swiper-scrollbar-sides-offset,1%))
+}
+
+.swiper-scrollbar.swiper-scrollbar-vertical,.swiper-vertical>.swiper-scrollbar{
+  position:absolute;
+  left:var(--swiper-scrollbar-left,auto);
+  right:var(--swiper-scrollbar-right,4px);
+  top:var(--swiper-scrollbar-sides-offset,1%);
+  z-index:50;
+  width:var(--swiper-scrollbar-size,4px);
+  height:calc(100% - 2 * var(--swiper-scrollbar-sides-offset,1%))
+}
+
+.swiper-scrollbar-drag{
+  height:100%;
+  width:100%;
+  position:relative;
+  background:var(--swiper-scrollbar-drag-bg-color,rgba(0,0,0,.5));
+  border-radius:var(--swiper-scrollbar-border-radius,10px);
+  left:0;
+  top:0
+}
+
+.swiper-scrollbar-cursor-drag{
+  cursor:move
+}
+
+.swiper-scrollbar-lock{
+  display:none
+}
+
+.swiper-zoom-container{
+  width:100%;
+  height:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center
+}
+
+.swiper-zoom-container>canvas,.swiper-zoom-container>img,.swiper-zoom-container>svg{
+  max-width:100%;
+  max-height:100%;
+  -o-object-fit:contain;
+     object-fit:contain
+}
+
+.swiper-slide-zoomed{
+  cursor:move;
+  touch-action:none
+}
+
+.swiper .swiper-notification{
+  position:absolute;
+  left:0;
+  top:0;
+  pointer-events:none;
+  opacity:0;
+  z-index:-1000
+}
+
+.swiper-free-mode>.swiper-wrapper{
+  transition-timing-function:ease-out;
+  margin:0 auto
+}
+
+.swiper-grid>.swiper-wrapper{
+  flex-wrap:wrap
+}
+
+.swiper-grid-column>.swiper-wrapper{
+  flex-wrap:wrap;
+  flex-direction:column
+}
+
+.swiper-fade.swiper-free-mode .swiper-slide{
+  transition-timing-function:ease-out
+}
+
+.swiper-fade .swiper-slide{
+  pointer-events:none;
+  transition-property:opacity
+}
+
+.swiper-fade .swiper-slide .swiper-slide{
+  pointer-events:none
+}
+
+.swiper-fade .swiper-slide-active{
+  pointer-events:auto
+}
+
+.swiper-fade .swiper-slide-active .swiper-slide-active{
+  pointer-events:auto
+}
+
+.swiper.swiper-cube{
+  overflow:visible
+}
+
+.swiper-cube .swiper-slide{
+  pointer-events:none;
+  backface-visibility:hidden;
+  z-index:1;
+  visibility:hidden;
+  transform-origin:0 0;
+  width:100%;
+  height:100%
+}
+
+.swiper-cube .swiper-slide .swiper-slide{
+  pointer-events:none
+}
+
+.swiper-cube.swiper-rtl .swiper-slide{
+  transform-origin:100% 0
+}
+
+.swiper-cube .swiper-slide-active,.swiper-cube .swiper-slide-active .swiper-slide-active{
+  pointer-events:auto
+}
+
+.swiper-cube .swiper-slide-active,.swiper-cube .swiper-slide-next,.swiper-cube .swiper-slide-prev{
+  pointer-events:auto;
+  visibility:visible
+}
+
+.swiper-cube .swiper-cube-shadow{
+  position:absolute;
+  left:0;
+  bottom:0px;
+  width:100%;
+  height:100%;
+  opacity:.6;
+  z-index:0
+}
+
+.swiper-cube .swiper-cube-shadow:before{
+  content:'';
+  background:#000;
+  position:absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  right:0;
+  filter:blur(50px)
+}
+
+.swiper-cube .swiper-slide-next+.swiper-slide{
+  pointer-events:auto;
+  visibility:visible
+}
+
+.swiper-cube .swiper-slide-shadow-cube.swiper-slide-shadow-bottom,.swiper-cube .swiper-slide-shadow-cube.swiper-slide-shadow-left,.swiper-cube .swiper-slide-shadow-cube.swiper-slide-shadow-right,.swiper-cube .swiper-slide-shadow-cube.swiper-slide-shadow-top{
+  z-index:0;
+  backface-visibility:hidden
+}
+
+.swiper.swiper-flip{
+  overflow:visible
+}
+
+.swiper-flip .swiper-slide{
+  pointer-events:none;
+  backface-visibility:hidden;
+  z-index:1
+}
+
+.swiper-flip .swiper-slide .swiper-slide{
+  pointer-events:none
+}
+
+.swiper-flip .swiper-slide-active,.swiper-flip .swiper-slide-active .swiper-slide-active{
+  pointer-events:auto
+}
+
+.swiper-flip .swiper-slide-shadow-flip.swiper-slide-shadow-bottom,.swiper-flip .swiper-slide-shadow-flip.swiper-slide-shadow-left,.swiper-flip .swiper-slide-shadow-flip.swiper-slide-shadow-right,.swiper-flip .swiper-slide-shadow-flip.swiper-slide-shadow-top{
+  z-index:0;
+  backface-visibility:hidden
+}
+
+.swiper-creative .swiper-slide{
+  backface-visibility:hidden;
+  overflow:hidden;
+  transition-property:transform,opacity,height
+}
+
+.swiper.swiper-cards{
+  overflow:visible
+}
+
+.swiper-cards .swiper-slide{
+  transform-origin:center bottom;
+  backface-visibility:hidden;
+  overflow:hidden
+}
+
+/* Các thành phần dùng lại cho all trang ví dụ btn, tab, input, bg, color, text, card, badge, .v.v. */
+
+/* ========================================================================
+   GLOBALS.CSS - CSS Variables & Component Styles
+   ======================================================================== */
+
+/* ========================================================================
+   @LAYER BASE - CSS Variables & Base Styles
+   ======================================================================== */
+
+/* ========================================================================
+   @LAYER COMPONENTS - Reusable Component Styles
+   ======================================================================== */
+
+/* Config theme trang Home (màu, font-size, border-radius) - sửa trong home-theme.css */
+
+/* ========================================================================
+   HOME THEME - Config màu, font-size, border-radius cho trang Home
+   Chỉ cần sửa các giá trị dưới đây để đổi toàn bộ giao diện home.
+   ======================================================================== */
+
+:root {
+ /* ----- MÀU (Colors) ----- */
+  --home-primary: #275cee;
+  /* Màu chính (nút, link, accent) */
+  --home-primary-hover: #1f4acd;
+  --home-accent: #05DF85;
+  /* Màu phụ / gradient start (xanh lá) */
+  --home-success: #08e779;
+  /* Badge, success (chữ / icon) */
+  --home-success-10: #DDF4E9;
+  /* Nền badge success nhạt */
+  --home-success-20: #DDF4E9;
+  /* Nền badge success (xanh lá nhạt) */
+  --home-heading: #2C2C2C;
+  /* Tiêu đề */
+  --home-body: #595959;
+  /* Chữ body / muted */
+  --home-surface: #EDEFF4;
+  /* Nền input, nút secondary */
+  --home-surface-light: #E9F3FD;
+  /* Nền badge, card nhạt */
+  --home-border: #999A9D;
+  /* Viền card */
+  --home-white: #ffffff;
+  /* ----- FONT SIZE (dùng với font-space / font-plus) ----- */
+  --home-text-xs: 0.625rem;
+  /* 10px */
+  --home-text-sm: 0.75rem;
+  /* 12px */
+  --home-text-base: 0.875rem;
+  /* 14px */
+  --home-text-md: 1rem;
+  /* 16px */
+  --home-text-lg: 1.25rem;
+  /* 20px */
+  --home-text-xl: 1.5rem;
+  /* 24px */
+  --home-text-2xl: 1.875rem;
+  /* 30px */
+  --home-text-3xl: 2.25rem;
+  /* 36px */
+  --home-text-hero: 3rem;
+  /* 48px - H2 section */
+  /* ----- BORDER RADIUS ----- */
+  --home-radius-sm: 0.375rem;
+  /* 6px - rounded-md */
+  --home-radius-md: 0.5rem;
+  /* 8px - rounded-lg */
+  --home-radius-card: 0.625rem;
+  /* 10px - card inner */
+  --home-radius-lg: 0.75rem;
+  /* 12px - rounded-xl */
+  --home-radius-xl: 1rem;
+  /* 16px - rounded-2xl */
+  --home-radius-full: 9999px;
+  /* rounded-full */
+}
+
+/* Các thành phần cho Header dùng chung all trang */
+
+/* ========================================================================
+   HEADER.CSS - Header Component Styles
+   ======================================================================== */
+
+/* ========================================================================
+   @LAYER COMPONENTS - Header Specific Components
+   ======================================================================== */
+
+/* Các thành phần Blaze Slider dùng chung all trang */
+
+/* ========================================================================
+   BLAZE-SLIDER.CSS - Blaze Slider Component Styles
+   ======================================================================== */
+
+/* ========================================================================
+   @LAYER COMPONENTS - Blaze Slider Components
+   ======================================================================== */
+
+/* Các thành phần cho Footer dùng chung all trang */
+
+/* ========================================================================
+   FOOTER.CSS - Footer Component Styles
+   ======================================================================== */
+
+/* ========================================================================
+   @LAYER COMPONENTS - Footer Specific Components
+   ======================================================================== */
+
+.hover\:border-home-success:hover {
+  border-color: var(--home-success);
+}
+
+.hover\:border-home-surface:hover {
+  border-color: var(--home-surface);
+}
+
+.hover\:bg-blue-600:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+}
+
+.hover\:bg-gray-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));
+}
+
+.hover\:bg-gray-200:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity, 1));
+}
+
+.hover\:bg-gray-50:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1));
+}
+
+.hover\:bg-home-primary-hover:hover {
+  background-color: var(--home-primary-hover);
+}
+
+.hover\:bg-home-surface:hover {
+  background-color: var(--home-surface);
+}
+
+.hover\:bg-home-surface-light:hover {
+  background-color: var(--home-surface-light);
+}
+
+.hover\:bg-white:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+
+.hover\:text-blue-600:hover {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
+}
+
+.hover\:text-gray-200:hover {
+  --tw-text-opacity: 1;
+  color: rgb(229 231 235 / var(--tw-text-opacity, 1));
+}
+
+.hover\:text-gray-900:hover {
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity, 1));
+}
+
+.hover\:text-home-primary:hover {
+  color: var(--home-primary);
+}
+
+.hover\:text-pink-600:hover {
+  --tw-text-opacity: 1;
+  color: rgb(219 39 119 / var(--tw-text-opacity, 1));
+}
+
+.hover\:underline:hover {
+  text-decoration-line: underline;
+}
+
+.focus\:border-white:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity, 1));
+}
+
+@media (min-width: 640px) {
+  .sm\:right-8 {
+    right: 2rem;
+  }
+
+  .sm\:col-span-1 {
+    grid-column: span 1 / span 1;
+  }
+
+  .sm\:col-span-2 {
+    grid-column: span 2 / span 2;
+  }
+
+  .sm\:mb-12 {
+    margin-bottom: 3rem;
+  }
+
+  .sm\:mb-6 {
+    margin-bottom: 1.5rem;
+  }
+
+  .sm\:h-\[27px\] {
+    height: 27px;
+  }
+
+  .sm\:w-\[27px\] {
+    width: 27px;
+  }
+
+  .sm\:w-\[322px\] {
+    width: 322px;
+  }
+
+  .sm\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sm\:gap-10 {
+    gap: 2.5rem;
+  }
+
+  .sm\:gap-2 {
+    gap: 0.5rem;
+  }
+
+  .sm\:gap-8 {
+    gap: 2rem;
+  }
+
+  .sm\:space-y-12 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-y-reverse: 0;
+    margin-top: calc(3rem * calc(1 - var(--tw-space-y-reverse)));
+    margin-bottom: calc(3rem * var(--tw-space-y-reverse));
+  }
+
+  .sm\:p-8 {
+    padding: 2rem;
+  }
+
+  .sm\:px-3 {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .sm\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .sm\:py-2 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .sm\:py-20 {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  .sm\:py-24 {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+
+  .sm\:pt-24 {
+    padding-top: 6rem;
+  }
+
+  .sm\:text-3xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+
+  .sm\:text-4xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+
+  .sm\:text-\[12px\] {
+    font-size: 12px;
+  }
+
+  .sm\:text-\[18px\] {
+    font-size: 18px;
+  }
+
+  .sm\:text-\[36px\] {
+    font-size: 36px;
+  }
+
+  .sm\:text-\[40px\] {
+    font-size: 40px;
+  }
+
+  .sm\:text-\[48px\] {
+    font-size: 48px;
+  }
+
+  .sm\:leading-\[28px\] {
+    line-height: 28px;
+  }
+
+  .sm\:leading-\[44px\] {
+    line-height: 44px;
+  }
+
+  .sm\:leading-\[48px\] {
+    line-height: 48px;
+  }
+
+  .sm\:leading-snug {
+    line-height: 1.375;
+  }
+}
+
+@media (min-width: 768px) {
+  .md\:grid {
+    display: grid;
+  }
+
+  .md\:hidden {
+    display: none;
+  }
+
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .md\:flex-row {
+    flex-direction: row;
+  }
+
+  .md\:gap-4 {
+    gap: 1rem;
+  }
+
+  .md\:px-2 {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .md\:space-y-0 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-y-reverse: 0;
+    margin-top: calc(0px * calc(1 - var(--tw-space-y-reverse)));
+    margin-bottom: calc(0px * var(--tw-space-y-reverse));
+  }
+
+  .md\:py-24 {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+
+  .md\:text-4xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+
+  .md\:text-\[52px\] {
+    font-size: 52px;
+  }
+
+  .md\:leading-\[60px\] {
+    line-height: 60px;
+  }
+
+  .md\:leading-\[61px\] {
+    line-height: 61px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:col-span-2 {
+    grid-column: span 2 / span 2;
+  }
+
+  .lg\:col-span-4 {
+    grid-column: span 4 / span 4;
+  }
+
+  .lg\:mb-8 {
+    margin-bottom: 2rem;
+  }
+
+  .lg\:ml-5 {
+    margin-left: 1.25rem;
+  }
+
+  .lg\:flex {
+    display: flex;
+  }
+
+  .lg\:hidden {
+    display: none;
+  }
+
+  .lg\:h-\[41px\] {
+    height: 41px;
+  }
+
+  .lg\:flex-none {
+    flex: none;
+  }
+
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .lg\:justify-start {
+    justify-content: flex-start;
+  }
+
+  .lg\:gap-12 {
+    gap: 3rem;
+  }
+
+  .lg\:space-x-0 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-x-reverse: 0;
+    margin-right: calc(0px * var(--tw-space-x-reverse));
+    margin-left: calc(0px * calc(1 - var(--tw-space-x-reverse)));
+  }
+
+  .lg\:p-8 {
+    padding: 2rem;
+  }
+  .lg\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  .lg\:px-8 {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .lg\:py-3 {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .lg\:py-\[105px\] {
+    padding-top: 105px;
+    padding-bottom: 105px;
+  }
+
+  .lg\:text-5xl {
+    font-size: 3rem;
+    line-height: 1;
+  }
+
+  .lg\:text-\[20px\] {
+    font-size: 20px;
+  }
+
+  .lg\:text-\[48px\] {
+    font-size: 48px;
+  }
+
+  .lg\:text-\[64px\] {
+    font-size: 64px;
+  }
+
+  .lg\:text-xs {
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
+
+  .lg\:leading-\[30px\] {
+    line-height: 30px;
+  }
+
+  .lg\:leading-\[80px\] {
+    line-height: 80px;
+  }
+
+  .lg\:leading-normal {
+    line-height: 1.5;
+  }
+}
+
+@media (min-width: 1280px) {
+  .xl\:ml-10 {
+    margin-left: 2.5rem;
+  }
+
+  .xl\:space-x-2 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-x-reverse: 0;
+    margin-right: calc(0.5rem * var(--tw-space-x-reverse));
+    margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
+  }
+
+  .xl\:px-12 {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+  .xl\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Download choose-edition desktop grid tuning (fallback when Tailwind build is stale) */
+.download-edition-desktop-grid {
+  width: 100%;
+  max-width: 1600px;
+}
+
+@media (min-width: 1024px) {
+  .download-edition-desktop-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    justify-content: center;
+  }
+}
+
+@media (min-width: 1280px) {
+  .download-edition-desktop-grid {
+    /* Keep card width equivalent to a 4-column layout even when only 3 cards exist */
+    --download-edition-col-width: calc((min(100%, 1600px) - (3 * 2.5rem)) / 4);
+    grid-template-columns: repeat(auto-fit, minmax(var(--download-edition-col-width), var(--download-edition-col-width)));
+    gap: 2.5rem;
+    justify-content: center;
+  }
+}

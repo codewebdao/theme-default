@@ -1,0 +1,54 @@
+/**
+ * Auth V2 – Styles
+ * Used when auth_ui version is v2
+ */
+
+/* Auth V2 container */
+.auth-v2-container {
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #f8fafc, #ffffff, #eff6ff);
+}
+
+/* Panel & form */
+.auth-v2-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2rem;
+  min-height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(4px);
+}
+
+.auth-v2-form {
+  width: 100%;
+  max-width: 24rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Messages */
+.auth-v2-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+
+.auth-v2-success {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+
+/* Profile tabs */
+.auth-v2-profile-section.hidden {
+  display: none;
+}
+
+.auth-v2-profile-nav.active {
+  background-color: #eff6ff;
+  color: #1d4ed8;
+}

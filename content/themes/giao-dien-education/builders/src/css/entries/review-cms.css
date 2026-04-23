@@ -1,0 +1,420 @@
+/**
+ * Review / so sánh CMS — bundle addon (trang phải nạp `index.css` trước).
+ * `archive-reviews.php`: thêm `index.css` + file này.
+ * @page-url https://laragon.net/reviews/
+ */
+ @import '../partials/_tailwind-standalone.css';
+
+ 
+/* Related / listing cards on blog-detail: _imglazy <picture>; avatar wrapper matches blog.css */
+.blog-author-avatar {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 9999px;
+    overflow: hidden;
+    background-color: #d1d5db;
+  }
+  .blog-author-avatar picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    line-height: 0;
+  }
+  .blog-author-avatar img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 9999px;
+  }
+  
+  /* _blog_article_card: px-5 py-6 không có trong bundle Tailwind của blog-detail */
+  .blog-article-card__body {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+  
+  .blog-article-card__title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+  
+  article.group .relative.overflow-hidden.rounded-home-lg picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+    line-height: 0;
+  }
+  article.group .relative.overflow-hidden.rounded-home-lg img.blog-article-card__thumb {
+    display: block;
+    width: 100%;
+    height: 11rem;
+    object-fit: cover;
+    object-position: center;
+  }
+  @media (min-width: 768px) {
+    article.group .relative.overflow-hidden.rounded-home-lg img.blog-article-card__thumb {
+      height: 12rem;
+    }
+  }
+  
+  /* Related posts: slider + auto 3s (JS), tối đa 8 card (PHP).
+     Breakpoint dùng @media (viewport): @container so với cqi sẽ không bật trên tablet vì #blog-related-scroll hẹp hơn 768px.
+     md: ~2.3 card; lg: ~3.2; xl: ~4. 100cqi = width vùng cuộn. Gap md+ = 1.5rem (md:gap-6). */
+  #blog-related-scroll {
+    container-type: inline-size;
+    container-name: blog-related;
+    cursor: grab;
+    touch-action: pan-x;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  #blog-related-scroll.blog-related--dragging {
+    cursor: grabbing;
+    scroll-behavior: auto;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  
+  #blog-related-track > .blog-related-card-slide {
+    flex: 0 0 calc(100cqi / 1.2);
+    scroll-snap-align: start;
+  }
+  
+  /* md (tablet): ~2.3 card — viewport ≥768, width ô vẫn tính theo cqi (strip cuộn) */
+  @media (min-width: 768px) {
+    #blog-related-track > .blog-related-card-slide {
+      flex: 0 0 calc((100cqi - 3rem) / 2.3);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    #blog-related-track > .blog-related-card-slide {
+      flex: 0 0 calc((100cqi - 4.5rem) / 3.2);
+    }
+  }
+  
+  @media (min-width: 1280px) {
+    #blog-related-track > .blog-related-card-slide {
+      flex: 0 0 calc((100cqi - 4.5rem) / 4);
+    }
+  }
+  
+  
+
+/* Trang chi tiết review: ống hiệu năng thang 0–100 (vàng), fill chạy ngang + lưới Ưu/Nhược md+ */
+.review-cms-performance-card {
+    padding: 1.125rem 1.25rem 1rem;
+    border-radius: 1rem;
+    background: linear-gradient(165deg, #fffbeb 0%, #fef9c3 40%, #fef08a 100%);
+    border: 1px solid rgba(234, 179, 8, 0.55);
+    box-shadow:
+      0 8px 28px rgba(234, 179, 8, 0.22),
+      0 1px 0 rgba(255, 255, 255, 0.85) inset;
+  }
+  .review-cms-performance-card__top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.875rem;
+  }
+  .review-cms-performance-card__title {
+    color: #713f12;
+    letter-spacing: 0.01em;
+  }
+  .review-cms-performance-card__score-wrap {
+    flex-shrink: 0;
+    text-align: right;
+  }
+  .review-cms-performance-card__score {
+    display: inline-block;
+    font-size: clamp(1.35rem, 4vw, 1.85rem);
+    font-weight: 800;
+    line-height: 1;
+    color: #78350f;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
+  }
+  /* Ống ngoài (viền vàng 3D nhẹ) */
+  .review-cms-performance-card__tube {
+    border-radius: 9999px;
+    padding: 5px;
+    background: linear-gradient(180deg, #fde047 0%, #eab308 48%, #ca8a04 100%);
+    box-shadow:
+      inset 0 2px 3px rgba(255, 255, 255, 0.55),
+      inset 0 -2px 4px rgba(146, 64, 14, 0.18),
+      0 3px 10px rgba(202, 138, 4, 0.35);
+  }
+  .review-cms-performance-card__tube-channel {
+    position: relative;
+    height: 22px;
+    border-radius: 9999px;
+    background: linear-gradient(180deg, rgba(69, 26, 3, 0.12) 0%, rgba(69, 26, 3, 0.2) 100%);
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+  }
+  @media (min-width: 640px) {
+    .review-cms-performance-card__tube-channel {
+      height: 26px;
+    }
+  }
+  .review-cms-performance-card__fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: calc(var(--review-perf-pct, 0) * 1%);
+    max-width: 100%;
+    border-radius: 9999px;
+    transform-origin: left center;
+    transform: scaleX(0);
+    will-change: transform;
+    background: linear-gradient(
+      90deg,
+      #facc15 0%,
+      #fde047 22%,
+      #fef08a 50%,
+      #facc15 78%,
+      #eab308 100%
+    );
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.65),
+      0 0 14px rgba(250, 204, 21, 0.55);
+    animation: review-cms-perf-tube-fill 1.15s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .review-cms-performance-card__fill::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      105deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.55) 42%,
+      transparent 62%
+    );
+    opacity: 0.85;
+    animation: review-cms-perf-shine 2.2s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes review-cms-perf-tube-fill {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+  @keyframes review-cms-perf-shine {
+    0%,
+    100% {
+      transform: translateX(-30%);
+    }
+    50% {
+      transform: translateX(40%);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .review-cms-performance-card__fill {
+      animation: none;
+      transform: scaleX(1);
+    }
+    .review-cms-performance-card__fill::after {
+      animation: none;
+      opacity: 0.35;
+    }
+  }
+  .review-cms-performance-card__ticks {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.4rem;
+    padding: 0 0.15rem;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: rgba(113, 63, 18, 0.55);
+    font-variant-numeric: tabular-nums;
+  }
+  @media (min-width: 640px) {
+    .review-cms-performance-card {
+      padding: 1.25rem 1.5rem 1.125rem;
+    }
+    .review-cms-performance-card__ticks {
+      font-size: 0.7rem;
+      margin-top: 0.5rem;
+    }
+  }
+  
+  
+  /* Ưu điểm / Nhược điểm — panel nổi bật, chữ rõ, bullet tùy cột */
+  .review-cms-pros-cons__col {
+    min-width: 0;
+    padding: 1.15rem 1.2rem 1.25rem;
+    border-radius: 0.9375rem;
+    border: 1px solid transparent;
+    box-shadow: 0 6px 24px rgba(15, 23, 42, 0.06);
+  }
+  @media (min-width: 640px) {
+    .review-cms-pros-cons__col {
+      padding: 1.35rem 1.4rem 1.45rem;
+    }
+  }
+  .review-cms-pros-cons__col--pros {
+    background: linear-gradient(165deg, #ecfdf5 0%, #d1fae5 38%, #f0fdf4 100%);
+    border-color: rgba(16, 185, 129, 0.35);
+    box-shadow:
+      0 6px 26px rgba(5, 150, 105, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+  .review-cms-pros-cons__col--cons {
+    background: linear-gradient(165deg, #fff7ed 0%, #ffedd5 40%, #fffbeb 100%);
+    border-color: rgba(237, 102, 29, 0.32);
+    box-shadow:
+      0 6px 26px rgba(234, 88, 12, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.92);
+  }
+  .review-cms-pros-cons__head {
+    margin-bottom: 1rem;
+    padding-bottom: 0.85rem;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+  }
+  .review-cms-pros-cons__col--pros .review-cms-pros-cons__head {
+    border-bottom-color: rgba(5, 150, 105, 0.2);
+  }
+  .review-cms-pros-cons__col--cons .review-cms-pros-cons__head {
+    border-bottom-color: rgba(237, 102, 29, 0.22);
+  }
+  .review-cms-pros-cons__icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+  .review-cms-pros-cons__icon--pros {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(209, 250, 229, 0.9) 100%);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+  }
+  .review-cms-pros-cons__icon--cons {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 237, 213, 0.95) 100%);
+    border: 1px solid rgba(237, 102, 29, 0.3);
+  }
+  .review-cms-pros-cons__icon svg {
+    display: block;
+  }
+  .review-cms-pros-cons__title {
+    font-size: 1.0625rem;
+    letter-spacing: 0.02em;
+    line-height: 1.35;
+  }
+  .review-cms-pros-cons__title--pros {
+    color: #047857;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+  }
+  .review-cms-pros-cons__title--cons {
+    color: #c2410c;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
+  }
+  .review-cms-pros-cons__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+  @media (min-width: 640px) {
+    .review-cms-pros-cons__list {
+      gap: 0.75rem;
+    }
+  }
+  .review-cms-pros-cons__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    margin: 0;
+    padding: 0.55rem 0.65rem 0.55rem 0.6rem;
+    border-radius: 0.625rem;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    font-weight: 500;
+    color: #1f2937;
+  }
+  @media (min-width: 640px) {
+    .review-cms-pros-cons__item {
+      font-size: 1rem;
+      padding: 0.65rem 0.75rem 0.65rem 0.65rem;
+    }
+  }
+  .review-cms-pros-cons__item--pros {
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(16, 185, 129, 0.14);
+  }
+  .review-cms-pros-cons__item--cons {
+    background: rgba(255, 255, 255, 0.58);
+    border: 1px solid rgba(251, 146, 60, 0.2);
+  }
+  .review-cms-pros-cons__item--empty {
+    justify-content: center;
+    color: #9ca3af;
+    font-weight: 400;
+    background: transparent;
+    border: none;
+    padding: 0.35rem;
+  }
+  .review-cms-pros-cons__item--pros::before {
+    content: "";
+    flex-shrink: 0;
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-top: 0.42em;
+    border-radius: 9999px;
+    background: radial-gradient(circle at 30% 30%, #6ee7b7, #059669 72%);
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.15);
+  }
+  .review-cms-pros-cons__item--cons::before {
+    content: "";
+    flex-shrink: 0;
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-top: 0.42em;
+    border-radius: 2px;
+    background: linear-gradient(135deg, #fb923c, #ea580c);
+    box-shadow: 0 0 0 2px rgba(234, 88, 12, 0.12);
+    transform: rotate(45deg);
+  }
+  .review-cms-pros-cons__item-text {
+    flex: 1;
+    min-width: 0;
+    color: #374151;
+  }
+  .review-cms-pros-cons__col--pros .review-cms-pros-cons__item-text {
+    color: #1e3a2f;
+  }
+  .review-cms-pros-cons__col--cons .review-cms-pros-cons__item-text {
+    color: #422006;
+  }
+  
+  /* Chi tiết review: nội dung dưới banner (đánh giá + bài + CTA) rộng hơn max-w-4xl cũ */
+  .review-cms-detail-main-inner {
+    width: 100%;
+    max-width: 80rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  @media (min-width: 1280px) {
+    .review-cms-detail-main-inner {
+      max-width: 85rem;
+    }
+  }
+  

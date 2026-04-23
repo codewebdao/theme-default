@@ -1,0 +1,14 @@
+/**
+ * FAQ Accordion strip – styles cho section Frequently Asked Questions
+ */
+.faq-accordion .faq-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+.faq-accordion .faq-content.is-open {
+  max-height: 400px;
+}
+.faq-accordion .faq-chevron.is-open {
+  transform: rotate(180deg);
+}

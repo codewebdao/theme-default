@@ -1,0 +1,5 @@
+/**
+ * Trang Download — bundle độc lập (chỉ `download.css` + header/footer).
+ * @page-url https://laragon.net/download/
+ */
+ @import '../partials/_tailwind-standalone.css';

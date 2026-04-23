@@ -1,0 +1,11 @@
+/**
+ * Lát cắt ý `tools/theme-assets/laragon/src/assets/css/globals.css` (base):
+ * màu viền mặc định gray-200 — không dùng `@layer base` vì entry `usage-guide` không có `@tailwind base`.
+ *
+ * Tham chiếu laragon read-only; chỉnh builder tại đây.
+ */
+*,
+::before,
+::after {
+    border-color: #e5e7eb; /* tailwind gray-200 — tương đương theme('colors.gray.200') */
+}

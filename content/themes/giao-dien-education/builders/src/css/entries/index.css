@@ -1,0 +1,5 @@
+/**
+ * CMS home / - `index.css`.
+ * @page-url https://laragon.net/
+ */
+ @import '../partials/_tailwind-standalone.css';

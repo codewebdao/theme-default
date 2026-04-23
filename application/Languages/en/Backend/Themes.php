@@ -1,0 +1,137 @@
+<?php
+
+return [
+    // Main tabs
+    'installed themes' => 'Installed Themes',
+    'add theme' => 'Add Theme',
+
+    // Search and filters
+    'place search' => 'Search themes...',
+    'place search store' => 'Search in store...',
+    'update all' => 'Update All',
+    'all' => 'All',
+    'active' => 'Active',
+    'inactive' => 'Inactive',
+    'filter' => 'Filter',
+    'all categories' => 'All Categories',
+
+    // Theme status and actions
+    'update' => 'Update',
+    'settings' => 'Settings',
+    'details' => 'Details',
+    'delete' => 'Delete',
+    'activate' => 'Activate',
+    'deactivate' => 'Deactivate',
+    'install' => 'Install',
+    'buy' => 'Buy',
+
+    // Theme information
+    'version' => 'Version',
+    'downloads' => 'Downloads',
+    'by' => 'by',
+    'featured' => 'Featured',
+    'premium' => 'Premium',
+    'free' => 'Free',
+    'popular' => 'Popular',
+    'recommended' => 'Recommended',
+    'favorites' => 'Favorites',
+    'updates' => 'Updates',
+
+    // Store section
+    'theme store' => 'Theme Store',
+    'upload theme' => 'Upload Theme',
+    'coming soon' => 'Coming Soon',
+    'featured themes' => 'Featured Themes',
+    'all themes' => 'All Themes',
+
+    // Upload section
+    'upload theme description' => 'Upload theme file (.zip) or install from URL',
+    'drag drop files' => 'Drag and drop files here',
+    'or click to select' => 'or click to select files',
+    'choose zip files' => 'Choose ZIP Files',
+    'remove' => 'Remove',
+    'upload' => 'Upload',
+    'install from url' => 'Install from URL',
+
+    // Security notice
+    'security notice' => 'Security Notice',
+    'security notice description' => 'Only upload themes from trusted sources. Themes may contain malicious code.',
+
+    // Installation guide
+    'installation guide' => 'Installation Guide',
+    'download themes' => 'Download Theme',
+    'download themes description' => 'Download theme file (.zip) from trusted source',
+    'upload file' => 'Upload File',
+    'upload file description' => 'Use the upload form above or install from URL',
+    'activate themes' => 'Activate Theme',
+    'activate themes description' => 'After installation, activate the theme from the themes list',
+
+    // Messages
+    'loading themes' => 'Loading themes...',
+    'no themes found' => 'No themes found',
+    'no themes match' => 'No themes match',
+    'no themes in category' => 'No themes in this category',
+    'try adjusting search' => 'Try adjusting your search terms',
+    'no themes found store' => 'No themes found in store',
+    'try adjusting search store' => 'Try adjusting your search terms in store',
+    'showing' => 'Showing',
+    'of' => 'of',
+    'themes' => 'themes',
+    'delete confirm' => 'Are you sure you want to delete this theme? The theme will be permanently removed from the system.',
+    'themes details' => 'Theme Details',
+    'upload themes files' => 'Upload Theme Files',
+    'upload description' => 'Upload Description',
+    'drag drop themes files' => 'Drag and drop theme files here',
+    'or click browse' => 'or click to browse',
+    'choose files' => 'Choose Files',
+    'supported formats' => 'Supported Formats',
+    'selected files' => 'Selected Files',
+    'upload all' => 'Upload All',
+    'upload guidelines' => 'Upload Guidelines',
+    'guideline 1' => 'Guideline 1',
+    'guideline 2' => 'Guideline 2',
+    'guideline 3' => 'Guideline 3',
+    'open new tab' => 'Open in New Tab',
+    'success' => 'Success',
+    'error' => 'Error',
+    'action failed' => 'Action Failed',
+    'error occurred' => 'An error occurred',
+    'upload success' => 'Upload successful',
+    'upload failed' => 'Upload failed',
+    'upload error' => 'Upload error',
+    'themes exists' => 'Theme exists',
+    'confirm overwrite' => 'Confirm overwrite',
+    'previous' => 'Previous',
+    'next' => 'Next',
+    'installed' => 'Installed',
+    'update available' => 'Update Available',
+
+    // Page titles and descriptions
+    'title themes' => 'Theme Management',
+    'themes management' => 'Theme Management',
+    'theme management description' => 'Manage and install themes for your website',
+
+    // Library Controller specific keys
+    'themes not found' => 'Theme not found',
+    'themes already active' => 'Theme is already active',
+    'themes activated successfully' => 'Theme activated successfully',
+    'themes not active' => 'Theme is not active',
+    'themes deactivated successfully' => 'Theme deactivated successfully',
+    'themes deleted successfully' => 'Theme deleted successfully',
+    'no file uploaded' => 'No file uploaded',
+    'upload error' => 'Upload error',
+    'only zip allowed' => 'Only ZIP files are allowed',
+    'themes exists' => 'Theme exists',
+    'failed extract zip' => 'Failed to extract ZIP file',
+    'themes invalid missing config' => 'Theme is invalid or missing config file',
+    'failed open zip' => 'Failed to open ZIP file',
+    'themes upload success' => 'Theme uploaded successfully',
+    'themes upload errors' => 'Upload errors',
+
+    'All types' => 'All types',
+    'theme config not found' => 'Theme config file not found',
+    'Are you sure you want to deactivate this theme?' => 'Are you sure you want to deactivate this theme?',
+    'Are you sure you want to activate this theme?' => 'Are you sure you want to activate this theme?',
+    'themes cannot deactivate switch only' => 'You cannot turn off a theme with nothing to replace it. Activate another theme of the same kind (WEB or ADMIN) to switch.',
+    'theme switch hint' => 'This theme is active. Activate another theme of the same type (WEB/ADMIN) to switch — you cannot deactivate to empty.',
+];

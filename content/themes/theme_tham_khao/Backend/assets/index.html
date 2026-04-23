@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACF Form Builder</title>
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom styles for better spacing */
+    .field-wrapper {
+      margin-bottom: 1rem;
+    }
+
+    .field-wrapper:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Editor.js styles */
+    .codex-editor {
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+    }
+
+    .codex-editor__redactor {
+      padding: 12px;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8;
+    }
+
+    /* Loading spinner */
+    .loading-spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #3498db;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* DND Kit specific styles */
+    .repeater-item {
+      transition: all 0.2s ease;
+    }
+
+    .repeater-handle {
+      cursor: grab;
+    }
+
+    .repeater-handle:active {
+      cursor: grabbing;
+    }
+
+    .flexible-layout-selector {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    /* DND Kit drag overlay styles */
+    .dnd-overlay {
+      opacity: 0.8;
+      transform: rotate(5deg);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+  <script type="module" crossorigin src="./js/posts_add.js"></script>
+  <link rel="stylesheet" crossorigin href="./css/posts_add.css">
+</head>
+
+<body>
+  <style>
+    @media screen and (max-width: 866px) {
+
+      .ce-block__content,
+      .ce-toolbar__content {
+        max-width: calc(100% - 100px) !important;
+      }
+
+      .cdx-block {
+        max-width: 100% !important;
+      }
+
+      pre {
+        background-color: #f4f4f4;
+        border: 1px solid #ccc;
+        padding: 10px;
+      }
+    }
+  </style>
+  <!-- PHP sẽ tạo form wrapper này -->
+  <form id="acf-form" method="post" action="" enctype="multipart/form-data">
+    <!-- PHP sẽ thêm các hidden fields cần thiết -->
+    <input type="hidden" name="post_id" value="" />
+    <input type="hidden" name="post_type" value="" />
+    <input type="hidden" name="nonce" value="" />
+
+    <!-- React app container - Chỉ render fields -->
+    <div id="initial-loading" style="
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 200px;
+          flex-direction: column;
+        ">
+      <div class="loading-spinner"></div>
+      <p style="margin-top: 10px; color: #666">Loading ACF Form Builder...</p>
+      <p style="margin-top: 5px; color: #999; font-size: 12px" id="initial-loading-content">
+        Initializing drag & drop components...
+      </p>
+    </div>
+    <div id="root">
+      <!-- Initial loading state -->
+    </div>
+
+    <!-- PHP sẽ tạo submit buttons -->
+    <div class="form-actions" style="
+          margin-top: 2rem;
+          padding: 1.5rem;
+          background: white;
+          border-radius: 8px;
+          border: 1px solid #e5e7eb;
+          display: block;
+        ">
+      <div style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+          ">
+        <div style="
+              font-size: 0.875rem;
+              color: #6b7280;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              flex-wrap: wrap;
+              gap: 1rem;
+            ">
+          <label for="last-updated-input" style="margin-right: 0.5rem" data-translate="Update time:">Update
+            time:</label>
+          <input type="datetime-local" id="last-updated-input" name="last_updated" style="
+                border: 1px solid #d1d5db;
+                border-radius: 6px;
+                padding: 0.25rem 0.5rem;
+                font-size: 0.95em;
+                color: #374151;
+                background: #fff;
+                margin-right: 1.5rem;
+              " />
+          <label for="post-status-input" style="margin-right: 0.5rem" data-translate="Status:">Status:</label>
+          <select id="post-status-input" name="post_status" style="
+                border: 1px solid #d1d5db;
+                border-radius: 6px;
+                padding: 0.25rem 0.5rem;
+                font-size: 0.95em;
+                color: #374151;
+                background: #fff;
+              ">
+            <option value="draft" data-translate="Draft">Draft</option>
+            <option value="published" data-translate="Published">
+              Published
+            </option>
+            <option value="pending" data-translate="Pending">Pending</option>
+            <option value="archived" data-translate="Archived">
+              Archived
+            </option>
+          </select>
+        </div>
+        <div style="display: flex; gap: 0.5rem">
+          <button type="submit" name="action" value="save_draft" id="save-draft-btn" style="
+                padding: 0.5rem 1rem;
+                border: 1px solid #d1d5db;
+                background: white;
+                border-radius: 6px;
+                font-size: 0.875rem;
+                cursor: pointer;
+                transition: all 0.2s ease;
+              " onmouseover="this.style.backgroundColor='#f9fafb'" onmouseout="this.style.backgroundColor='white'"
+            data-translate="Save Draft">
+            💾 Save Draft
+          </button>
+          <button type="submit" name="action" value="publish" id="publish-btn" style="
+                padding: 0.5rem 1.5rem;
+                background: #3b82f6;
+                color: white;
+                border: none;
+                border-radius: 6px;
+                font-size: 0.875rem;
+                cursor: pointer;
+                font-weight: 500;
+                transition: all 0.2s ease;
+              " onmouseover="this.style.backgroundColor='#2563eb'" onmouseout="this.style.backgroundColor='#3b82f6'"
+            data-translate="Publish">
+            🚀 Publish
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <!-- React and other dependencies -->
+  <!-- ĐÃ XÓA: <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script> -->
+  <!-- ĐÃ XÓA: <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script> -->
+
+  <!-- Main React app - Load this last -->
+  <!-- "watermark_config": {
+      "image": "<?= $watermark_global['image'] ?>",
+      "position": "bottom-right",
+      "padding": 20,
+      "opacity": 50,
+      "width": 20,
+  } -->
+  <!-- PHP sẽ inject data vào đây -->
+  <script>
+    // PHP sẽ truyền data vào window object
+    window.ACF_DATA = {
+      "BASE_URL": "https://cmsfullform.net/",
+      "PUBLIC_URL": "https://cmsfullform.net/",
+      "lang": "en",
+      "FILES_URL": "https://cmsfullform.net/content/uploads/",
+      "APP_LANG": "en",
+      "ADMIN_URL": "https://cmsfullform.net/admin/",
+      "current_user": 1,
+      "postType": { "id": 602, "current_id": 3, "name": "12312312", "slug": "zzzzz", "fields": [{ "id": "17743336563634100", "type": "Text", "label": "Title", "field_name": "title", "description": "", "synchronous": false, "required": true, "visibility": true, "unique": false, "indexdb": true, "css_class": "", "placeholder": "", "default_value": "", "order": 1, "collapsed": true, "width_value": 100, "width_unit": "%", "position": "top", "lock_edit": ["type", "field_name"], "lock_delete": true, "min": null, "max": 190, "autofill": "", "autofill_type": "normal" }, { "id": "17743336563637640", "type": "Text", "label": "Slug URL", "field_name": "slug", "description": "", "synchronous": false, "required": true, "visibility": true, "unique": true, "indexdb": true, "css_class": "", "placeholder": "", "default_value": "", "order": 2, "collapsed": true, "width_value": 100, "width_unit": "%", "position": "left", "lock_edit": ["type", "field_name"], "lock_delete": true, "min": null, "max": 190, "autofill": "title", "autofill_type": "slug" }, { "id": "17743336563637690", "type": "Textarea", "label": "Lang Slug", "field_name": "lang_slug", "description": "Lang slug of the article", "synchronous": true, "required": false, "visibility": false, "unique": false, "indexdb": false, "css_class": "", "placeholder": "", "default_value": "", "order": 3, "collapsed": true, "width_value": 100, "width_unit": "%", "position": "top", "lock_edit": ["type", "field_name"], "lock_delete": true, "min": null, "max": 10000, "rows": 3 }, { "id": "17743336563637840", "type": "Text", "label": "Search Keywords", "field_name": "search_string", "description": "Search keywords without accents (max 190 Chars)", "synchronous": false, "required": true, "visibility": true, "unique": false, "indexdb": true, "css_class": "", "placeholder": "", "default_value": "", "order": 5, "collapsed": true, "width_value": 100, "width_unit": "%", "position": "left", "min": null, "max": 190, "autofill": "title", "autofill_type": "keyword" }, { "id": "17743336563637870", "type": "Textarea", "label": "Description", "field_name": "description", "description": "", "synchronous": true, "required": false, "visibility": true, "unique": false, "indexdb": false, "css_class": "", "placeholder": "", "default_value": "", "order": 6, "collapsed": true, "width_value": 100, "width_unit": "%", "position": "left", "min": null, "max": 500, "rows": 3 }, { "id": "17743336563637890", "type": "WYSIWYG", "label": "Content", "field_name": "content", "description": "", "synchronous": true, "required": false, "visibility": true, "unique": false, "indexdb": false, "css_class": "", "placeholder": "", "default_value": "", "order": 7, "collapsed": true, "width_value": 100, "width_unit": "%", "position": "left", "min": null, "max": 500000, "allow_types": ["jpg", "jpeg", "png", "gif", "webp"], "resizes": [{ "name": "medium", "width": "800", "height": "1200" }], "autocrop": true, "format": "jpg", "quality": 90, "watermark": true, "convert_webp": true }, { "id": "17743336563637920", "type": "Text", "label": "SEO Title", "field_name": "seo_title", "description": "", "synchronous": true, "required": false, "visibility": true, "unique": false, "indexdb": false, "css_class": "", "placeholder": "", "default_value": "", "order": 8, "collapsed": true, "width_value": 100, "width_unit": "%", "position": "left", "min": null, "max": 190, "autofill": "", "autofill_type": "normal" }, { "id": "17743336563637940", "type": "Text", "label": "SEO Description", "field_name": "seo_desc", "description": "", "synchronous": true, "required": false, "visibility": true, "unique": false, "indexdb": false, "css_class": "", "placeholder": "", "default_value": "", "order": 9, "collapsed": true, "width_value": 100, "width_unit": "%", "position": "left", "min": null, "max": 190, "autofill": "", "autofill_type": "normal" }, { "id": "17743336563637970", "type": "Image", "label": "Feature Image", "field_name": "feature", "description": "", "synchronous": true, "required": false, "visibility": true, "unique": false, "indexdb": false, "css_class": "", "placeholder": "", "default_value": "", "order": 10, "collapsed": true, "width_value": 100, "width_unit": "%", "position": "right", "allow_types": ["jpg", "jpeg", "png", "gif", "webp"], "max_file_size": 10485760, "multiple": false, "resizes": [{ "name": "thumbnail", "width": 250, "height": 250 }, { "name": "medium", "width": 600, "height": 600 }, { "name": "large", "width": 1000, "height": 1000 }], "autocrop": true, "watermark": false, "format": "jpg", "quality": 90, "convert_webp": true, "optimize": false }, { "id": "17743336563638170", "type": "User", "label": "Author User ID", "field_name": "user_id", "description": "", "synchronous": true, "required": true, "visibility": true, "unique": false, "indexdb": true, "css_class": "", "placeholder": "", "default_value": "", "order": 11, "collapsed": true, "width_value": 100, "width_unit": "%", "position": "right" }, { "id": "17743336563638220", "type": "Number", "label": "Rating AVG", "field_name": "rating_avg", "description": "", "synchronous": true, "required": false, "visibility": true, "unique": false, "indexdb": true, "css_class": "", "placeholder": "Average", "default_value": 0, "order": 12, "collapsed": true, "width_value": 33, "width_unit": "%", "position": "right", "min": 0, "max": 5, "step": 0.1 }, { "id": "17743336563638260", "type": "Number", "label": "Rating Count", "field_name": "rating_count", "description": "", "synchronous": true, "required": false, "visibility": true, "unique": false, "indexdb": true, "css_class": "", "placeholder": "Count", "default_value": 0, "order": 13, "collapsed": true, "width_value": 33, "width_unit": "%", "position": "right", "min": 0, "max": null, "step": 1 }, { "id": "17743336563638290", "type": "Number", "label": "Rating Total", "field_name": "rating_total", "description": "", "synchronous": true, "required": false, "visibility": true, "unique": false, "indexdb": false, "css_class": "", "placeholder": "Total", "default_value": 0, "order": 14, "collapsed": true, "width_value": 33, "width_unit": "%", "position": "right", "min": 0, "max": null, "step": 1 }, { "id": "17743336563638310", "type": "Number", "label": "Views Day", "field_name": "views_day", "description": "", "synchronous": true, "required": false, "visibility": true, "unique": false, "indexdb": true, "css_class": "", "placeholder": "", "default_value": 0, "order": 15, "collapsed": true, "width_value": 33, "width_unit": "%", "position": "right", "min": 0, "max": null, "step": 1 }, { "id": "17743336563638340", "type": "Number", "label": "Views Week", "field_name": "views_week", "description": "", "synchronous": true, "required": false, "visibility": true, "unique": false, "indexdb": true, "css_class": "", "placeholder": "0", "default_value": 0, "order": 16, "collapsed": true, "width_value": 33, "width_unit": "%", "position": "right", "min": 0, "max": null, "step": 1 }, { "id": "17743336563638360", "type": "Number", "label": "Views", "field_name": "views", "description": "", "synchronous": true, "required": false, "visibility": true, "unique": false, "indexdb": true, "css_class": "", "placeholder": "0", "default_value": 0, "order": 17, "collapsed": true, "width_value": 33, "width_unit": "%", "position": "right", "min": 0, "max": null, "step": 1 }, { "id": 1774333659727, "type": "Repeater", "label": "123123", "field_name": "t_123123", "description": "", "synchronous": true, "required": false, "visibility": true, "unique": false, "indexdb": false, "css_class": "", "placeholder": "", "default_value": "", "order": 20, "collapsed": true, "width_value": 100, "width_unit": "%", "position": "left", "fields": [{ "id": 1774333670046, "type": "Repeater", "label": "123", "field_name": "123123", "description": "", "synchronous": true, "required": false, "visibility": true, "unique": false, "indexdb": false, "css_class": "", "placeholder": "", "default_value": "", "order": 1, "collapsed": true, "width_value": 100, "width_unit": "%", "position": "left", "fields": [{ "id": 1774333685239, "type": "Text", "label": "1231111", "field_name": "1231111", "description": "", "synchronous": true, "required": false, "visibility": true, "unique": false, "indexdb": false, "css_class": "", "placeholder": "", "default_value": "", "order": 1, "collapsed": true, "width_value": 100, "width_unit": "%", "position": "left", "min": null, "max": 255, "autofill": "", "autofill_type": "normal" }] }] }, { "id": "17743336563638430", "type": "DateTime", "label": "Updated at", "field_name": "updated_at", "description": "", "synchronous": false, "required": true, "visibility": true, "unique": false, "indexdb": true, "css_class": "", "placeholder": "", "default_value": "", "order": 19, "collapsed": true, "width_value": 100, "width_unit": "%", "position": "right", "lock_edit": ["type", "field_name"], "lock_delete": true, "min": null, "max": 190, "readonly": true }], "created_at": "2026-03-24 13:28:36", "updated_at": "2026-04-08 18:55:21", "languages": ["en", "vi"], "terms": [], "status": "active", "menu": "zzzzz", "is_locked": 0 },
+      "postEdit": { "title": null, "slug": null, "lang_slug": null, "status": "draft", "search_string": null, "description": null, "content": null, "seo_title": null, "seo_desc": null, "feature": null, "user_id": 1, "rating_avg": null, "rating_count": null, "rating_total": null, "views_day": null, "views_week": null, "views": null, "t_123123": null, "created_at": "2026-04-08 18:55:21", "updated_at": "2026-04-08 18:55:21", "id": 3, "terms": [] },
+      "languageData": [{ "code": "en", "t": { "Backup Management": "Backup Management", "Cannot detect PostType or PostEdit data": "Cannot detect PostType or PostEdit data", "Loading...": "Loading...", "Please wait while data is being loaded": "Please wait while data is being loaded", "Saving...": "Saving...", "Save Settings": "Save Settings", "Please fix the following errors before submitting:": "Please fix the following errors before submitting:", "Validation Errors": "Validation Errors", "Close": "Close", "Add New Term": "Add New Term", "Name": "Name", "Slug": "Slug", "Status": "Status", "Active": "Active", "Inactive": "Inactive", "Parent": "Parent", "Select Parent": "Select Parent", "Description": "Description", "SEO Title": "SEO Title", "SEO Description": "SEO Description", "Enter term name": "Enter term name", "Enter term slug": "Enter term slug", "Enter term description": "Enter term description", "Enter SEO title": "Enter SEO title", "Enter SEO description": "Enter SEO description", "Adding...": "Adding...", "Add": "Add", "Featured News": "Featured News", "Travel": "Travel", "Food": "Food", "Specialty": "Specialty", "Entertainment": "Entertainment", "Discovery": "Discovery", "Experience": "Experience", "Location": "Location", "Invalid field configuration": "Invalid field configuration", "Field type not specified": "Field type not specified", "Unsupported field type": "Unsupported field type", "Field": "Field", "unknown": "unknown", "Edit Field": "Edit Field", "No": "No", "Yes": "Yes", "Checkbox": "Checkbox", "Date": "Date", "date": "date", "DateTime": "DateTime", "Select time...": "Select time...", "date\/time": "date\/time", "example@domain.com": "example@domain.com", "Please enter a valid email address": "Please enter a valid email address", "Unknown size": "Unknown size", "Add file": "Add file", "Select Files": "Select Files", "Select File": "Select File", "Remove all": "Remove all", "Allowed types": "Allowed types", "Max size": "Max size", "All files": "All files", "per file": "per file", "Multiple files allowed": "Multiple files allowed", "Media Library": "Media Library", "Bytes": "Bytes", "KB": "KB", "MB": "MB", "GB": "GB", "0 Bytes": "0 Bytes", "Selected {{count}} files": "Selected {{count}} files", "Drag and drop to reorder files": "Drag and drop to reorder files", "files": "files", "Drag to reorder": "Drag to reorder", "Move up": "Move up", "Move down": "Move down", "Clone layout": "Clone layout", "Delete layout": "Delete layout", "Add Layout": "Add Layout", "layout": "layout", "layouts": "layouts", "Level": "Level", "min": "min", "max": "max", "Layout": "Layout", "fields": "fields", "Select image": "Select image", "Add image": "Add image", "Selected {{count}} images": "Selected {{count}} images", "Multiple selection": "Multiple selection", "Unlimited": "Unlimited", "Drag and drop to reorder images": "Drag and drop to reorder images", "Value": "Value", "Step": "Step", "Enter URL (YouTube, Vimeo, etc.)": "Enter URL (YouTube, Vimeo, etc.)", "Fetch": "Fetch", "Clear": "Clear", "Embed preview": "Embed preview", "Very Weak": "Very Weak", "Weak": "Weak", "Fair": "Fair", "Good": "Good", "Strong": "Strong", "Coordinates (Point)": "Coordinates (Point)", "Latitude": "Latitude", "Longitude": "Longitude", "Get current location": "Get current location", "Radio": "Radio", "Current": "Current", "Select {{type}}": "Select {{type}}", "Item": "Item", "Search...": "Search...", "No data found": "No data found", "Scroll to load more...": "Scroll to load more...", "Clone row": "Clone row", "Delete row": "Delete row", "Add Row": "Add Row", "No rows added yet. Click \"Add Row\" to begin.": "No rows added yet. Click \"Add Row\" to begin.", "No items yet. Click \"{{label}}\" to add the first row.": "No items yet. Click \"{{label}}\" to add the first row.", "row": "row", "rows": "rows", "Minimum {{count}} {{unit}} required": "Minimum {{count}} {{unit}} required", "Maximum {{count}} {{unit}} reached": "Maximum {{count}} {{unit}} reached", "Row": "Row", "Select": "Select", "Select an option": "Select an option", "Tags": "Tags", "Enter tag, press Enter or comma...": "Enter tag, press Enter or comma...", "Taxonomy": "Taxonomy", "term": "term", "terms": "terms", "characters": "characters", "lines": "lines", "https:\/\/example.com": "https:\/\/example.com", "Please enter a valid URL": "Please enter a valid URL", "Open link": "Open link", "Select user": "Select user", "Select user...": "Select user...", "Search by name, email...": "Search by name, email...", "No users found": "No users found", "Image Picker": "Image Picker", "Unable to load Visual Editor": "Unable to load Visual Editor", "WYSIWYG Editor": "WYSIWYG Editor", "Ready": "Ready", "Visual Editor": "Visual Editor", "Attributes": "Attributes", "Variations": "Variations", "Create at least one attribute to manage variations": "Create at least one attribute to manage variations", "Attribute name already exists. Please enter a different name.": "Attribute name already exists. Please enter a different name.", "Please resolve duplicate attribute names before creating variations.": "Please resolve duplicate attribute names before creating variations.", "Please enter at least one attribute with a name and at least one value.": "Please enter at least one attribute with a name and at least one value.", "posttype not found": "posttype not found", "field_name not found": "field_name not found", "parent_post_id not found in window.ACF_DATA.postEdit.id": "parent_post_id not found in window.ACF_DATA.postEdit.id", "Successfully created {{count}} variations!": "Successfully created {{count}} variations!", "Unable to create attributes: {{message}}": "Unable to create attributes: {{message}}", "Attribute not found": "Attribute not found", "Added attribute \"{{name}}\". Please enter items.": "Added attribute \"{{name}}\". Please enter items.", "Please select values for: {{names}}": "Please select values for: {{names}}", "This variation already exists! Please select different values.": "This variation already exists! Please select different values.", "Unable to delete variation: {{message}}": "Unable to delete variation: {{message}}", "Updated {{field}} for {{count}} variations.": "Updated {{field}} for {{count}} variations.", "Please ensure each attribute has a unique name.": "Please ensure each attribute has a unique name.", "Attribute name": "Attribute name", "Attribute slug": "Attribute slug", "Delete {{name}}": "Delete {{name}}", "Enter item name, press Enter or comma to create": "Enter item name, press Enter or comma to create", "Delete attribute": "Delete attribute", "Create variations from Attributes": "Create variations from Attributes", "Select available attribute": "Select available attribute", "Loading attributes...": "Loading attributes...", "All attributes have been added": "All attributes have been added", "-- Select available attribute --": "-- Select available attribute --", "Add Attribute": "Add Attribute", "-- Select template --": "-- Select template --", "Fashion": "Fashion", "Technology": "Technology", "Furniture": "Furniture", "Beauty": "Beauty", "Sports": "Sports", "Books": "Books", "Toys": "Toys", "Create template": "Create template", "No attributes available": "No attributes available", "Please create attributes in the Attributes tab before managing variations.": "Please create attributes in the Attributes tab before managing variations.", "Generate variations automatically": "Generate variations automatically", "Generate all variations based on configured attributes in the Attributes tab.": "Generate all variations based on configured attributes in the Attributes tab.", "Generate variations based on configured attributes": "Generate variations based on configured attributes", "Generating variations...": "Generating variations...", "Generate all variations": "Generate all variations", "Create variation manually": "Create variation manually", "Select values for each attribute to create a specific variation.": "Select values for each attribute to create a specific variation.", "Variations list": "Variations list", "Search, filter and update information for each variation.": "Search, filter and update information for each variation.", "Search variations by attribute values": "Search variations by attribute values", "Filter by attribute": "Filter by attribute", "Select field to update": "Select field to update", "New value": "New value", "Apply": "Apply", "Virtualization enabled for large lists (drag and drop temporarily disabled).": "Virtualization enabled for large lists (drag and drop temporarily disabled).", "Confirm update": "Confirm update", "Are you sure you want to update": "Are you sure you want to update", "variations for field": "variations for field", "with value": "with value", "Cancel": "Cancel", "Confirm": "Confirm", "No variations yet. Enter attributes and click \"Generate Variations\" to start.": "No variations yet. Enter attributes and click \"Generate Variations\" to start.", "Expand": "Expand", "Collapse": "Collapse", "Delete variation": "Delete variation", "-- Select --": "-- Select --", "Create": "Create", "Debug: JSON format to be saved": "Debug: JSON format to be saved", "No data to display. Please create attributes or variations to view JSON structure.": "No data to display. Please create attributes or variations to view JSON structure.", "useFormValidationContext must be used within a FormValidationProvider": "useFormValidationContext must be used within a FormValidationProvider" } }]
+    };
+  </script>
+</body>
+
+</html>

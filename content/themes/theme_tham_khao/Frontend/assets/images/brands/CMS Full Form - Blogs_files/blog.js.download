@@ -1,0 +1,160 @@
+// Share button and comment actions for blog
+document.addEventListener('DOMContentLoaded', () => {
+  // Shared utility functions
+  const toggleMenu = (menu) => {
+    menu.classList.toggle('opacity-0');
+    menu.classList.toggle('invisible');
+    menu.classList.toggle('-translate-y-2');
+  };
+
+  const showToast = (toast, messageEl, message) => {
+    messageEl.textContent = message;
+    toast.classList.remove('translate-x-full');
+    setTimeout(() => toast.classList.add('translate-x-full'), 2000);
+  };
+
+  const shareToSocial = (url, width = 600, height = 400) => {
+    window.open(url, '_blank', `width=${width},height=${height}`);
+  };
+
+  // Share button functionality
+  const shareConfig = {
+    button: document.getElementById('shareButton'),
+    menu: document.getElementById('shareMenu'),
+    toast: document.getElementById('toast'),
+    toastMessage: document.getElementById('toastMessage'),
+    copyLink: document.getElementById('copyLink'),
+    shareFacebook: document.getElementById('shareFacebook'),
+    shareTwitter: document.getElementById('shareTwitter'),
+  };
+
+  if (Object.values(shareConfig).every(el => el)) {
+    const { button, menu, toast, toastMessage, copyLink, shareFacebook, shareTwitter } = shareConfig;
+
+    // Toggle share menu
+    button.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleMenu(menu);
+    });
+
+    // Close menu on outside click
+    document.addEventListener('click', () => {
+      menu.classList.add('opacity-0', 'invisible', '-translate-y-2');
+    });
+
+    // Copy link
+    copyLink.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        showToast(toast, toastMessage, 'Đã sao chép liên kết!');
+      } catch {
+        showToast(toast, toastMessage, 'Không thể sao chép');
+      }
+      toggleMenu(menu);
+    });
+
+    // Share to Facebook
+    shareFacebook.addEventListener('click', () => {
+      shareToSocial(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`);
+      toggleMenu(menu);
+    });
+
+    // Share to Twitter
+    shareTwitter.addEventListener('click', () => {
+      shareToSocial(`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}`);
+      toggleMenu(menu);
+    });
+  }
+
+  // Comment action functionality
+  const state = {
+    like: { isLiked: false, count: 24 },
+    heart: { isLiked: false },
+    bookmark: { isSaved: false },
+  };
+
+  const elements = {
+    likeBtn: document.getElementById('likeBtn'),
+    heartBtn: document.getElementById('heartBtn'),
+    bookmarkBtn: document.getElementById('bookmarkBtn'),
+    shareBtn: document.getElementById('shareBtn'),
+    shareMenuDropdown: document.getElementById('shareMenuDropdown'),
+    copyLinkBtn: document.getElementById('copyLinkBtn'),
+    shareFacebookBtn: document.getElementById('shareFacebookBtn'),
+    shareTwitterBtn: document.getElementById('shareTwitterBtn'),
+  };
+
+  // Generic action handler
+  const handleAction = (btn, type, textEl, activeText, inactiveText, animationDuration) => {
+    if (!btn) return;
+
+    btn.addEventListener('click', () => {
+      state[type][`is${type.charAt(0).toUpperCase() + type.slice(1)}`] = !state[type][`is${type.charAt(0).toUpperCase() + type.slice(1)}`];
+
+      // Update count for like
+      if (type === 'like') {
+        state.like.count += state.like.isLiked ? 1 : -1;
+        document.querySelector('.like-count').textContent = state.like.count;
+      }
+
+      // Update UI
+      btn.classList.toggle('active', state[type][`is${type.charAt(0).toUpperCase() + type.slice(1)}`]);
+      if (textEl) {
+        textEl.textContent = state[type][`is${type.charAt(0).toUpperCase() + type.slice(1)}`] ? activeText : inactiveText;
+      }
+
+      // Animation
+      btn.classList.add('animate');
+      setTimeout(() => btn.classList.remove('animate'), animationDuration);
+    });
+  };
+
+  // Initialize actions
+  handleAction(elements.likeBtn, 'like', null, null, null, 300);
+  handleAction(elements.heartBtn, 'heart', document.querySelector('.heart-text'), 'Đã yêu thích', 'Yêu thích', 600);
+  handleAction(elements.bookmarkBtn, 'bookmark', document.querySelector('.bookmark-text'), 'Đã lưu', 'Lưu', 400);
+
+  // Share dropdown functionality
+  if (elements.shareBtn && elements.shareMenuDropdown) {
+    elements.shareBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleMenu(elements.shareMenuDropdown);
+    });
+
+    // Close share menu on outside click
+    document.addEventListener('click', (e) => {
+      if (!elements.shareBtn.contains(e.target) && !elements.shareMenuDropdown.contains(e.target)) {
+        elements.shareMenuDropdown.classList.add('opacity-0', 'invisible', '-translate-y-2');
+      }
+    });
+
+    // Copy link
+    if (elements.copyLinkBtn) {
+      elements.copyLinkBtn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(window.location.href);
+          showToast(shareConfig.toast, shareConfig.toastMessage, 'Đã sao chép liên kết!');
+        } catch {
+          showToast(shareConfig.toast, shareConfig.toastMessage, 'Không thể sao chép');
+        }
+        toggleMenu(elements.shareMenuDropdown);
+      });
+    }
+
+    // Share to Facebook
+    if (elements.shareFacebookBtn) {
+      elements.shareFacebookBtn.addEventListener('click', () => {
+        shareToSocial(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`);
+        toggleMenu(elements.shareMenuDropdown);
+      });
+    }
+
+    // Share to Twitter
+    if (elements.shareTwitterBtn) {
+      elements.shareTwitterBtn.addEventListener('click', () => {
+        shareToSocial(`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}`);
+        toggleMenu(elements.shareMenuDropdown);
+      });
+    }
+  }
+});

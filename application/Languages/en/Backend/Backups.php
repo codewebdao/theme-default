@@ -1,0 +1,126 @@
+<?php
+return [
+    // General
+    'Backup Management' => 'Backup Management',
+    'Backup Settings' => 'Backup Settings',
+    'Backups' => 'Backups',
+    'Settings' => 'Settings',
+    'Create Backup' => 'Create Backup',
+    'Create Manual Backup' => 'Create Manual Backup',
+    'Full Backup' => 'Full Backup',
+    'Database Only' => 'Database Only',
+    'Files Only' => 'Files Only',
+    'Manual Backup' => 'Manual Backup',
+    'Automatic Backup' => 'Automatic Backup',
+    
+    // Backup Types
+    'Full' => 'Full',
+    'Database' => 'Database',
+    'Files' => 'Files',
+    
+    // Status
+    'Completed' => 'Completed',
+    'Pending' => 'Pending',
+    'Failed' => 'Failed',
+    
+    // Actions
+    'Download Backup' => 'Download Backup',
+    'Restore Backup' => 'Restore Backup',
+    'Delete Backup' => 'Delete Backup',
+    'Delete Selected' => 'Delete Selected',
+    'Deleting...' => 'Deleting...',
+    'Creating...' => 'Creating...',
+    'Save Settings' => 'Save Settings',
+    'View All Backups' => 'View All Backups',
+    
+    // Settings
+    'Automatic Backup Configuration' => 'Automatic Backup Configuration',
+    'Enable Automatic Backup' => 'Enable Automatic Backup',
+    'Automatically create backups based on schedule' => 'Automatically create backups based on schedule',
+    'Backup Frequency' => 'Backup Frequency',
+    'Hourly' => 'Hourly',
+    'Daily' => 'Daily',
+    'Weekly' => 'Weekly',
+    'Monthly' => 'Monthly',
+    'Backup Time' => 'Backup Time',
+    'Time when automatic backup should run (24-hour format)' => 'Time when automatic backup should run (24-hour format)',
+    'Maximum Backups to Keep' => 'Maximum Backups to Keep',
+    'Oldest backups will be automatically deleted when this limit is reached' => 'Oldest backups will be automatically deleted when this limit is reached',
+    'What to Backup' => 'What to Backup',
+    'Include database in backup' => 'Include database in backup',
+    'Include application files in backup' => 'Include application files in backup',
+    'Backup Storage Path' => 'Backup Storage Path',
+    'Directory where backup files will be stored' => 'Directory where backup files will be stored',
+    'Email Notifications' => 'Email Notifications',
+    'Email Address' => 'Email Address',
+    'Email address to receive backup notifications' => 'Email address to receive backup notifications',
+    
+    // Quick Actions
+    'Quick Actions' => 'Quick Actions',
+    'System Information' => 'System Information',
+    'PHP Version' => 'PHP Version',
+    'Available Space' => 'Available Space',
+    'Backup Directory' => 'Backup Directory',
+    'Backup Size' => 'Backup Size',
+    
+    // Help & Tips
+    'Help & Tips' => 'Help & Tips',
+    'Automatic backups run in the background and don\'t affect your website performance.' => 'Automatic backups run in the background and don\'t affect your website performance.',
+    'Backups are stored securely and can be restored at any time.' => 'Backups are stored securely and can be restored at any time.',
+    'Choose backup time when your website has low traffic.' => 'Choose backup time when your website has low traffic.',
+    
+    // Messages
+    'Backup created successfully' => 'Backup created successfully',
+    'Backup settings updated successfully' => 'Backup settings updated successfully',
+    'Backup restored successfully' => 'Backup restored successfully',
+    'Backups deleted successfully' => 'Backups deleted successfully',
+    'Failed to create backup' => 'Failed to create backup',
+    'Failed to update backup settings' => 'Failed to update backup settings',
+    'Failed to restore backup' => 'Failed to restore backup',
+    'Failed to delete backup' => 'Failed to delete backup',
+    'Error creating backup' => 'Error creating backup',
+    'Error deleting items' => 'Error deleting items',
+    'Network error occurred' => 'Network error occurred',
+    'No backups found.' => 'No backups found.',
+    'Please select items to delete' => 'Please select items to delete',
+    'Are you sure you want to delete selected items?' => 'Are you sure you want to delete selected items?',
+    'Are you sure you want to delete this backup?' => 'Are you sure you want to delete this backup?',
+    'Are you sure you want to restore this backup? This will overwrite current data.' => 'Are you sure you want to restore this backup? This will overwrite current data.',
+    
+    // Validation Messages
+    'Invalid auto backup setting' => 'Invalid auto backup setting',
+    'Invalid backup frequency' => 'Invalid backup frequency',
+    'Invalid backup time format' => 'Invalid backup time format',
+    'Max backups must be between 1 and 100' => 'Max backups must be between 1 and 100',
+    'Invalid database backup setting' => 'Invalid database backup setting',
+    'Invalid files backup setting' => 'Invalid files backup setting',
+    'Backup path is required' => 'Backup path is required',
+    'Invalid email notification setting' => 'Invalid email notification setting',
+    'Invalid email address' => 'Invalid email address',
+    'Invalid backup type' => 'Invalid backup type',
+    'Backup name is required' => 'Backup name is required',
+    'Backup name must be between 3 and 100 characters' => 'Backup name must be between 3 and 100 characters',
+    'Description too long' => 'Description too long',
+    'Invalid request' => 'Invalid request',
+    'Validation failed' => 'Validation failed',
+    'Backup not found' => 'Backup not found',
+    'Cannot open backup file' => 'Cannot open backup file',
+    'Backup file not found' => 'Backup file not found',
+    'Please correct the following errors:' => 'Please correct the following errors:',
+    
+    // Table Headers
+    'Name' => 'Name',
+    'Type' => 'Type',
+    'Size' => 'Size',
+    'Status' => 'Status',
+    'Created' => 'Created',
+    'Actions' => 'Actions',
+    'All Types' => 'All Types',
+    'All Status' => 'All Status',
+    
+    // Descriptions
+    'Manage system backups and restore points' => 'Manage system backups and restore points',
+    'Configure automatic backup settings for your system' => 'Configure automatic backup settings for your system',
+    'Manual backup created from settings page' => 'Manual backup created from settings page',
+    'Manual backup created from management page' => 'Manual backup created from management page',
+];

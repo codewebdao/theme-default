@@ -1,0 +1,113 @@
+<?php
+/**
+ * Multi-Database Configuration Example
+ * 
+ * This file demonstrates advanced database configuration with:
+ * - Read/Write separation
+ * - Multiple read nodes with load balancing
+ * - Sticky writes (route reads to write node after writes)
+ * 
+ * To use this configuration:
+ * 1. Copy this file to Database.php: cp MultiDatabase.php.example Database.php
+ * 2. Update connection details below
+ * 3. In Config.php, change the 'database' line to:
+ *    'database' => require __DIR__ . '/Database.php',
+ * 4. Comment out the simple database array config in Config.php
+ * 
+ * This approach is faster than file_exists() check because the require happens
+ * directly in Config.php during config loading.
+ * 
+ * @package Application\Config
+ */
+
+// Prevent direct access
+if (!defined('PATH_ROOT')) {
+    exit('No direct access allowed.');
+}
+
+// Database charset settings
+$db_charset = 'utf8mb4';
+$db_collate = 'utf8mb4_unicode_ci';
+
+return [
+    // Default connection name
+    'default' => 'mysql_main',
+
+    // Connection definitions
+    'connections' => [
+        'mysql_main' => [
+            'driver'    => 'mysql',
+            'read'      => ['mysql_read_1', 'mysql_read_2'], // Empty array [] for single DB
+            'write'     => 'mysql_write_1',
+            'sticky_ms' => 2000, // After write, route SELECT to WRITE for 2s
+            'retry'     => ['deadlock' => 1, 'lost' => 1],
+            'prefix'    => 'fast_',
+            'slow_ms'   => 500, // Queries > 500ms logged as slow
+
+            // Query logging configuration
+            'logging' => [
+                'info' => [
+                    'enabled' => false, // Log all queries
+                    'path'    => PATH_WRITE . '/logs/query.log',
+                ],
+                'slow' => [
+                    'enabled' => true, // Log slow queries only
+                    'path'    => PATH_WRITE . '/logs/slow.log',
+                ],
+                'error' => [
+                    'enabled' => true,
+                    'path'    => PATH_WRITE . '/logs/db_error.log',
+                ],
+            ],
+        ],
+    ],
+
+    // PDO Node Declarations (actual database connections)
+    'nodes' => [
+        // Write node (master)
+        'mysql_write_1' => [
+            'dsn'      => 'mysql:host=localhost;port=3306;dbname=cmsfullform.net;charset=' . $db_charset,
+            'username' => 'macvn',
+            'password' => '1234',
+            'options'  => [
+                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_PERSISTENT         => true,
+                PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES {$db_charset} COLLATE {$db_collate}, sql_mode='STRICT_ALL_TABLES'",
+            ],
+            'init_sql' => [
+                "SET time_zone = '{$db_timezone}'", // Change to your timezone
+            ],
+            'weight' => 1,
+        ],
+        
+        // Read node 1 (slave/replica)
+        'mysql_read_1' => [
+            'dsn'      => 'mysql:host=localhost;port=3306;dbname=cmsfullform.net;charset=' . $db_charset,
+            'username' => 'macvn',
+            'password' => '1234',
+            'options'  => [
+                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_PERSISTENT         => true,
+            ],
+            'init_sql' => [],
+            'weight' => 2, // Round-robin weight (higher = more traffic)
+        ],
+        
+        // Read node 2 (slave/replica)
+        'mysql_read_2' => [
+            'dsn'      => 'mysql:host=localhost;port=3306;dbname=cmsfullform.net;charset=' . $db_charset,
+            'username' => 'macvn',
+            'password' => '1234',
+            'options'  => [
+                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_PERSISTENT         => true,
+            ],
+            'init_sql' => [],
+            'weight' => 1,
+        ]
+    ],
+];
+

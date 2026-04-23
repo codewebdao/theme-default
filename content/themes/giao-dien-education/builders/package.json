@@ -1,0 +1,21 @@
+{
+  "name": "giao-dien-education-builders",
+  "private": true,
+  "description": "Local Node toolchain for giao-dien-education (CSS). See README.md.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "THEME_CSS_PREVIEW=1 node scripts/build-page-css.cjs",
+    "build:wide": "node scripts/build-page-css.cjs",
+    "dev": "postcss src/css/entries/usage-guide.css -o ../assets/css/usage-guide.css --watch"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.15",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "postcss-cli": "^11.0.0",
+    "postcss-import": "^16.1.0",
+    "tailwindcss": "^3.4.17"
+  }
+}

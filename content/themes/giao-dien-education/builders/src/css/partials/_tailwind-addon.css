@@ -1,0 +1,8 @@
+/**
+ * Bundle bổ sung sau `index.css` (đã có preflight) — không lặp @tailwind base.
+ */
+@import './_home-tokens.css';
+@import './_usage-doc-globals.css';
+
+@tailwind components;
+@tailwind utilities;

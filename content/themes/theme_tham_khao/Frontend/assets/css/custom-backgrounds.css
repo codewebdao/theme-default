@@ -1,0 +1,42 @@
+/* Custom background classes for themes and plugins */
+
+.bg-gray {
+    background-color: #6b7280; /* gray-500 */
+}
+
+.bg-light {
+    background-color: #f8fafc; /* slate-50 */
+}
+
+.bg-silver {
+    background-color: #e2e8f0; /* slate-200 */
+}
+
+.bg-dark {
+    background-color: #1f2937; /* gray-800 */
+}
+
+.bg-blue {
+    background-color: #3b82f6; /* blue-500 */
+}
+
+/* Alternative gradient backgrounds for better visual appeal */
+.bg-gray-gradient {
+    background: linear-gradient(135deg, #6b7280 0%, #9ca3af 100%);
+}
+
+.bg-light-gradient {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+.bg-silver-gradient {
+    background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+}
+
+.bg-dark-gradient {
+    background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+}
+
+.bg-blue-gradient {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+}

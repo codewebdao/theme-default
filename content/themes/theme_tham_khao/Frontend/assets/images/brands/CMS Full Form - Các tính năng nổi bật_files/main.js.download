@@ -1,0 +1,37 @@
+
+document.getElementById("languageSelect").addEventListener("change", function () {
+  window.location.href = this.value;
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const mobileMenuToggle = document.querySelector("#mobileMenuToggle");
+    const mobileMenu = document.querySelector("#mobileMenu");
+    const mobileMenuOverlay = document.querySelector("#mobileMenuOverlay");
+    const closeMobileMenu = document.querySelector("#closeMobileMenu");
+
+    if (mobileMenuToggle && mobileMenu && mobileMenuOverlay) {
+      // Mở menu
+      mobileMenuToggle.addEventListener("click", function () {
+        mobileMenu.classList.add("active");
+        mobileMenu.classList.remove("hidden");
+        mobileMenuOverlay.classList.remove("hidden");
+      });
+
+      // Đóng menu qua overlay
+      mobileMenuOverlay.addEventListener("click", function () {
+        mobileMenu.classList.remove("active");
+        mobileMenu.classList.add("hidden");
+        mobileMenuOverlay.classList.add("hidden");
+      });
+
+      // Đóng menu qua nút X
+      if (closeMobileMenu) {
+        closeMobileMenu.addEventListener("click", function () {
+          mobileMenu.classList.remove("active");
+          mobileMenu.classList.add("hidden");
+          mobileMenuOverlay.classList.add("hidden");
+        });
+      }
+    }
+  });

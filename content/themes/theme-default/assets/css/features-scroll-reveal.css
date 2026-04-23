@@ -1,0 +1,93 @@
+/**
+ * Trang Features — hiện nội dung khi cuộn (fade / fade-up).
+ * Dùng với class .sr + modifier; JS thêm .is-visible khi vào viewport.
+ */
+
+.sr {
+  will-change: opacity, transform;
+}
+
+.sr--fade-up {
+  opacity: 0;
+  transform: translate3d(0, 1.25rem, 0);
+  transition:
+    opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--sr-delay, 0s);
+}
+
+.sr--fade-up.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Chỉ fade — dùng cho thẻ có hover:translate (tránh xung đột transform) */
+.sr--fade {
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--sr-delay, 0s);
+}
+
+.sr--fade.is-visible {
+  opacity: 1;
+}
+
+.sr--slide-left {
+  opacity: 0;
+  transform: translate3d(1.5rem, 0, 0);
+  transition:
+    opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--sr-delay, 0s);
+}
+
+.sr--slide-left.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sr,
+  .sr--fade-up,
+  .sr--fade,
+  .sr--slide-left {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    will-change: auto;
+  }
+}
+
+/* Banner Features CTA → scroll tới section đầu tiên (offset header cố định) */
+.features-main-anchor {
+  scroll-margin-top: clamp(4.5rem, 12vw, 6rem);
+}
+
+@keyframes features-banner-cta-nudge {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  45% {
+    transform: translateY(5px);
+  }
+}
+
+.features-banner-cta__icon {
+  animation: features-banner-cta-nudge 2.4s ease-in-out infinite;
+}
+
+.features-banner-cta:hover .features-banner-cta__icon,
+.features-banner-cta:focus-visible .features-banner-cta__icon {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .features-banner-cta__icon {
+    animation: none;
+  }
+
+  .features-banner-cta {
+    transition: none;
+  }
+}

@@ -1,0 +1,67 @@
+<?php
+
+return [
+    'download.banner.badge'                    => 'Latest Stable Release: v6.0.0 (2026)',
+    'download.banner.title'                    => 'Download Laragon',
+    'download.banner.subtitle_1'               => 'Join millions of developers building web apps faster on Windows.',
+    'download.banner.subtitle_2'               => 'Safe, secure, and always free.',
+
+    'download.editions.heading'                => 'Choose Your Edition',
+
+    'download.badge.recommended'               => 'Recommended',
+    'download.badge.business'                  => 'For Business',
+
+    'download.portable.title'                  => 'Laragon Portable',
+    'download.portable.desc'                   => 'Self-contained. Copy folder to USB or Cloud. No installation required.',
+    'download.portable.btn'                    => 'Download Portable',
+    'download.portable.includes'               => 'Service Includes:',
+    'download.portable.includes_desktop'       => 'INCLUDED:',
+    'download.portable.li_1'                   => 'Same content as Full',
+    'download.portable.li_2'                   => 'Zero registry impact',
+    'download.portable.li_3'                   => 'Easy to move/backup',
+    'download.portable.li_4'                   => 'Perfect for students/schools',
+
+    'download.full.title'                      => 'Laragon-Install.exe',
+    'download.full.desc'                       => 'Includes Apache 2.4, Nginx, MySQL 8/9, PHP 8.x, Node.js 22+, npm, git, yarn + Cmder.',
+    'download.full.btn'                        => 'Download Full (173MB)',
+    'download.full.packages_heading'           => 'PACKAGES INCLUDED:',
+    'download.full.li_1'                       => 'Apache 2.4, Nginx, MySQL 8',
+    'download.full.li_2'                       => 'PHP 8.4, Node.js 23, npm',
+    'download.full.li_3'                       => 'git, yarn, Redis, Memcached',
+    'download.full.li_4'                       => 'HeidiSQL, Cmder, Notepad++',
+
+    'download.services.title'                  => 'Laragon Services',
+    'download.services.desc'                   => 'Custom development & optimization services by Laragon experts.',
+    'download.services.btn'                    => 'Chat With Us',
+    'download.services.includes'               => 'Service Includes:',
+    'download.services.li_1'                   => 'Custom Web Development',
+    'download.services.li_2'                   => 'Performance Optimization',
+    'download.services.li_3'                   => 'Server Architecture Design',
+    'download.services.li_4'                   => '24/7 Priority Support',
+
+    'download.sysreq.title'                    => 'System Requirements',
+    'download.sysreq.os'                       => 'OS',
+    'download.sysreq.os_value'                 => 'Windows 7, 8, 10, 11',
+    'download.sysreq.arch'                     => 'Architecture',
+    'download.sysreq.arch_value'               => '32-bit / 64-bit (64-bit recommended)',
+    'download.sysreq.hardware'                 => 'Hardware',
+    'download.sysreq.hardware_line1'           => '512MB RAM (min), 4GB+ (recommended)',
+    'download.sysreq.hardware_line2'           => '200MB free space (for Full)',
+
+    'download.release.title'                   => 'Release Notes',
+    'download.release.latest'                  => 'Latest',
+    'download.release.version'                 => 'v6.0.0',
+    'download.release.date'                    => '03/01/2026',
+    'download.release.change_1'                => 'Added PHP 8.4 support',
+    'download.release.change_2'                => 'Updated Node.js to v23',
+    'download.release.change_3'                => 'Improved MySQL 8.0 startup speed',
+    'download.release.change_4'                => 'Fixed SSL generation bug on Windows 11',
+
+    'download.faq.title'                       => 'Download FAQs',
+    'download.faq.q1'                          => 'Is it safe to download?',
+    'download.faq.a1'                          => 'Yes. Downloading from the official site ensures it is free from malware. We scan every release.',
+    'download.faq.q2'                          => 'What if the download link is broken?',
+    'download.faq.a2'                          => 'Try using a different browser or check our GitHub Releases page for alternative mirrors.',
+    'download.faq.q3'                          => 'Can I download older versions?',
+    'download.faq.a3'                          => 'Yes, visit the "Releases" section on our GitHub repository to find all previous versions.',
+];

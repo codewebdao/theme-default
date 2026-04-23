@@ -1,0 +1,80 @@
+/* Blog Styles - Base styles for blog functionality */
+
+/* Blog listing styles */
+.blog-card {
+    transition: all 0.3s ease;
+}
+
+.blog-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Blog detail specific styles */
+.blog-hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.blog-content {
+    line-height: 1.8;
+}
+
+.blog-content h1,
+.blog-content h2,
+.blog-content h3 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.blog-content p {
+    margin-bottom: 1.5rem;
+}
+
+.blog-content img {
+    border-radius: 8px;
+    margin: 1.5rem 0;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Reading progress */
+#readingProgress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+}
+
+#readingProgress .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    transition: width 0.2s ease;
+}
+
+/* Social share buttons */
+.share-btn {
+    transition: all 0.3s ease;
+}
+
+.share-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Comment section */
+.comment-form textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .blog-hero h1 {
+        font-size: 2rem;
+    }
+    
+    .blog-content {
+        font-size: 1rem;
+    }
+}

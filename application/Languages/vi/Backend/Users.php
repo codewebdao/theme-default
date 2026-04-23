@@ -1,0 +1,127 @@
+<?php
+return [
+    // Page titles and descriptions
+    'Users Management' => 'Quản lý Người dùng',
+    'Manage system users and their permissions' => 'Quản lý người dùng hệ thống và quyền hạn của họ',
+    'list user' => 'Danh sách Người dùng',
+    'title_add_member' => 'Thêm Người dùng Mới',
+    'title_edit_member' => 'Sửa Người dùng',
+    
+    // Form labels and fields
+    'Username' => 'Tên đăng nhập',
+    'Full Name' => 'Họ và tên',
+    'Email' => 'Email',
+    'Phone' => 'Số điện thoại',
+    'Role' => 'Vai trò',
+    'ID' => 'ID',
+    'username' => 'Tên đăng nhập',
+    'fullname' => 'Họ và tên',
+    'email' => 'Email',
+    'phone' => 'Số điện thoại',
+    'role' => 'Vai trò',
+    'password' => 'Mật khẩu',
+    'password_repeat' => 'Xác nhận mật khẩu',
+    'change password' => 'Đổi mật khẩu',
+    'roles_permissions' => 'Vai trò & Quyền hạn',
+    
+    // Placeholders
+    'placeholder_username' => 'Nhập tên đăng nhập',
+    'placeholder_fullname' => 'Nhập họ và tên',
+    'placeholder_email' => 'Nhập địa chỉ email',
+    'placeholder_phone' => 'Nhập số điện thoại',
+    'placeholder_password' => 'Nhập mật khẩu',
+    'placeholder_password_repeat' => 'Xác nhận mật khẩu',
+    
+    // User roles
+    'Admin' => 'Quản trị viên',
+    'Moderator' => 'Điều hành viên',
+    'Author' => 'Tác giả',
+    'Member' => 'Thành viên',
+    'All Roles' => 'Tất cả Vai trò',
+    
+    // Actions
+    'Add User' => 'Thêm Người dùng',
+    'Edit User' => 'Sửa Người dùng',
+    'Delete User' => 'Xóa Người dùng',
+    'Delete Selected' => 'Xóa Đã chọn',
+    'Deleting...' => 'Đang xóa...',
+    'back_to_list' => 'Quay lại Danh sách',
+    'submit_add' => 'Thêm Người dùng',
+    'submit_edit' => 'Cập nhật Người dùng',
+    
+    // Messages
+    'User added successfully' => 'Thêm người dùng thành công',
+    'User updated successfully' => 'Cập nhật người dùng thành công',
+    'User deleted successfully' => 'Xóa người dùng thành công',
+    'Users deleted successfully' => 'Xóa người dùng thành công',
+    'User not found' => 'Không tìm thấy người dùng',
+    'Failed to add user' => 'Thêm người dùng thất bại',
+    'Failed to update user' => 'Cập nhật người dùng thất bại',
+    'Failed to update user status' => 'Cập nhật trạng thái người dùng thất bại',
+    'User status updated successfully' => 'Cập nhật trạng thái người dùng thành công',
+    'No users found.' => 'Không tìm thấy người dùng nào.',
+    'No users selected for deletion' => 'Không có người dùng nào được chọn để xóa',
+    'Please select items to delete' => 'Vui lòng chọn mục để xóa',
+    'Are you sure you want to delete selected items?' => 'Bạn có chắc chắn muốn xóa các mục đã chọn?',
+    'Error deleting items' => 'Lỗi khi xóa mục',
+    'Network error occurred' => 'Đã xảy ra lỗi mạng',
+    'Please fix the validation errors' => 'Vui lòng sửa các lỗi xác thực',
+    
+    // Validation messages
+    'username_invalid' => 'Tên đăng nhập chỉ được chứa chữ cái, số và dấu gạch dưới',
+    'username_length' => 'Tên đăng nhập phải từ %d đến %d ký tự',
+    'username_double' => 'Tên đăng nhập "%s" đã tồn tại',
+    'fullname_length' => 'Họ và tên phải từ %d đến %d ký tự',
+    'email_invalid' => 'Vui lòng nhập địa chỉ email hợp lệ',
+    'email_length' => 'Email phải từ %d đến %d ký tự',
+    'email_double' => 'Email "%s" đã tồn tại',
+    'phone_invalid' => 'Vui lòng nhập số điện thoại hợp lệ',
+    'phone_length' => 'Số điện thoại phải từ %d đến %d ký tự',
+    'password_length' => 'Mật khẩu phải từ %d đến %d ký tự',
+    'password_repeat_invalid' => 'Mật khẩu không khớp',
+    'role_option' => 'Vui lòng chọn vai trò hợp lệ',
+    'permission_array_json' => 'Quyền hạn phải là một mảng hợp lệ',
+    'status_option' => 'Vui lòng chọn trạng thái hợp lệ',
+    'active_account' => 'Kích hoạt Tài khoản',
+    
+    // Page titles and descriptions
+    'Add New User' => 'Thêm Người dùng Mới',
+    'Edit User' => 'Sửa Người dùng',
+    'Create a new user account with roles and permissions' => 'Tạo tài khoản người dùng mới với vai trò và quyền hạn',
+    'Update user information and permissions' => 'Cập nhật thông tin người dùng và quyền hạn',
+    'Basic Information' => 'Thông tin Cơ bản',
+    'Personal Information' => 'Thông tin Cá nhân',
+    'Roles Permission' => 'Vai trò & Quyền hạn',
+    'Enter the user\'s basic information' => 'Nhập thông tin cơ bản của người dùng',
+    
+    // Status values
+    'active' => 'Hoạt động',
+    'inactive' => 'Không hoạt động',
+    'banned' => 'Bị cấm',
+    
+    // JavaScript messages
+    'Switching role will reset permissions to default. Continue?' => 'Chuyển đổi vai trò sẽ đặt lại quyền hạn về mặc định. Tiếp tục?',
+    'Standard user role' => 'Vai trò người dùng tiêu chuẩn',
+    'Permission access' => 'Truy cập quyền hạn',
+    'Create new items' => 'Tạo mục mới',
+    'View and read items' => 'Xem và đọc mục',
+    'Edit existing items' => 'Chỉnh sửa mục hiện có',
+    'Remove items' => 'Xóa mục',
+    'Full management access' => 'Truy cập quản lý đầy đủ',
+    'Publish content' => 'Xuất bản nội dung',
+    'Moderate content' => 'Kiểm duyệt nội dung',
+    
+    // Security & Roles section
+    'Configure user roles and permissions' => 'Cấu hình vai trò và quyền hạn người dùng',
+    'Select Role' => 'Chọn Vai trò',
+    'Choose a role to configure permissions' => 'Chọn một vai trò để cấu hình quyền hạn',
+    'Enable All' => 'Bật Tất cả',
+    'permissions available' => 'quyền hạn có sẵn',
+    'Permissions' => 'Quyền hạn',
+    'Access Level' => 'Mức Truy cập',
+    'Full Access' => 'Truy cập Đầy đủ',
+    'High Access' => 'Truy cập Cao',
+    'Medium Access' => 'Truy cập Trung bình',
+    'Low Access' => 'Truy cập Thấp',
+    'Minimal Access' => 'Truy cập Tối thiểu',
+];

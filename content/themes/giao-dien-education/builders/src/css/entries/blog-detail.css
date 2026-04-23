@@ -1,0 +1,111 @@
+/**
+ * Chi tiết bài blog (`single.php`) — trang không nạp `index.css`; bundle độc lập.
+ * `single-reviews.php`: nạp sau `blog-detail.css` — giữ thứ tự; `review-cms.css` dùng addon.
+ * @page-url https://laragon.net/blog/how-to-create-virtual-hosts-in-laragon-for-local-development/
+ */
+ @import '../partials/_tailwind-standalone.css';
+
+
+/* Related / listing cards on blog-detail: _imglazy <picture>; avatar wrapper matches blog.css */
+.blog-author-avatar {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 9999px;
+    overflow: hidden;
+    background-color: #d1d5db;
+  }
+  .blog-author-avatar picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    line-height: 0;
+  }
+  .blog-author-avatar img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 9999px;
+  }
+  
+  /* _blog_article_card: px-5 py-6 không có trong bundle Tailwind của blog-detail */
+  .blog-article-card__body {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+  
+  .blog-article-card__title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+  
+  article.group .relative.overflow-hidden.rounded-home-lg picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+    line-height: 0;
+  }
+  article.group .relative.overflow-hidden.rounded-home-lg img.blog-article-card__thumb {
+    display: block;
+    width: 100%;
+    height: 11rem;
+    object-fit: cover;
+    object-position: center;
+  }
+  @media (min-width: 768px) {
+    article.group .relative.overflow-hidden.rounded-home-lg img.blog-article-card__thumb {
+      height: 12rem;
+    }
+  }
+  
+  /* Related posts: slider + auto 3s (JS), tối đa 8 card (PHP).
+     Breakpoint dùng @media (viewport): @container so với cqi sẽ không bật trên tablet vì #blog-related-scroll hẹp hơn 768px.
+     md: ~2.3 card; lg: ~3.2; xl: ~4. 100cqi = width vùng cuộn. Gap md+ = 1.5rem (md:gap-6). */
+  #blog-related-scroll {
+    container-type: inline-size;
+    container-name: blog-related;
+    cursor: grab;
+    touch-action: pan-x;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  #blog-related-scroll.blog-related--dragging {
+    cursor: grabbing;
+    scroll-behavior: auto;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  
+  #blog-related-track > .blog-related-card-slide {
+    flex: 0 0 calc(100cqi / 1.2);
+    scroll-snap-align: start;
+  }
+  
+  /* md (tablet): ~2.3 card — viewport ≥768, width ô vẫn tính theo cqi (strip cuộn) */
+  @media (min-width: 768px) {
+    #blog-related-track > .blog-related-card-slide {
+      flex: 0 0 calc((100cqi - 3rem) / 2.3);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    #blog-related-track > .blog-related-card-slide {
+      flex: 0 0 calc((100cqi - 4.5rem) / 3.2);
+    }
+  }
+  
+  @media (min-width: 1280px) {
+    #blog-related-track > .blog-related-card-slide {
+      flex: 0 0 calc((100cqi - 4.5rem) / 4);
+    }
+  }
+  
+  

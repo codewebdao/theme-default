@@ -1,0 +1,2217 @@
+<?php
+
+namespace App\Controllers\Backend;
+
+use App\Controllers\BackendController;
+use App\Models\PostsModel;
+use App\Models\TermsModel;
+use App\Models\UsersModel;
+use System\Libraries\Session;
+use System\Libraries\Render;
+use System\Libraries\Validate;
+use App\Libraries\Fastlang as Flang;
+use Random\Engine\Xoshiro256StarStar;
+
+class PostsController extends BackendController
+{
+    protected $languageModel;
+    protected $termsModel;
+    protected $usersModel;
+    protected $postsModel;
+    protected $post_lang;
+
+    public function __construct()
+    {
+        parent::__construct();
+        load_helpers(['backend', 'string']);
+        Flang::load('Backend/Posts');
+
+        $posttypeSlug = S_GET('type') ?? 'posts';
+        $postLang = S_GET('post_lang') ?? 'all';
+
+        // Load flatpickr for datetime pickers
+        Render::asset('js', 'js/flatpickr.v4.6.13.min.js', ['area' => 'backend', 'location' => 'head']);
+
+        $this->postsModel = new PostsModel($posttypeSlug, $postLang);
+        $this->termsModel = new TermsModel();
+        $this->usersModel = new UsersModel();
+        $this->post_lang = S_GET('post_lang') ?? null;
+    }
+
+    public function index()
+    {
+        Render::asset('js', 'js/notification.js', ['area' => 'backend', 'location' => 'head']);
+        Render::inline('js', "
+document.addEventListener('DOMContentLoaded', function () {
+    window.fastNotice = new FastNotice({
+        position: 'top-center',    // Vị trí mặc định
+        duration: 3000,              // Thời gian hiển thị (ms)
+        maxNotifications: 3          // Số notification tối đa
+    });
+});
+        ", ['area' => 'backend', 'location' => 'head']);
+
+        $postTypeSlug = S_GET('type') ?: 'posts';
+        $currentLang = $this->post_lang;
+        $search = S_GET('q') ?: '';
+        $statusFilter = S_GET('status') ?: '';
+        $limit = S_GET('limit') ?: 10;
+        $sort = S_GET('sort') ?: '';
+        $order = S_GET('order') ?: 'DESC';
+        $paged = S_GET('page') ?: 1;
+        // If page = 0 or negative, set to 1
+        if ($paged < 1) {
+            $paged = 1;
+        }
+
+
+        // If limit is invalid, set to 10
+        if ($limit < 1) {
+            $limit = 10;
+        }
+        $postType = $this->postsModel->getPostTypeBySlug($postTypeSlug);
+        if (empty($postType)) {
+            redirect(admin_url('/'));
+        }
+        $allPostType = $this->postsModel->getAllPostTypes();
+
+
+        $posttypeLanguages = json_decode($postType['languages'], true);
+        if (empty($this->post_lang)) $currentLang = $posttypeLanguages[0];
+        if (!in_array($currentLang, $posttypeLanguages)) {
+            redirect(admin_url('posts') . '?type=' . $postTypeSlug . '&post_lang=' . $posttypeLanguages[0]);
+        }
+        $where = '';
+        $params = [];
+        $conditions = [];
+
+        if (!empty($search)) {
+            $conditions[] = "title LIKE ?";
+            $params[] = '%' . $search . '%';
+        }
+
+        if (!empty($statusFilter) && in_array($statusFilter, ['active', 'inactive', 'schedule', 'draft', 'suspended', 'deleted'])) {
+            $conditions[] = "status = ?";
+            $params[] = $statusFilter;
+        }
+
+        if (!empty($conditions)) {
+            $where = implode(' AND ', $conditions);
+        }
+        if (!empty($sort) && !empty($order)) {
+            $orderBy = $sort . ' ' . $order;
+        } else {
+            $orderBy = 'id DESC';
+        }
+
+        //$post = get_post(4, 'blogs', ['with_comments' => true, 'with_categories' => true, 'with_tags' => true, 'with_author' => true]);
+        //print_r($post);
+
+        // $blogs = get_posts([
+        //     'post_type' => $postTypeSlug,
+        //     'lang'  => $currentLang,
+        //     //'category__in' => [1, 2, 3],
+        //     'limit' => 1,
+        //     'with_categories' => true,  // Eager Loading!
+        //     //'with_tags' => true,
+        //     'with_author' => true,
+        //     'with_comments' => true
+        // ]);
+        // print_r($blogs);
+
+        // $posttypeTableName = posttype_name($postTypeSlug, $currentLang); // Return like: fast_blogs_en
+        // $postsWithComments = PostsModel::for($posttypeTableName, 'id')->newQuery()->with(['comments' => function($query) use ($postTypeSlug) {
+        //     $query->where('status', 'active')
+        //           ->where('posttype', $postTypeSlug) //like blogs
+        //       ->orderBy('created_at', 'desc');
+        // }])->get();
+        // foreach ($postsWithComments as $post) {
+        //     $comments = $post['comments'] ?? []; // Already loaded!
+        //     echo "Post: {$post['title']} - Comments: " . count($comments) . "\n";
+        // }
+
+
+        // Build filters for get_posts helper
+        $filters = ['status' => $statusFilter ?: 'active'];
+        if (!empty($statusFilter)) {
+            $filters['status'] = $statusFilter;
+        }
+
+        // Use get_posts helper with eager loading
+        $postsResult = get_posts([
+            'post_type' => $postTypeSlug,
+            'lang' => $currentLang,
+            'status'    =>  '',
+            'filters' => $filters,
+            's' => $search,
+            'searchcolumns' => ['title', 'search_string'],
+            'posts_per_page' => $limit,
+            'paged' => $paged,
+            'orderby' => $sort ?: 'id',
+            'order' => $order,
+            'with_categories' => true,   // Eager load categories for display
+            'with_tags' => false,
+            'with_author' => false,
+            'with_comments' => false,
+        ]);
+
+        // Extract data from result
+        $postsOfCurrentLang = [
+            'data' => $postsResult['data'] ?? [],
+            'is_next' => $postsResult['is_next'] ?? false,
+            'page' => $postsResult['page'] ?? $paged,
+        ];
+
+        $idsOfCurrentLang = [];
+        $postsLists = $postsOfCurrentLang;
+        $postsLists['data'] = [];
+
+        foreach ($postsOfCurrentLang['data'] as $item) {
+            $idsOfCurrentLang[] = $item['id'];
+            $item['languages'] = array($currentLang);
+            $postsLists['data'][$item['id']] = $item;
+        }
+
+        // Get posts in other languages to show language availability
+        if (!empty($idsOfCurrentLang) && !empty($posttypeLanguages)) {
+            foreach ($posttypeLanguages as $lang) {
+                if ($lang == $currentLang) continue;
+
+                $postLangModel = new PostsModel($postTypeSlug, $lang);
+                $where = "id IN (" . implode(',', $idsOfCurrentLang) . ")";
+                $postsLang = $postLangModel->getPostsFieldsPagination('id, title, status, created_at', $where, []);
+
+                if (!empty($postsLang['data'])) {
+                    foreach ($postsLang['data'] as $item) {
+                        $postsLists['data'][$item['id']]['languages'][] = $lang;
+                    }
+                }
+            }
+        }
+        unset($postsOfCurrentLang);
+
+
+
+        $this->data('posttype', $postType);
+        $this->data('allPostType', $allPostType);
+        $this->data('limit', $limit);
+        $this->data('sort', $sort);
+        $this->data('order', $order);
+        $this->data('page', $paged);
+        $this->data('search', $search);
+        $this->data('posts', $postsLists);
+        $this->data('currentLang', $currentLang);
+        $this->data('languages', $posttypeLanguages);
+        $this->data('title', __('List ') . $postType['name'] . ' ' .  $this->post_lang);
+        echo Render::html('Backend/posts_index', $this->data);
+    }
+
+
+
+
+    public function add()
+    {
+        // WordPress-style: Create draft post and redirect to edit
+        $postTypeSlug = S_GET('type') ?? 'posts';
+        $postType = $this->postsModel->getPostTypeBySlug($postTypeSlug);
+
+        if (empty($postType)) {
+            redirect(admin_url('/'));
+            return;
+        }
+
+        // Decode posttype data
+        $postType['fields'] = is_string($postType['fields']) ? json_decode($postType['fields'], true) : $postType['fields'];
+        $postType['terms'] = is_string($postType['terms']) ? json_decode($postType['terms'], true) : $postType['terms'];
+        $languages = is_string($postType['languages']) ? json_decode($postType['languages'], true) : [];
+
+        // Determine language
+        $currentLang = $this->post_lang;
+        if (empty($currentLang)) {
+            if (in_array(APP_LANG_DF, $languages)) {
+                $currentLang = APP_LANG_DF;
+            } else {
+                $currentLang = $languages[0] ?? APP_LANG;
+            }
+        }
+
+        // Check if language is valid
+        if (!in_array($currentLang, $languages)) {
+            redirect(admin_url('posts/add') . '?type=' . $postTypeSlug . '&post_lang=' . $languages[0]);
+            return;
+        }
+
+        foreach ($postType['fields'] as &$field) {
+            $field = $this->_finalizeImageFields($field);
+        }
+
+        // Create draft post
+        $currentId = $postType['current_id'] ?? 0;
+        $newPostId = $currentId + 1;
+
+        $draftData = [
+            'id' => $newPostId,
+            'title' => '',
+            'slug' => null,
+            'status' => 'draft',
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ];
+
+        // Create post in database
+        $result = $this->_add($postType, $draftData, $languages, [], $currentLang);
+
+        if ($result) {
+            // Redirect to edit with 301 (permanent redirect as requested)
+            header('Location: ' . admin_url('posts/edit/' . $newPostId) . '?type=' . $postTypeSlug . '&post_lang=' . $currentLang, true, 301);
+            exit;
+        } else {
+            // Failed - redirect back to list
+            redirect(admin_url('posts') . '?type=' . $postTypeSlug . '&post_lang=' . $currentLang);
+        }
+    }
+
+    private function _finalizeImageFields($field)
+    {
+        if ($field['type'] == 'Image') {
+            if ($field['watermark'] === true) {
+                if (empty($field['watermark_img'])) {
+                    $field['watermark_img'] = option('watermark_img');
+                }
+
+                if (empty($field['watermark_opacity'])) {
+                    $field['watermark_opacity'] = option('watermark_opacity') ?? 100;
+                }
+
+                if (empty($field['watermark_position'])) {
+                    $field['watermark_position'] = option('watermark_position') ?? 'bottom-right';
+                }
+
+                if (empty($field['watermark_padding'])) {
+                    $field['watermark_padding'] = option('watermark_padding') ?? 10;
+                }
+
+                if (empty($field['watermark_scale'])) {
+                    $field['watermark_scale'] = option('watermark_scale') ?? 100;
+                }
+            }
+        }
+        return $field;
+    }
+
+    public function _add_backup()
+    {
+        // validate posttype
+        $postTypeSlug = S_POST('type') ?? (S_GET('type') ?? '');
+        $postType = $this->postsModel->getPostTypeBySlug($postTypeSlug);
+        if (empty($postType)) {
+            redirect(admin_url());
+        }
+
+        // format decode data
+        $postType['terms'] = _json_decode($postType['terms']);
+        $postType['fields'] = _json_decode($postType['fields']);
+        $languages = _json_decode($postType['languages']);
+
+        // check post_lang in_array languages
+        if (!in_array($this->post_lang, $languages)) {
+            redirect(admin_url('posts/add') . '?type=' . $postTypeSlug . '&post_lang=' . $languages[0]);
+        }
+        // validate language S_GET
+        if (empty($this->post_lang)) {
+            if (in_array(APP_LANG_DF, $languages)) {
+                $this->post_lang = APP_LANG_DF;
+            } else {
+                $this->post_lang = $languages[0];
+            }
+        };
+
+        // handle submit form 
+        if (S_POST('type')) {
+            $langadd = S_POST('lang') ?? $this->post_lang;
+            $curent_id = $postType['current_id'] ?? 0;
+            $postDataFields = $_POST;
+            if (is_string($postDataFields['terms'])) {
+                $postDataFields['terms'] = _json_decode($postDataFields['terms']);
+            }
+
+            $terms_list = $postDataFields['terms'];
+
+            // check created_at
+            if (!empty($postDataFields['created_at'])) {
+                if (is_numeric($postDataFields['created_at'])) {
+                    $postDataFields['created_at'] = date('Y-m-d H:i:s', $postDataFields['created_at']);
+                } else {
+                    $postDataFields['created_at'] = date('Y-m-d H:i:s', strtotime($postDataFields['created_at']));
+                }
+            } else {
+                $postDataFields['created_at'] = _DateTime();
+            }
+            if (!in_array($postDataFields['status'], ['active', 'inactive', 'schedule', 'draft', 'suspended', 'deleted'])) {
+                $postDataFields['status'] = 'active';
+            }
+            if ($postDataFields['status'] == 'active' && $postDataFields['created_at'] > _DateTime()) {
+                $postDataFields['status'] = 'schedule';
+            } elseif ($postDataFields['status'] == 'schedule' && $postDataFields['created_at'] < _DateTime()) {
+                $postDataFields['status'] = 'active';
+            }
+            $data = [
+                'id' => ($curent_id + 1),
+                'title' => $postDataFields['title'],
+                'slug' => $postDataFields['slug'],
+                'status' => $postDataFields['status'],
+                'created_at' => $postDataFields['created_at'],
+                'updated_at' => $postDataFields['created_at'],
+            ];
+            $data['slug'] = $this->_slug_unique($data['slug'], $postType['slug'], $langadd);
+            // validate data form
+            $rules = $this->_rules_validate($postType['fields']);
+            $validator = new Validate();
+            if (!$validator->check($postDataFields, $rules)) {
+                $errors = $validator->getErrors();
+                $this->data('errors', $errors);
+            } else {
+                // Store Reference fields for later processing (after post is created)
+                $referenceFields = [];
+
+                foreach ($postType['fields'] as $field) {
+                    if ($field['type'] == 'Reference') {
+                        // Store for processing in _add() via helper
+                        if (isset($postDataFields[$field['field_name']])) {
+                            $referenceFields[$field['field_name']] = $postDataFields[$field['field_name']];
+                            $data[$field['field_name']] = $postDataFields[$field['field_name']];
+                        }
+                    } elseif (($field['type'] == 'Point')) {
+                        if (isset($postDataFields[$field['field_name']]) && count($postDataFields[$field['field_name']]) === 2) {
+                            $latitude = $postDataFields[$field['field_name']][0];
+                            $longitude = $postDataFields[$field['field_name']][1];
+                            if ($latitude >= 90 || $latitude <= -90 || $longitude >= 180 || $longitude <= -180) $data[$field['field_name']] = NULL;
+                            continue;
+                            $data[$field['field_name']] = [
+                                'expr' => "ST_GeomFromText('POINT($longitude $latitude)')",
+                                'params' => []
+                            ];
+                        } else {
+                            $data[$field['field_name']] = NULL;
+                        }
+                    } else {
+                        if (isset($postDataFields[$field['field_name']])) {
+                            if ($field['type'] == 'Number') {
+                                if ($postDataFields[$field['field_name']] === "") {
+                                    $data[$field['field_name']] = null;
+                                } else {
+                                    $data[$field['field_name']] = (int)$postDataFields[$field['field_name']];
+                                }
+                            } else {
+                                $data[$field['field_name']] = is_array($postDataFields[$field['field_name']]) ? json_encode($postDataFields[$field['field_name']]) : $postDataFields[$field['field_name']];
+                            }
+                        }
+                    }
+                }
+                $result = $this->_add($postType, $data, $languages, $terms_list, $langadd);
+                if ($result) {
+                    redirect(admin_url('posts') . '?type=' . $postTypeSlug . '&post_lang=' . $langadd);
+                } else {
+                    $this->data('errors', ['Failed to add post']);
+                }
+            };
+        }
+
+        // update fields for FE format
+        $postType = $this->_loadTermInputs($postType, $postType['terms']);
+
+        // data for view add post 
+        $this->data('posttype', $postType);
+        $this->data('title', __('add_new'));
+        echo Render::html('Backend/posts_add', $this->data);
+    }
+
+    private function _add($postType, $data, $languages, $terms_list, $langadd)
+    {
+        // Use posts_add_term() helper for proper synchronous handling
+        $tableName = posttype_name($postType['slug'], $langadd);
+
+        // Insert post first
+        if (!$this->postsModel->addPost($tableName, $data)) {
+            return false;
+        }
+
+        $post_id = $data['id'];
+
+        // Update posttype current_id
+        $postType['terms'] = is_array($postType['terms']) ? json_encode($postType['terms']) : $postType['terms'];
+        $postType['fields'] = is_array($postType['fields']) ? json_encode($postType['fields']) : $postType['fields'];
+        $postType['current_id'] = $post_id;
+        $this->postsModel->updatePostType($postType['id'], $postType);
+
+        // Add terms using helper (handles sync automatically)
+        if (!empty($terms_list)) {
+            foreach ($terms_list as $termId) {
+                posts_add_term($post_id, $termId, $postType['slug'], $langadd);
+            }
+        }
+
+        \System\Libraries\Events::run('Backend\\PostsAddEvent', $data);
+        return true;
+    }
+
+    /**
+     * Export posts to JSON
+     * GET: Show export form with column selection
+     * POST: Process export and return JSON file
+     */
+    public function export()
+    {
+        $postTypeSlug = S_GET('type') ?? 'posts';
+        $postType = $this->postsModel->getPostTypeBySlug($postTypeSlug);
+
+        if (empty($postType)) {
+            redirect(admin_url('/'));
+            return;
+        }
+
+        $postType['fields'] = _json_decode($postType['fields']);
+        $postType['terms'] = _json_decode($postType['terms']);
+        $languages = _json_decode($postType['languages']);
+
+        $currentLang = $this->post_lang ?? $languages[0] ?? APP_LANG;
+
+        // Handle AJAX export request
+        if (S_POST('action') == 'export_posts') {
+            $selectedFields = $_POST['fields'] ?? [];
+            $selectedTerms = $_POST['terms'] ?? [];
+
+            // Decode if string
+            if (is_string($selectedFields)) {
+                $selectedFields = _json_decode($selectedFields);
+            }
+            if (is_string($selectedTerms)) {
+                $selectedTerms = _json_decode($selectedTerms);
+            }
+
+            $page = (int)(S_POST('page') ?: 1);
+            $limit = 500; // Max 500 items per request
+
+            // Get posts for current page - include all terms if any terms are selected
+            $postsResult = get_posts([
+                'post_type' => $postTypeSlug,
+                'lang' => $currentLang,
+                'posts_per_page' => $limit,
+                'paged' => $page,
+                'orderby' => 'id',
+                'order' => 'ASC',
+                'with_terms' => !empty($selectedTerms),
+                'status' => ''
+            ]);
+
+            $exportData = [];
+
+            foreach ($postsResult['data'] as $post) {
+                $item = [];
+
+                // Always include ID
+                $item['id'] = $post['id'];
+                // Add selected fields
+                $checkSelectedFields = [];
+                if (!empty($selectedFields)) {
+                    foreach ($selectedFields as $fieldName) {
+                        $checkSelectedFields[$fieldName] = true;
+                    }
+                }
+                if ($fieldName == 'id') continue; // Already added
+                foreach ($post as $fieldName => $value) {
+                    if (isset($checkSelectedFields[$fieldName])) {
+                        $value = $post[$fieldName];
+                        // Decode JSON fields for export
+                        if (is_string($value) && (substr($value, 0, 1) === '{' || substr($value, 0, 1) === '[')) {
+                            $decoded = json_decode($value, true);
+                            if (json_last_error() === JSON_ERROR_NONE) {
+                                $value = $decoded;
+                            }
+                        }
+                        $item[$fieldName] = $value;
+                    }
+                }
+
+                // Add selected terms - filter from all terms
+                $checkSelectedTerms = [];
+                if (!empty($selectedTerms)) {
+                    foreach ($selectedTerms as $termType) {
+                        $checkSelectedTerms[$termType] = true;
+                    }
+                }
+                if (!empty($checkSelectedTerms) && !empty($post['terms'])) {
+                    foreach ($post['terms'] as $term) {
+                        if (isset($checkSelectedTerms[$term['type']])) {
+                            if (isset($item['terms:' . $term['type']])) {
+                                $item['terms:' . $term['type']] .= ',' . $term['slug'];
+                            } else {
+                                $item['terms:' . $term['type']] = $term['slug'];
+                            }
+                        }
+                    }
+                }
+
+                $exportData[] = $item;
+            }
+
+            $response = [
+                'success' => true,
+                'data' => $exportData,
+                'page' => $page,
+                'is_next' => $postsResult['is_next'] ?? false,
+                'total_items' => count($exportData)
+            ];
+
+            header('Content-Type: application/json');
+            echo json_encode($response);
+            return;
+        }
+
+        // Show export form
+        $this->data('posttype', $postType);
+        $this->data('languages', $languages);
+        $this->data('currentLang', $currentLang);
+        $this->data('title', __('Export') . ' ' . $postType['name']);
+
+        echo Render::html('Backend/posts_export', $this->data);
+    }
+
+    public function import()
+    {
+        // xoi handle import term, images, files, etc.
+        // Validate posttype
+        $postTypeSlug = S_POST('type') ?? (S_GET('type') ?? 'posts');
+        $postType = $this->postsModel->getPostTypeBySlug($postTypeSlug);
+        if (empty($postType)) {
+            redirect(admin_url('/'));
+        }
+
+        $postType['terms'] = is_string($postType['terms']) ? json_decode($postType['terms'], true) : $postType['terms'];
+        $postType['fields'] = is_string($postType['fields']) ? json_decode($postType['fields'], true) : $postType['fields'];
+        $languages = is_string($postType['languages']) ? json_decode($postType['languages'], true) : [];
+
+        // Validate language
+        $currentLang = $this->post_lang;
+        if (empty($currentLang)) {
+            if (in_array(APP_LANG_DF, $languages)) {
+                $currentLang = APP_LANG_DF;
+            } else {
+                $currentLang = $languages[0];
+            }
+        }
+
+        // Handle JSON file upload
+        if (S_POST('action') == 'upload_json') {
+            $response = ['success' => false, 'message' => '', 'data' => []];
+
+            if (isset($_FILES['json_file']) && $_FILES['json_file']['error'] == 0) {
+                $jsonFile = $_FILES['json_file']['tmp_name'];
+                $jsonContent = file_get_contents($jsonFile);
+                $jsonData = json_decode($jsonContent, true);
+
+                if ($jsonData !== null && is_array($jsonData) && !empty($jsonData)) {
+                    // Validate: Check if posttype exists
+                    if (empty($postType) || empty($postType['slug'])) {
+                        $response['message'] = 'Posttype not found. Cannot import.';
+                        header('Content-Type: application/json');
+                        echo json_encode($response);
+                        return;
+                    }
+
+                    // Validate: JSON structure must be array of objects [{...}, {...}]
+                    if (!isset($jsonData[0]) || !is_array($jsonData[0])) {
+                        $response['message'] = 'Invalid JSON structure. Expected array of objects: [{...}, {...}, ...]';
+                        header('Content-Type: application/json');
+                        echo json_encode($response);
+                        return;
+                    }
+
+                    // Save file for later use
+                    load_helpers(['upload']);
+                    $uploadResult = do_upload($_FILES['json_file'], [
+                        'folder' => 'imports/' . date('Y/m/d'),
+                        'storage' => 'local'
+                    ]);
+
+                    if ($uploadResult['success']) {
+                        // Get columns from first item
+                        $firstItem = $jsonData[0];
+                        $columns = array_keys($firstItem);
+
+                        $response['success'] = true;
+                        $response['data'] = [
+                            'columns' => $columns,
+                            'total_items' => count($jsonData),
+                            'file_path' => $uploadResult['data']['path'],
+                            'preview' => array_slice($jsonData, 0, 5) // First 5 items for preview
+                        ];
+                        $response['message'] = 'JSON file uploaded successfully';
+                    } else {
+                        $response['message'] = 'Failed to save uploaded file: ' . ($uploadResult['message'] ?? 'Unknown error');
+                    }
+                } else {
+                    $response['message'] = 'Invalid JSON format or empty file';
+                }
+            } else {
+                $response['message'] = 'No file uploaded or file error';
+            }
+
+            header('Content-Type: application/json');
+            echo json_encode($response);
+            return;
+        }
+
+        // Handle JSON import batch processing
+        if (S_POST('action') == 'import_json') {
+            $filePath = S_POST('file_path');
+            $columnMapping = $_POST['column_mapping'] ?? [];
+            $startIndex = (int)(S_POST('start_index') ?? 0);
+            $batchSize = (int)(S_POST('batch_size') ?? 100);
+
+            if (empty($filePath) || empty($columnMapping)) {
+                header('Content-Type: application/json');
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Missing file path or column mapping'
+                ]);
+                return;
+            }
+
+            // Decode column mapping
+            if (is_string($columnMapping)) {
+                $columnMapping = json_decode($columnMapping, true);
+            }
+
+            // Read JSON file
+            $fullPath = PATH_UPLOADS . ltrim($filePath, '/');
+            if (!file_exists($fullPath)) {
+                header('Content-Type: application/json');
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'File not found'
+                ]);
+                return;
+            }
+
+            $jsonContent = file_get_contents($fullPath);
+            $jsonData = json_decode($jsonContent, true);
+
+            if (!$jsonData || !is_array($jsonData)) {
+                header('Content-Type: application/json');
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Invalid JSON data'
+                ]);
+                return;
+            }
+
+            // Get batch
+            $batch = array_slice($jsonData, $startIndex, $batchSize);
+
+            // Pass posttype slug to importJSONBatch
+            $result = $this->importJSONBatch($batch, $columnMapping, $postType, $currentLang, $postTypeSlug);
+
+            // Return success with data
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => true,
+                'data' => $result,
+                'message' => $result['message'] ?? 'Batch imported successfully'
+            ]);
+            return;
+        }
+
+        // Get available fields for mapping
+        $availableFields = $this->getAvailableFieldsForImport($postType);
+
+        $this->data('posttype', $postType);
+        $this->data('languages', $languages);
+        $this->data('currentLang', $currentLang);
+        $this->data('availableFields', $availableFields);
+        $this->data('title', __('Import') . ' ' . $postType['name']);
+
+        echo Render::html('Backend/posts_import', $this->data);
+    }
+
+    /**
+     * Import JSON batch
+     */
+    private function importJSONBatch($batch, $columnMapping, $postType, $currentLang, $expectedPosttype)
+    {
+        $imported = 0;
+        $updated = 0;
+        $skipped = 0;
+        $errors = [];
+        $languages = is_string($postType['languages']) ? json_decode($postType['languages'], true) : $postType['languages'];
+
+        // Validate fields for rules
+        $rules = $this->_rules_validate($postType['fields']);
+        $validator = new Validate();
+        foreach ($batch as $rowIndex => $row) {
+            try {
+                // Check posttype validation FIRST
+                if (isset($row['posttype'])) {
+                    // If JSON has posttype field and it's different from expected -> SKIP
+                    if ($row['posttype'] !== $expectedPosttype) {
+                        $skipped++;
+                        $errors[] = "Row " . ($rowIndex + 1) . ": Skipped - posttype '{$row['posttype']}' does not match expected posttype '{$expectedPosttype}'";
+                        continue;
+                    }
+                }
+
+                // Map JSON row -> post data based on columnMapping
+                $postDataFields = [];
+                $termsData = [];
+
+                foreach ($columnMapping as $posttypeField => $jsonColumn) {
+                    if (empty($jsonColumn)) continue;
+
+                    if (isset($row[$jsonColumn])) {
+                        // Check if it's a term field (terms:type format)
+                        if (strpos($posttypeField, 'terms:') === 0) {
+                            $termType = substr($posttypeField, 6); // Remove "terms:" prefix
+                            $termsData[$termType] = $row[$jsonColumn];
+                        } else {
+                            $postDataFields[$posttypeField] = $row[$jsonColumn];
+                        }
+                    }
+                }
+
+                // If JSON doesn't have posttype column, set it to expected posttype
+                if (!isset($postDataFields['posttype']) && !isset($row['posttype'])) {
+                    $postDataFields['posttype'] = $expectedPosttype;
+                }
+
+                // Normalize data
+                $postDataFields = $this->_normalize_data($postDataFields, $postType['fields']);
+
+                $tableName = posttype_name($postType['slug'], $currentLang);
+
+                // Check if post exists by ID first (more reliable for updates)
+                $existingPost = null;
+                if (!empty($postDataFields['id'])) {
+                    $existingPost = $this->postsModel->getPostById($tableName, $postDataFields['id']);
+                }
+
+                // If not found by ID, check by slug (fallback)
+                if (!$existingPost && !empty($postDataFields['slug'])) {
+                    $existingPost = $this->postsModel->getPostBySlug($tableName, $postDataFields['slug']);
+                }
+
+                // Handle slug logic based on whether post exists
+                if ($existingPost) {
+                    // UPDATE mode: Keep original slug if not provided
+                    if (empty($postDataFields['slug'])) {
+                        $postDataFields['slug'] = $existingPost['slug'];
+                    }
+                } else {
+                    // INSERT mode: Generate slug from title if not provided
+                    if (empty($postDataFields['slug']) && !empty($postDataFields['title'])) {
+                        $postDataFields['slug'] = url_slug($postDataFields['title']);
+                    }
+                }
+
+                // Validate data
+                if (!$validator->check($postDataFields, $rules)) {
+                    $fieldErrors = $validator->getErrors();
+                    foreach ($fieldErrors as $field => $fieldError) {
+                        $errors[] = "Row " . ($rowIndex + 1) . " - {$field}: " . implode(', ', $fieldError);
+                    }
+                    continue;
+                }
+
+                // Process terms
+                $termsList = [];
+                if (!empty($termsData) && is_array($termsData)) {
+                    foreach ($termsData as $termType => $termSlugsString) {
+                        if (empty($termSlugsString)) continue;
+
+                        $termSlugs = array_map('trim', explode(',', $termSlugsString));
+                        foreach ($termSlugs as $termSlug) {
+                            if (empty($termSlug)) continue;
+
+                            // Get term by slug
+                            $term = $this->termsModel->getTermsSlugAndByTypeAndPostTypeAndLang(
+                                $termSlug,
+                                $postType['slug'],
+                                $termType,
+                                $currentLang
+                            );
+
+                            if ($term) {
+                                // Handle both array and single term response
+                                if (is_array($term) && isset($term[0])) {
+                                    $termId = $term[0]['id'];
+                                } elseif (is_array($term) && isset($term['id'])) {
+                                    $termId = $term['id'];
+                                } else {
+                                    continue;
+                                }
+                                $termsList[] = $termId;
+                            }
+                        }
+                    }
+                }
+
+                if ($existingPost) {
+                    // UPDATE existing post
+                    $postDataFields['updated_at'] = date('Y-m-d H:i:s');
+
+                    // Prepare data for update
+                    // Note: If slug is not provided, we keep the existing slug (don't overwrite)
+                    $updateData = [
+                        'title' => $postDataFields['title'] ?? $existingPost['title'],
+                        'slug' => $postDataFields['slug'], // Already handled above (keeps existing if empty)
+                        'status' => $postDataFields['status'] ?? $existingPost['status'],
+                        'updated_at' => $postDataFields['updated_at']
+                    ];
+
+                    // Add custom fields
+                    if (!empty($postType['fields']) && is_array($postType['fields'])) {
+                        foreach ($postType['fields'] as $field) {
+                            if (isset($postDataFields[$field['field_name']])) {
+                                if ($field['type'] == 'Point') {
+                                    // Skip Point fields in import for now
+                                    continue;
+                                } elseif ($field['type'] == 'Number') {
+                                    $updateData[$field['field_name']] = $postDataFields[$field['field_name']] === "" ? null : (int)$postDataFields[$field['field_name']];
+                                } else {
+                                    $updateData[$field['field_name']] = is_array($postDataFields[$field['field_name']]) ? json_encode($postDataFields[$field['field_name']]) : $postDataFields[$field['field_name']];
+                                }
+                            }
+                        }
+                    }
+
+                    $this->postsModel->editPost($tableName, $existingPost['id'], $updateData);
+
+                    // Update terms if provided
+                    if (!empty($termsList)) {
+                        // Get existing terms
+                        $tableRelation = table_postrel($postType['slug']);
+                        $existingTerms = $this->postsModel->getTermsbyPostIDAndLang($tableRelation, $existingPost['id'], $currentLang);
+                        $existingTermIds = array_column($existingTerms, 'rel_id');
+
+                        // Calculate diff
+                        $removedTermIds = array_diff($existingTermIds, $termsList);
+                        $addedTermIds = array_diff($termsList, $existingTermIds);
+
+                        // Add new terms
+                        foreach ($addedTermIds as $termId) {
+                            posts_add_term($existingPost['id'], $termId, $postType['slug'], $currentLang);
+                        }
+
+                        // Remove old terms
+                        foreach ($removedTermIds as $termId) {
+                            posts_remove_term($existingPost['id'], $termId, $postType['slug'], $currentLang);
+                        }
+                    }
+
+                    $updated++;
+                } else {
+                    // INSERT new post
+                    $currentId = $postType['current_id'] ?? 0;
+
+                    // For new posts, ensure slug is set
+                    if (empty($postDataFields['slug'])) {
+                        $errors[] = "Row " . ($rowIndex + 1) . ": Slug is required for new posts";
+                        continue;
+                    }
+
+                    $data = [
+                        'id' => ($currentId + 1),
+                        'title' => $postDataFields['title'],
+                        'slug' => $this->_slug_unique($postDataFields['slug'], $postType['slug'], $currentLang),
+                        'status' => $postDataFields['status'] ?? 'active',
+                        'created_at' => $postDataFields['created_at'] ?? date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ];
+
+                    // Add custom fields
+                    if (!empty($postType['fields']) && is_array($postType['fields'])) {
+                        foreach ($postType['fields'] as $field) {
+                            if (isset($postDataFields[$field['field_name']])) {
+                                if ($field['type'] == 'Point') {
+                                    // Skip Point fields in import for now
+                                    continue;
+                                } elseif ($field['type'] == 'Number') {
+                                    $data[$field['field_name']] = $postDataFields[$field['field_name']] === "" ? null : (int)$postDataFields[$field['field_name']];
+                                } else {
+                                    $data[$field['field_name']] = is_array($postDataFields[$field['field_name']]) ? json_encode($postDataFields[$field['field_name']]) : $postDataFields[$field['field_name']];
+                                }
+                            }
+                        }
+                    }
+
+                    $this->_add($postType, $data, $languages, $termsList, $currentLang);
+                    $postType['current_id'] = $data['id'];
+                    $imported++;
+                }
+            } catch (\Exception $e) {
+                $errors[] = "Row " . ($rowIndex + 1) . ": " . $e->getMessage();
+            }
+        }
+
+        return [
+            'success' => true,
+            'imported' => $imported,
+            'updated' => $updated,
+            'skipped' => $skipped,
+            'errors' => $errors,
+            'message' => "$imported posts imported, $updated posts updated, $skipped posts skipped."
+        ];
+    }
+
+    private function getAvailableFieldsForImport($postType)
+    {
+        $fields = [];
+        // Basic fields
+        $fields[] = ['field_name' => 'id', 'label' => 'ID', 'type' => 'Number', 'required' => false];
+        $fields[] = ['field_name' => 'title', 'label' => 'Title', 'type' => 'Text', 'required' => true];
+        $fields[] = ['field_name' => 'slug', 'label' => 'Slug', 'type' => 'Text', 'required' => false];
+        $fields[] = ['field_name' => 'status', 'label' => 'Status', 'type' => 'Select', 'required' => false];
+        $fields[] = ['field_name' => 'created_at', 'label' => 'Created At', 'type' => 'Date', 'required' => false];
+        $fields[] = ['field_name' => 'updated_at', 'label' => 'Updated At', 'type' => 'Date', 'required' => false];
+        // Custom fields
+        if (!empty($postType['fields'])) {
+            foreach ($postType['fields'] as $field) {
+                $fields[] = $field;
+            }
+        }
+
+        return $fields;
+    }
+
+
+    public function edit($id)
+    {
+        Render::asset('js', 'js/jstring.1.1.0.js', ['area' => 'backend', 'location' => 'head']);
+
+        $fields = "*";
+        $postTypeSlug = S_POST('type') ?? (S_GET('type') ?? 'posts');
+        if (!isset($id)) {
+            redirect(admin_url('/'));
+            return;
+        }
+        $postType = $this->postsModel->getPostTypeBySlug($postTypeSlug);
+        if (empty($postType)) {
+            redirect(admin_url('/'));
+            return;
+        }
+        $languagesPosttype = is_string($postType['languages']) ? json_decode($postType['languages'], true) : [];
+        if (empty($this->post_lang)) $this->post_lang = $languagesPosttype[0];
+
+
+        $postType['fields'] = is_string($postType['fields']) ? json_decode($postType['fields'], true) : $postType['fields'];
+        if (!empty($postType['fields'])) {
+            foreach ($postType['fields'] as $field) {
+                if ($field['type'] === 'Point') $fields .= ',  ST_AsText(' . $field['field_name'] . ') as ' . $field['field_name'];
+            }
+        }
+        $tableName = posttype_name($postType['slug'], $this->post_lang);
+        $existingPost = $this->postsModel->getPostById($tableName, $id, $fields);
+        if (!$existingPost) {
+            redirect(admin_url('posts') . '?type=' . $postTypeSlug);
+            return;
+        }
+        // different language posttype 
+        $langHasPost = [];
+        foreach ($languagesPosttype as $lang) {
+            $tableName = posttype_name($postType['slug'], $lang);
+            if ($this->postsModel->getPostById($tableName, $id)) {
+                $langHasPost[] = $lang;
+            }
+        }
+
+        if (!empty($postType['fields'])) {
+            foreach ($postType['fields'] as $i => $field) {
+                if ($field['type'] == 'Reference') {
+                    $post_status_filter = $field['post_status_filter'] ?? '';
+                    $post_query_filter = $field['post_query_filter'] ?? '';
+                    $post_query_sort = $field['post_query_sort'] ?? '';
+                    $where = [];
+                    $sql = "";
+                    if ($post_status_filter !== 'all') {
+                        $where[] = "status = '$post_status_filter'";
+                    }
+                    if (!empty($post_query_filter)) {
+                        $where[] = $post_query_filter;
+                    }
+                    if (!empty($where)) {
+                        $sql .= implode(' AND ', $where);
+                    }
+                    if (!empty($sql)) {
+                        $sql = " WHERE $sql";
+                    }
+                    if (!empty($post_query_sort)) {
+                        $sql .= " ORDER BY $post_query_sort";
+                    }
+                    $postType['fields'][$i]['data'] = $this->postsModel->getPostByQuery(posttype_name($field['post_type_reference'], $this->post_lang),  $sql);
+                    if (isset($field['table_save_data_reference']) && $field['table_save_data_reference'] == 1) {
+                        $tableRelation = table_postrel($postType['slug']);
+                        $listPost = $this->postsModel->getAllRelPostByPostId($tableRelation, $field['post_type_reference'], $field['id'], $id, $this->post_lang);
+                    } else {
+                        $tableRelation = table_postrel($field['post_type_reference']);
+                        $listPost = $this->postsModel->getAllPostIdByRenference($tableRelation, $postType['slug'], $field['id'], $id, $this->post_lang);
+                    }
+                    $existingPost[$field['field_name']] = $listPost;
+                } elseif ($field['type'] == 'User') {
+                    $userList =  $this->usersModel->getUsers();
+                    $postType['fields'][$i]['data'] = $userList;
+                }
+            }
+        }
+
+
+        $tableRelation = table_postrel($postType['slug']);
+        $termActive = $this->postsModel->getTermsbyPostIDAndLang($tableRelation, $id, $this->post_lang);
+        $termActiveIds = array_column($termActive, 'rel_id');
+        $existingPost['terms'] =  $termActiveIds;
+        $postType['terms'] = is_string($postType['terms']) ? json_decode($postType['terms'], true) : $postType['terms'];
+
+        if (S_POST('type')) {
+            if (!in_array($this->post_lang, $languagesPosttype)) {
+                redirect(admin_url('posts') . '?type=' . $postTypeSlug);
+            }
+
+
+            $postDataFields = $_POST;
+            $newtermActiveIds = $postDataFields['terms'] ?? [];
+            if (is_string($newtermActiveIds)) {
+                $newtermActiveIds = json_decode($newtermActiveIds, true);
+            }
+
+            if (!empty($postDataFields['created_at'])) {
+                if (is_numeric($postDataFields['created_at'])) {
+                    $postDataFields['created_at'] = date('Y-m-d H:i:s', $postDataFields['created_at']);
+                } else {
+                    $postDataFields['created_at'] = date('Y-m-d H:i:s', strtotime($postDataFields['created_at']));
+                }
+            } else {
+                $postDataFields['created_at'] = _DateTime();
+            }
+
+            if (!in_array($postDataFields['status'], ['active', 'inactive', 'schedule', 'draft', 'suspended', 'deleted'])) {
+                $postDataFields['status'] = 'active';
+            }
+            if ($postDataFields['status'] == 'active' && $postDataFields['created_at'] > _DateTime()) {
+                $postDataFields['status'] = 'schedule';
+            } elseif ($postDataFields['status'] == 'schedule' && $postDataFields['created_at'] < _DateTime()) {
+                $postDataFields['status'] = 'active';
+            }
+
+            $data = [
+                'title' => S_POST('title'),
+                'slug' => S_POST('slug'),
+                'status' => $postDataFields['status'],
+                'created_at' => $postDataFields['created_at'],
+                'updated_at' => _DateTime()
+            ];
+
+            $data['slug'] = $this->_slug_unique($data['slug'], $postType['slug'], $this->post_lang, $id);
+            $postType['fields'] = is_string($postType['fields']) ? json_decode($postType['fields'], true) : $postType['fields'];
+            $rules = $this->_rules_validate($postType['fields']);
+            $validator = new Validate();
+            if (!$validator->check($postDataFields, $rules)) {
+                $errors = $validator->getErrors();
+                $this->data('errors', $errors);
+            } else {
+                if (!empty($postType['fields'])) {
+                    foreach ($postType['fields'] as $field) {
+                        if ($field['type'] == 'Reference') {
+                            // Use current language only (sync not needed for reference fields in edit)
+                            $langRel = $this->post_lang;
+
+                            // Check empty array before comparison
+                            if (!isset($existingPost[$field['field_name']])) {
+                                $deletedIds = [];
+                                $addedIds = $postDataFields[$field['field_name']] ?? [];
+                            } elseif (!isset($postDataFields[$field['field_name']])) {
+                                $deletedIds = $existingPost[$field['field_name']];
+                                $addedIds = [];
+                            } else {
+                                $deletedIds = array_diff($existingPost[$field['field_name']], $postDataFields[$field['field_name']]);
+                                $addedIds = array_diff($postDataFields[$field['field_name']], $existingPost[$field['field_name']]);
+                            }
+
+                            if ($field['table_save_data_reference'] == 1) {
+                                $tableRelation = table_postrel($postType['slug']);
+                                if (!empty($deletedIds)) {
+                                    foreach ($deletedIds as $idRel) {
+                                        $this->postsModel->deleteReferenceRelationship($tableRelation, $idRel, $postType['slug'], $field['id'], $id, $langRel);
+                                    }
+                                }
+                                if (!empty($addedIds)) {
+                                    foreach ($addedIds as $idRel) {
+                                        $this->postsModel->addReferenceRelationship($tableRelation, $id, $field['post_type_reference'], $field['id'], $idRel, $langRel);
+                                    }
+                                }
+                            } else {
+                                $tableRelation = table_postrel($field['post_type_reference']);
+                                if (!empty($deletedIds)) {
+                                    foreach ($deletedIds as $idRel) {
+                                        $this->postsModel->deleteReferenceRelationship($tableRelation, $idRel, $postType['slug'], $field['id'], $id, $langRel);
+                                    }
+                                }
+                                if (!empty($addedIds)) {
+                                    foreach ($addedIds as $idRel) {
+                                        $this->postsModel->addReferenceRelationship($tableRelation, $idRel, $postType['slug'], $field['id'], $id, $langRel);
+                                    }
+                                }
+                            }
+                        } elseif (($field['type'] == 'Point')) {
+                            if (isset($postDataFields[$field['field_name']])) {
+                                $postDataFields[$field['field_name']] = _json_decode($postDataFields[$field['field_name']]);
+
+                                // Validate Point data structure
+                                if (
+                                    is_array($postDataFields[$field['field_name']]) &&
+                                    isset($postDataFields[$field['field_name']]['lat']) &&
+                                    isset($postDataFields[$field['field_name']]['lng'])
+                                ) {
+
+                                    $latitude = (float)$postDataFields[$field['field_name']]['lat'];
+                                    $longitude = (float)$postDataFields[$field['field_name']]['lng'];
+
+                                    // Validate coordinates range
+                                    // Latitude: -90 to 90, Longitude: -180 to 180
+                                    if ($latitude < -90 || $latitude > 90 || $longitude < -180 || $longitude > 180) {
+                                        // Invalid coordinates - set to NULL
+                                        $data[$field['field_name']] = null;
+                                    } else {
+                                        // Valid coordinates - use DB::raw() for ST_GeomFromText
+                                        $data[$field['field_name']] = \System\Database\DB::raw("ST_GeomFromText('POINT({$longitude} {$latitude})')");
+                                    }
+                                    $existingPost[$field['field_name']] = 'POINT(' . $longitude . ' ' . $latitude . ')';
+                                } else {
+                                    // Invalid structure - set to NULL
+                                    $data[$field['field_name']] = null;
+                                }
+                            }
+                        } else {
+                            if (isset($postDataFields[$field['field_name']])) {
+                                if ($field['type'] == 'Number') {
+                                    if ($postDataFields[$field['field_name']] === "") {
+                                        $data[$field['field_name']] = null;
+                                    } else {
+                                        if (isset($field['step']) && $field['step'] > 0) {
+                                            if ($field['step'] % 1 == 0) {
+                                                $data[$field['field_name']] = (int)$postDataFields[$field['field_name']];
+                                            } else {
+                                                $data[$field['field_name']] = (float)$postDataFields[$field['field_name']];
+                                            }
+                                        } else {
+                                            $data[$field['field_name']] = (int)$postDataFields[$field['field_name']];
+                                        }
+                                    }
+                                } else {
+                                    $data[$field['field_name']] = is_array($postDataFields[$field['field_name']]) ? json_encode($postDataFields[$field['field_name']]) : $postDataFields[$field['field_name']];
+                                }
+                            }
+
+                            $existingPost[$field['field_name']] = $postDataFields[$field['field_name']];
+
+                            // Check Unique Field Validate
+                            if ($field['unique'] && isset($postDataFields[$field['field_name']])) {
+                                $uniqueField = $this->postsModel->checkUniqueField($field['field_name'], $postDataFields[$field['field_name']], $id);
+                                if (!$uniqueField) {
+                                    $errors[$field['field_name']] = [__('Field ' . $field['label'] . ' must be unique')];
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (!empty($errors)) {
+                    $this->data('errors', $errors);
+                } else {
+                    $this->_edit($postType, $id, $data, $this->post_lang, $newtermActiveIds, $termActiveIds);
+                    redirect(admin_url('posts') . '?type=' . $postTypeSlug . '&post_lang=' . $this->post_lang);
+                }
+            };
+        }
+        foreach ($postType['fields'] as $field) {
+            if ($field['type'] == 'Point') {
+                if (preg_match('/POINT\(\s*([-0-9\.]+)\s+([-0-9\.]+)\s*\)/i', $existingPost[$field['field_name']], $m)) {
+                    $lng = (float) $m[1];
+                    $lat = (float) $m[2];
+
+                    $existingPost[$field['field_name']] = [
+                        'lat' => $lat,
+                        'lng' => $lng,
+                    ];
+                }
+            } elseif ($field['type'] == 'Image') {
+                if (isset($existingPost[$field['field_name']])) {
+                    $existingPost[$field['field_name']] = $this->_finalizeImageFields($existingPost[$field['field_name']], $field);
+                }
+            }
+        }
+        $postType = $this->_loadTermInputs($postType, $postType['terms']);
+        foreach ($postType['fields'] as $key => $field) {
+            if (isset($field['field_name']) && in_array($field['field_name'], ['status', 'created_at', 'updated_at'])) {
+                //print_r($postType['fields'][$key]);
+                unset($postType['fields'][$key]);
+            }
+        }
+        //Fix index of this array => Fix json result
+        $postType['fields'] = array_values($postType['fields']);
+        $fields = $this->_forms_layout($postType['fields']);
+        $this->data('currentLang', $this->post_lang);
+        $this->data('languages', $languagesPosttype);
+        $this->data('langHasPost', $langHasPost);
+        $this->data('posttype', $postType);
+        $this->data('post', $existingPost);
+        $this->data('fields', $fields);
+        //Render::asset('css', 'css/forms.css', ['area' => 'backend', 'location' => 'footer']);
+        // Render::asset('js', 'js/forms.js', ['area' => 'backend', 'location' => 'footer']);
+        $this->data('title', __('Edit') . ' ' . $postType['name']);
+        echo Render::html('Backend/posts_add', $this->data);
+    }
+
+    private function _edit($postType, $id, $data, $currentLang, $newtermActiveIds, $termActiveIds)
+    {
+        $tableName = posttype_name($postType['slug'], $currentLang);
+
+        // Update post data
+        if ($this->postsModel->editPost($tableName, $id, $data)) {
+            \System\Libraries\Events::run('Backend\\PostsEditEvent', $data);
+        }
+
+        // Handle term changes (added/removed)
+        $removedTermIds = array_diff($termActiveIds, $newtermActiveIds);
+        $addedTermIds = array_diff($newtermActiveIds, $termActiveIds);
+
+        // Add new terms using helper (handles sync automatically)
+        if (!empty($addedTermIds)) {
+            foreach ($addedTermIds as $termId) {
+                posts_add_term($id, $termId, $postType['slug'], $currentLang);
+            }
+        }
+
+        // Remove terms using helper (handles sync automatically)
+        if (!empty($removedTermIds)) {
+            foreach ($removedTermIds as $termId) {
+                posts_remove_term($id, $termId, $postType['slug'], $currentLang);
+            }
+        }
+    }
+
+    public function delete($id = null)
+    {
+        if ($id) {
+            $posttype_slug = S_GET('type');
+            if (empty($posttype_slug)) {
+                // 
+                redirect(admin_url());
+            }
+            $result = $this->_delete($posttype_slug, $id);
+            redirect(admin_url('posts') . '?type=' . $posttype_slug);
+        } elseif (S_POST('ids') && isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+            $ids = S_POST('ids');
+            $posttype_slug = S_POST('type');
+            if (empty($posttype_slug)) {
+                $this->error('posttype_not_found');
+            }
+
+            // Parse JSON if it's a string
+            if (is_string($ids)) {
+                $ids = json_decode($ids, true);
+            }
+
+            if (!is_array($ids)) {
+                $this->error('Invalid ids format');
+            }
+
+            $result = [];
+            foreach ($ids as $id) {
+                $result[] = $this->_delete($posttype_slug, $id);
+            }
+            $this->success($result, 'Success');
+        } else {
+            // Handle non-AJAX requests or invalid requests
+            redirect(admin_url('posts'));
+        }
+    }
+
+    private function _delete($posttype_slug, $id)
+    {
+        $currentLang = S_GET('post_lang');
+
+        // Use helper function (handles references + terms cleanup)
+        $result = posts_delete($id, $posttype_slug, $currentLang);
+
+        return $result;
+    }
+
+    public function changestatus()
+    {
+        // Check if this is an AJAX request
+        $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+            strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+
+        if (!$isAjax) {
+            redirect(admin_url('posts'));
+            return;
+        }
+
+        header('Content-Type: application/json');
+
+        $id = S_POST('id');
+        $newStatus = S_POST('status');
+        $posttype_slug = S_POST('type') ?? 'posts';
+        $post_lang = S_POST('post_lang') ?? APP_LANG_DF;
+
+        // Validate
+        $validStatuses = ['active', 'inactive', 'schedule', 'draft', 'suspended', 'deleted'];
+        if (empty($id) || empty($newStatus) || !in_array($newStatus, $validStatuses)) {
+            echo json_encode(['success' => false, 'message' => __('Invalid parameters')]);
+            return;
+        }
+
+        try {
+            $tableName = posttype_name($posttype_slug, $post_lang);
+            $postModel = new PostsModel($posttype_slug, $post_lang);
+
+            $updated = $postModel->editPost($tableName, $id, [
+                'status' => $newStatus,
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+
+            if ($updated) {
+                echo json_encode(['success' => true, 'message' => __('Status updated successfully')]);
+            } else {
+                echo json_encode(['success' => false, 'message' => __('Failed to update status')]);
+            }
+        } catch (\Exception $e) {
+            error_log("Error in changestatus: " . $e->getMessage());
+            echo json_encode(['success' => false, 'message' => __('Please update status ENUM of this table')]);
+        }
+    }
+
+    public function clone($id)
+    {
+        $postTypeSlug = S_GET('type') ?? 'posts';
+        if (!S_GET('post_lang')) {
+            redirect(admin_url('posts') . '?type=' . $postTypeSlug);
+        }
+
+        $source_lang = S_GET('oldpost_lang');
+        $target_langs = explode(',', S_GET('post_lang'));
+
+        // Use helper function (handles all complexity)
+        $result = posts_clone_language($id, $postTypeSlug, $target_langs, $source_lang);
+
+        if ($result['success']) {
+            // Redirect to edit the first cloned language
+            redirect(admin_url('posts/edit/' . $id) . '?type=' . $postTypeSlug . '&post_lang=' . $target_langs[0]);
+        } else {
+            // Error - redirect back
+            redirect(admin_url('posts') . '?type=' . $postTypeSlug);
+        }
+    }
+
+    // xoi fix missing too much
+    private function _rules_validate($fields)
+    {
+        $rules = [];
+
+        if (!empty($fields)) {
+            foreach ($fields as $field) {
+                $fieldName = $field['field_name'];
+                $isRequired = !empty($field['required']); // Check if field is required
+
+                $rules[$fieldName] = [
+                    'rules'    => [],
+                    'messages' => []
+                ];
+
+                // If required => add notEmpty rule
+                if ($isRequired) {
+                    $rules[$fieldName]['rules'][]    = Validate::notEmpty();
+                    $rules[$fieldName]['messages'][] = __('not_empty');
+                }
+
+                // Check minimum and maximum length
+                if (!empty($field['min']) || !empty($field['max'])) {
+                    $min = !empty($field['min']) ? $field['min'] : 1;
+                    $max = !empty($field['max']) ? $field['max'] : 255;
+
+                    // If not required => wrap rule with Validate::optional
+                    $lengthRule = Validate::length($min, $max);
+                    if (!$isRequired) {
+                        $lengthRule = Validate::optional($lengthRule);
+                    }
+
+                    $rules[$fieldName]['rules'][]    = $lengthRule;
+                    $rules[$fieldName]['messages'][] = __('not_min_max');
+                }
+
+                // Check Number type
+                if ($field['type'] == 'Number') {
+                    $numericRule = Validate::numericVal();
+                    if (!$isRequired) {
+                        $numericRule = Validate::optional($numericRule);
+                    }
+
+                    $rules[$fieldName]['rules'][]    = $numericRule;
+                    $rules[$fieldName]['messages'][] = "{$field['label']} must be a number.";
+                }
+
+                // Check if it's slug
+                if ($fieldName == 'slug') {
+                    $slugRule = Validate::lowercase();
+                    if (!$isRequired) {
+                        $slugRule = Validate::optional($slugRule);
+                    }
+
+                    $rules[$fieldName]['rules'][]    = $slugRule;
+                    $rules[$fieldName]['messages'][] = __('lowercase');
+                }
+
+                // Check if it's email
+                if ($field['type'] == 'Email') {
+                    $emailRule = Validate::email();
+                    if (!$isRequired) {
+                        $emailRule = Validate::optional($emailRule);
+                    }
+
+                    $rules[$fieldName]['rules'][]    = $emailRule;
+                    $rules[$fieldName]['messages'][] = __('email_valid');
+                }
+
+                // Check if it's URL
+                if ($field['type'] == 'URL') {
+                    $urlRule = Validate::url();
+                    if (!$isRequired) {
+                        $urlRule = Validate::optional($urlRule);
+                    }
+
+                    $rules[$fieldName]['rules'][]    = $urlRule;
+                    $rules[$fieldName]['messages'][] = __('url_valid');
+                }
+
+                // Check if it's date
+                if ($field['type'] == 'Date') {
+                    $dateRule = Validate::date();
+                    if (!$isRequired) {
+                        $dateRule = Validate::optional($dateRule);
+                    }
+
+                    $rules[$fieldName]['rules'][]    = $dateRule;
+                    $rules[$fieldName]['messages'][] = __('date_valid');
+                }
+            }
+        }
+
+        return $rules;
+    }
+
+
+
+    private function _slug_unique($post_slug, $postTypeSlug, $lang, $curent_id = null)
+    {
+        $tableName = posttype_name($postTypeSlug, $lang);
+        $original_slug = $post_slug;
+        $counter = 2;
+
+        while (true) {
+            // Get post with current slug
+            $existingPost = $this->postsModel->getPostBySlug($tableName, $post_slug);
+
+            // If no post matches or matching post is current_id
+            if (!$existingPost || ($curent_id && $existingPost['id'] == $curent_id)) {
+                break;
+            }
+
+            // If matches another post, add number to end of slug
+            $post_slug = $original_slug . '-' . $counter;
+            $counter++;
+        }
+
+        return $post_slug;
+    }
+
+    private function _forms_layout($fields)
+    {
+        // POST TYPE FIELDS
+        $fields = is_string($fields)
+            ? json_decode($fields, true)
+            : $fields;
+
+        $fieldsTop = [];
+        $fieldsLeft = [];
+        $fieldsRight = [];
+        $fieldsBottom = [];
+        if (!empty($fields)) {
+            foreach ($fields as $field) {
+                $field['position'] = $field['position'] ?? 'left';
+                switch ($field['position']) {
+                    case 'top':
+                        $fieldsTop[] = $field;
+                        break;
+                    case 'left':
+                        $fieldsLeft[] = $field;
+                        break;
+                    case 'right':
+                        $fieldsRight[] = $field;
+                        break;
+                    case 'bottom':
+                        $fieldsBottom[] = $field;
+                        break;
+                }
+            }
+        }
+
+        return [
+            'top' => $fieldsTop,
+            'left' => $fieldsLeft,
+            'right' => $fieldsRight,
+            'bottom' => $fieldsBottom
+        ];
+    }
+
+
+    private function _normalize_data($data, $fields)
+    {
+        if (empty($data['search_string']) && !empty($data['title'])) {
+            $data['search_string'] = keyword_slug($data['title']);
+        } elseif (!empty($data['search_string'])) {
+            $data['search_string'] = keyword_slug($data['search_string']);
+        }
+        if (empty($data['slug']) && !empty($data['title'])) {
+            $data['slug'] = url_slug($data['title']);
+        } elseif (!empty($data['slug'])) {
+            $data['slug'] = url_slug($data['slug']);
+        }
+        if (empty($data['status'])) {
+            $data['status'] = 'active';
+        }
+        if (empty($data['created_at'])) {
+            $data['created_at'] = date('Y-m-d H:i:s');
+        }
+        if (empty($data['updated_at'])) {
+            $data['updated_at'] = date('Y-m-d H:i:s');
+        }
+
+        // Xử lý các field đặc biệt
+        foreach ($fields as $field) {
+            $name = $field['field_name'];
+            $type = $field['type'];
+            $default = isset($field['default_value']) ? $field['default_value'] : null;
+            $isRequired = !empty($field['required']);
+            // Boolean/Checkbox
+            if (in_array($type, ['Checkbox', 'Boolean'])) {
+                if (!isset($data[$name]) || $data[$name] === '') {
+                    $data[$name] = $default !== null ? $default : 0;
+                }
+            }
+
+            if (in_array($type, ['Boolean'])) {
+                $data[$name] = $data[$name] === 1 || $data[$name] === '1'  || $data[$name] === true  || $data[$name] === 'true' || $data[$name] === 'on' || $data[$name] === 'yes' ? 1 : 0;
+            }
+            // Select/Radio/Ratio
+            if (in_array($type, ['Select', 'Radio', 'Ratio'])) {
+                if (!isset($data[$name]) || $data[$name] === '') {
+                    $data[$name] = $default !== null ? $default : '';
+                }
+            }
+            // Date
+            if ($type == 'Date' && !empty($data[$name])) {
+                $data[$name] = date('Y-m-d H:i:s', strtotime($data[$name]));
+            }
+            // Required
+            if ($isRequired && (!isset($data[$name]) || $data[$name] === '')) {
+                $data[$name] = $default !== null ? $default : (in_array($type, ['Checkbox', 'Boolean']) ? 0 : '');
+            }
+
+            // nếu là số thì là int 
+            if ($type == 'Number') {
+                // Nếu không có giá trị, gán mặc định (ưu tiên default_value, nếu không có thì 0)
+                if (!isset($data[$name]) || $data[$name] === '' || $data[$name] === null) {
+                    $data[$name] = ($default !== null && $default !== '') ? (int)$default : 0;
+                } else {
+                    // deteach các dấu , . chỉ khi là string/number
+                    $value = $data[$name];
+                    if (!is_string($value)) {
+                        // Cho phép number/bool -> string
+                        $value = (string)$value;
+                    }
+                    $value = str_replace(',', '', $value);
+                    $value = str_replace('.', '', $value);
+                    // Nếu sau khi làm sạch mà rỗng -> 0
+                    $data[$name] = ($value === '' ? 0 : (int)$value);
+                }
+            }
+
+            // user cho mặc định hoặc = 1
+            if ($type == 'User') {
+                $data[$name] = $data[$name] ?: 1;
+            }
+
+            // date cho mặc định hoặc = now
+            if ($type == 'Date') {
+                $data[$name] = $data[$name] ?: date('Y-m-d');
+            }
+
+            // DateTime
+            if ($type == 'DateTime') {
+                $data[$name] = $data[$name] ?: date('Y-m-d H:i:s');
+            }
+        }
+        return $data;
+    }
+
+    private function _loadTermInputs($posttype, $terms)
+    {
+        foreach ($terms as $term) {
+            $field = [
+                "id" => 1,
+                "type" => "Taxonomy",
+                "label" => $term['name'],
+                "field_name" => $term['type'],
+                "required" => false,
+                "order" => 26,
+                "posttype" => $posttype['slug'],
+                "taxonomy" => $term['type'],
+                "field_type" => "checkbox",
+                "add_term" => true,
+                "position" => "right"
+            ];
+            array_unshift($posttype['fields'], $field);
+        }
+        return $posttype;
+    }
+
+    /**
+     * Bulk edit posts page
+     */
+    public function bulkedit()
+    {
+        $postIds = S_POST('post_ids') ?: '';
+        $postIds = array_filter(array_map('intval', explode(',', $postIds)));
+
+        $post_lang = S_REQUEST('post_lang') ?: APP_LANG;
+        $posttype_slug = S_REQUEST('type') ?: 'posts';
+        $posttype = $this->postsModel->getPostTypeBySlug($posttype_slug);
+
+        if (empty($posttype)) {
+            Session::flash('error', __('Post type not found'));
+            redirect(admin_url('posts'));
+            return;
+        }
+
+        $pagination = null;
+
+        // Only apply filters if no post_ids from POST (user selection)
+        if (!is_array($postIds) || empty($postIds)) {
+            // Get filters from GET parameters
+            $search = S_GET('q') ?: '';
+            $limit = S_GET('limit') ?: 10;
+            $status = S_GET('status') ?: '';
+            $page = S_GET('page') ?: 1;
+
+            $filters = [
+                'post_type' => $posttype_slug,
+                'lang' => $post_lang,
+                'posts_per_page' => (int)$limit,
+                'post_status' => $status ?: '',
+                'orderby' => 'id',
+                'order' => 'DESC',
+                'paged' => (int)$page
+            ];
+
+            // Add search filter if provided
+            if (!empty($search)) {
+                $filters['search'] = $search;
+            }
+
+            $posts = get_posts($filters);
+
+            if (!empty($posts['data'])) {
+                $postIds = array_column($posts['data'], 'id');
+
+                // Build pagination data
+                $pagination = [
+                    'page' => $posts['page'] ?? 1,
+                    'is_next' => $posts['is_next'] ?? 0,
+                    'total' => $posts['total'] ?? count($postIds)
+                ];
+            }
+        }
+
+        $allPostType = $this->postsModel->getAllPostTypes();
+        $languages = json_decode($posttype['languages'], true);
+        $currentLang = S_REQUEST('post_lang') ?: ($languages[0] ?? APP_LANG);
+
+        // Set data using $this->data() like other methods
+        $this->data('posttype', $posttype);
+        $this->data('allPostType', $allPostType);
+        $this->data('languages', $languages);
+        $this->data('currentLang', $currentLang);
+        $this->data('posts', $postIds);
+        $this->data('pagination', $pagination);
+        $this->data('title', __('Bulk Edit') . ' ' . $posttype['name']);
+
+        // Render view with echo
+        echo Render::html('Backend/posts_bulk_edit', $this->data);
+    }
+
+    /**
+     * Get bulk posts data via AJAX
+     */
+    public function getbulkposts()
+    {
+        header('Content-Type: application/json');
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            echo json_encode(['success' => false, 'message' => __('Invalid request method')]);
+            return;
+        }
+
+        $postIds = S_POST('post_ids');
+        $postIds = array_filter(array_map('intval', explode(',', $postIds)));
+        $posttype_slug = S_POST('type') ?: 'posts';
+        $post_lang = S_POST('post_lang') ?: APP_LANG;
+
+        if (!is_array($postIds) || empty($postIds)) {
+            echo json_encode(['success' => false, 'message' => __('Invalid post selection')]);
+            return;
+        }
+
+        try {
+            // Get posttype to know which terms are available
+            $posttype = $this->postsModel->getPostTypeBySlug($posttype_slug);
+            $posttype['terms'] = _json_decode($posttype['terms']);
+
+            // Use get_posts helper with terms included
+            $postsResult = get_posts([
+                'post_type' => $posttype_slug,
+                'lang' => $post_lang,
+                // 'filters' => [
+                //     ['id', $postIds, 'IN']
+                // ],
+                'post__in' => $postIds,
+                'posts_per_page' => -1,
+                'post_status' => '',
+                'orderby' => 'id',
+                'order' => 'ASC',
+                'with_terms' => true // Load terms
+            ]);
+
+            if (empty($postsResult['data'])) {
+                echo json_encode(['success' => false, 'message' => __('No posts found')]);
+                return;
+            }
+
+            // Format data for spreadsheet (similar to export)
+            $posts = [];
+            $allTermTypes = [];
+
+            // Collect all term types from posttype
+            if (!empty($posttype['terms'])) {
+                foreach ($posttype['terms'] as $term) {
+                    $allTermTypes[$term['type']] = true;
+                }
+            }
+
+            foreach ($postsResult['data'] as $post) {
+                $item = [];
+
+                // Add ALL fields from post (not just selected ones like export)
+                foreach ($post as $fieldName => $value) {
+                    // Skip terms array (will be handled separately)
+                    if ($fieldName === 'terms') {
+                        continue;
+                    }
+
+                    // Decode JSON fields for display
+                    if (is_string($value) && (substr($value, 0, 1) === '{' || substr($value, 0, 1) === '[')) {
+                        $decoded = json_decode($value, true);
+                        if (json_last_error() === JSON_ERROR_NONE) {
+                            // For arrays/objects, keep as JSON string for spreadsheet
+                            $value = is_array($decoded) ? json_encode($decoded) : $value;
+                        }
+                    }
+
+                    $item[$fieldName] = $value ?? '';
+                }
+
+                // Add terms as "terms:type" fields (comma-separated slugs)
+                if (!empty($allTermTypes)) {
+                    foreach ($allTermTypes as $termType => $v) {
+                        $item['terms:' . $termType] = '';
+                    }
+                }
+
+                if (!empty($post['terms'])) {
+                    foreach ($post['terms'] as $term) {
+                        $termType = $term['type'];
+                        if (isset($item['terms:' . $termType])) {
+                            if ($item['terms:' . $termType] !== '') {
+                                $item['terms:' . $termType] .= ',' . $term['slug'];
+                            } else {
+                                $item['terms:' . $termType] = $term['slug'];
+                            }
+                        } else {
+                            $item['terms:' . $termType] = $term['slug'];
+                        }
+                    }
+                }
+
+                $posts[] = $item;
+            }
+
+            echo json_encode([
+                'success' => true,
+                'data' => $posts,
+                'term_types' => array_keys($allTermTypes),
+                'posttype_fields' => _json_decode($posttype['fields']) // Send field definitions
+            ]);
+        } catch (\Exception $e) {
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    /**
+     * Update single field of a post via AJAX
+     */
+    public function updatebulkpost()
+    {
+        header('Content-Type: application/json');
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            echo json_encode(['success' => false, 'message' => __('Invalid request method')]);
+            return;
+        }
+
+        $postId = S_POST('post_id');
+        $field = S_POST('field');
+        $value = S_POST('value');
+        $posttype_slug = S_POST('type') ?: 'posts';
+        $post_lang = S_POST('post_lang') ?: APP_LANG;
+
+        if (empty($postId)) {
+            echo json_encode(['success' => false, 'message' => __('Post ID is required')]);
+            return;
+        }
+
+        if (empty($field)) {
+            echo json_encode(['success' => false, 'message' => __('Field name is required')]);
+            return;
+        }
+
+        try {
+            // Check if field is a term field (terms:type format)
+            $isTermField = strpos($field, 'terms:') === 0;
+
+            if ($isTermField) {
+                // Handle term update
+                $termType = substr($field, 6); // Remove "terms:" prefix
+
+                // Get current post with terms
+                $postsResult = get_posts([
+                    'post_type' => $posttype_slug,
+                    'lang' => $post_lang,
+                    'post__in' => [$postId],
+                    'posts_per_page' => 1,
+                    'post_status' => '',
+                    'with_terms' => true
+                ]);
+
+                if (empty($postsResult['data'])) {
+                    echo json_encode(['success' => false, 'message' => __('Post not found')]);
+                    return;
+                }
+
+                $post = $postsResult['data'][0];
+
+                // Get current term IDs for this type
+                $currentTermIds = [];
+                if (!empty($post['terms'])) {
+                    foreach ($post['terms'] as $term) {
+                        if ($term['type'] === $termType) {
+                            $currentTermIds[] = $term['id'];
+                        }
+                    }
+                }
+
+                // Parse new term slugs from comma-separated string
+                $newTermSlugs = array_filter(array_map('trim', explode(',', $value)));
+                $newTermIds = [];
+
+                if (!empty($newTermSlugs)) {
+                    foreach ($newTermSlugs as $termSlug) {
+                        // Get term by slug
+                        $term = $this->termsModel->getTermsSlugAndByTypeAndPostTypeAndLang(
+                            $termSlug,
+                            $posttype_slug,
+                            $termType,
+                            $post_lang
+                        );
+
+                        if ($term) {
+                            // Handle both array and single term response
+                            if (is_array($term) && isset($term[0])) {
+                                $newTermIds[] = $term[0]['id'];
+                            } elseif (is_array($term) && isset($term['id'])) {
+                                $newTermIds[] = $term['id'];
+                            }
+                        }
+                    }
+                }
+
+                // Calculate diff
+                $removedTermIds = array_diff($currentTermIds, $newTermIds);
+                $addedTermIds = array_diff($newTermIds, $currentTermIds);
+
+                // Add new terms
+                foreach ($addedTermIds as $termId) {
+                    posts_add_term($postId, $termId, $posttype_slug, $post_lang);
+                }
+
+                // Remove old terms
+                foreach ($removedTermIds as $termId) {
+                    posts_remove_term($postId, $termId, $posttype_slug, $post_lang);
+                }
+
+                echo json_encode([
+                    'success' => true,
+                    'message' => __('Terms updated successfully')
+                ]);
+            } else {
+                // Handle regular field update
+
+                // Get posttype to validate allowed fields
+                $posttype = $this->postsModel->getPostTypeBySlug($posttype_slug);
+                $posttype['fields'] = _json_decode($posttype['fields']);
+
+                // Build allowed fields list: base fields + posttype custom fields
+                // Base fields - always available in any posttype
+                $baseEditableFields = ['title', 'slug', 'status', 'created_at', 'updated_at'];
+
+                // Internal fields - should not be editable
+                $notAllowedFields = ['id', 'posttype', 'lang'];
+
+                $allowedFields = $baseEditableFields;
+
+                // Add custom fields from posttype definition
+                if (!empty($posttype['fields'])) {
+                    foreach ($posttype['fields'] as $posttypeField) {
+                        $fieldName = $posttypeField['field_name'] ?? '';
+                        if (!empty($fieldName) && !in_array($fieldName, $notAllowedFields) && !in_array($fieldName, $allowedFields)) {
+                            $allowedFields[] = $fieldName;
+                        }
+                    }
+                }
+
+                // Validate field name
+                if (!in_array($field, $allowedFields)) {
+                    echo json_encode(['success' => false, 'message' => __('Invalid field name: ') . $field]);
+                    return;
+                }
+
+                // Get current post
+                $postsResult = get_posts([
+                    'post_type' => $posttype_slug,
+                    'lang' => $post_lang,
+                    'post__in' => [$postId],
+                    'posts_per_page' => 1,
+                    'post_status' => ''
+                ]);
+
+                if (empty($postsResult['data'])) {
+                    echo json_encode(['success' => false, 'message' => __('Post not found')]);
+                    return;
+                }
+
+                $post = $postsResult['data'][0];
+
+                // Prepare update data
+                $updateData = [$field => $value];
+
+                // If updating title and slug is empty or default, auto-generate slug
+                if ($field === 'title') {
+                    $newSlug = url_slug($value);
+                    if (empty($post['slug']) || $post['slug'] === url_slug($post['title'])) {
+                        $updateData['slug'] = $newSlug;
+                    }
+                }
+
+                // Validate status
+                if ($field === 'status') {
+                    $validStatuses = ['active', 'inactive', 'schedule', 'draft', 'suspended', 'deleted'];
+                    if (!in_array($value, $validStatuses)) {
+                        echo json_encode(['success' => false, 'message' => __('Invalid status value')]);
+                        return;
+                    }
+                }
+
+                // Validate views (must be numeric)
+                if ($field === 'views') {
+                    if (!is_numeric($value)) {
+                        echo json_encode(['success' => false, 'message' => __('Views must be a number')]);
+                        return;
+                    }
+                    $updateData['views'] = (int)$value;
+                }
+
+                // Add updated_at timestamp
+                $updateData['updated_at'] = date('Y-m-d H:i:s');
+
+                // Update post using PostsModel
+                $postModel = new PostsModel($posttype_slug, $post_lang);
+                $tableName = posttype_name($posttype_slug, $post_lang);
+                $result = $postModel->editPost($tableName, $postId, $updateData);
+
+                if ($result) {
+                    $response = [
+                        'success' => true,
+                        'message' => __('Post updated successfully')
+                    ];
+
+                    // Return new slug if title was updated
+                    if ($field === 'title' && isset($updateData['slug'])) {
+                        $response['data'] = ['slug' => $updateData['slug']];
+                    }
+
+                    echo json_encode($response);
+                } else {
+                    echo json_encode(['success' => false, 'message' => __('Failed to update post')]);
+                }
+            }
+        } catch (\Exception $e) {
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    /**
+     * Create new post from bulk edit via AJAX
+     */
+    public function createbulkpost()
+    {
+        header('Content-Type: application/json');
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            echo json_encode(['success' => false, 'message' => __('Invalid request method')]);
+            return;
+        }
+
+        $field = S_POST('field');
+        $value = S_POST('value');
+        $posttype_slug = S_POST('type') ?: 'posts';
+        $post_lang = S_POST('post_lang') ?: APP_LANG;
+
+        if (empty($field)) {
+            echo json_encode(['success' => false, 'message' => __('Field name is required')]);
+            return;
+        }
+
+        try {
+            // Get posttype
+            $postModel = new PostsModel($posttype_slug, $post_lang);
+            $postType = $postModel->getPostTypeBySlug($posttype_slug);
+
+            if (empty($postType)) {
+                echo json_encode(['success' => false, 'message' => __('Post type not found')]);
+                return;
+            }
+
+            // Decode posttype data
+            $postType['fields'] = is_string($postType['fields']) ? json_decode($postType['fields'], true) : $postType['fields'];
+            $postType['terms'] = is_string($postType['terms']) ? json_decode($postType['terms'], true) : $postType['terms'];
+            $languages = is_string($postType['languages']) ? json_decode($postType['languages'], true) : [];
+
+            // Get next ID
+            $currentId = $postType['current_id'] ?? 0;
+            $newPostId = $currentId + 1;
+
+            // Default fields only: id, title, slug, status, created_at, updated_at
+            $postData = [
+                'id' => $newPostId,
+                'title' => '',
+                'slug' => '',
+                'status' => 'draft',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ];
+
+            // Check if field is a default field or custom field
+            $defaultFields = ['title', 'slug', 'status'];
+
+            if (in_array($field, $defaultFields)) {
+                // Update default field
+                $postData[$field] = $value;
+            } else {
+                // Check if it's a valid custom field from posttype
+                $isValidField = false;
+                if (!empty($postType['fields'])) {
+                    foreach ($postType['fields'] as $customField) {
+                        if (isset($customField['field_name']) && $customField['field_name'] === $field) {
+                            $isValidField = true;
+                            // Add custom field to postData
+                            $postData[$field] = $value;
+                            break;
+                        }
+                    }
+                }
+
+                if (!$isValidField && !str_starts_with($field, 'terms:')) {
+                    echo json_encode(['success' => false, 'message' => __('Invalid field: ') . $field]);
+                    return;
+                }
+            }
+
+            // Auto-generate slug if title is provided
+            if (!empty($postData['title']) && empty($postData['slug'])) {
+                $postData['slug'] = $this->_slug_unique(
+                    url_slug($postData['title']),
+                    $posttype_slug,
+                    $post_lang
+                );
+            } elseif (empty($postData['slug'])) {
+                // If no title, generate default slug
+                $postData['slug'] = $this->_slug_unique(
+                    'post-' . $newPostId,
+                    $posttype_slug,
+                    $post_lang
+                );
+            }
+
+            // Create post using _add helper
+            $result = $this->_add($postType, $postData, $languages, [], $post_lang);
+
+            if ($result) {
+                // Get the created post to return full data
+                $postsResult = get_posts([
+                    'post_type' => $posttype_slug,
+                    'lang' => $post_lang,
+                    'post__in' => [$newPostId],
+                    'posts_per_page' => 1,
+                    'post_status' => ''
+                ]);
+
+                $createdPost = !empty($postsResult['data']) ? $postsResult['data'][0] : null;
+
+                echo json_encode([
+                    'success' => true,
+                    'message' => __('Post created successfully'),
+                    'data' => $createdPost
+                ]);
+            } else {
+                echo json_encode(['success' => false, 'message' => __('Failed to create post')]);
+            }
+        } catch (\Exception $e) {
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+}

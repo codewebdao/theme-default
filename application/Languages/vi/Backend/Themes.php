@@ -1,0 +1,137 @@
+<?php
+
+return [
+    // Main tabs
+    'installed themes' => 'Themes đã cài đặt',
+    'add theme' => 'Thêm theme',
+
+    // Search and filters
+    'place search' => 'Tìm kiếm themes...',
+    'place search store' => 'Tìm kiếm trong store...',
+    'update all' => 'Cập nhật tất cả',
+    'all' => 'Tất cả',
+    'active' => 'Đang hoạt động',
+    'inactive' => 'Không hoạt động',
+    'filter' => 'Lọc',
+    'all categories' => 'Tất cả danh mục',
+
+    // Theme status and actions
+    'update' => 'Cập nhật',
+    'settings' => 'Cài đặt',
+    'details' => 'Chi tiết',
+    'delete' => 'Xóa',
+    'activate' => 'Kích hoạt',
+    'deactivate' => 'Vô hiệu hóa',
+    'install' => 'Cài đặt',
+    'buy' => 'Mua',
+
+    // Theme information
+    'version' => 'Phiên bản',
+    'downloads' => 'Lượt tải',
+    'by' => 'bởi',
+    'featured' => 'Nổi bật',
+    'premium' => 'Premium',
+    'free' => 'Miễn phí',
+    'popular' => 'Phổ biến',
+    'recommended' => 'Đề xuất',
+    'favorites' => 'Yêu thích',
+    'updates' => 'Cập nhật',
+
+    // Store section
+    'theme store' => 'Cửa hàng theme',
+    'upload theme' => 'Tải lên theme',
+    'coming soon' => 'Sắp ra mắt',
+    'featured themes' => 'Themes nổi bật',
+    'all themes' => 'Tất cả themes',
+
+    // Upload section
+    'upload theme description' => 'Tải lên file theme (.zip) hoặc cài đặt từ URL',
+    'drag drop files' => 'Kéo thả file vào đây',
+    'or click to select' => 'hoặc nhấp để chọn file',
+    'choose zip files' => 'Chọn file ZIP',
+    'remove' => 'Xóa',
+    'upload' => 'Tải lên',
+    'install from url' => 'Cài đặt từ URL',
+
+    // Security notice
+    'security notice' => 'Thông báo bảo mật',
+    'security notice description' => 'Chỉ tải lên các theme từ nguồn đáng tin cậy. Themes có thể chứa mã độc hại.',
+
+    // Installation guide
+    'installation guide' => 'Hướng dẫn cài đặt',
+    'download themes' => 'Tải theme',
+    'download themes description' => 'Tải file theme (.zip) từ nguồn đáng tin cậy',
+    'upload file' => 'Tải file lên',
+    'upload file description' => 'Sử dụng form tải lên bên trên hoặc cài đặt từ URL',
+    'activate themes' => 'Kích hoạt theme',
+    'activate themes description' => 'Sau khi cài đặt, kích hoạt theme từ danh sách themes',
+
+    // Messages
+    'loading themes' => 'Đang tải themes...',
+    'no themes found' => 'Không tìm thấy theme nào',
+    'no themes match' => 'Không có theme nào khớp với',
+    'no themes in category' => 'Không có theme nào trong danh mục này',
+    'try adjusting search' => 'Thử điều chỉnh từ khóa tìm kiếm',
+    'no themes found store' => 'Không tìm thấy theme nào trong store',
+    'try adjusting search store' => 'Thử điều chỉnh từ khóa tìm kiếm trong store',
+    'showing' => 'Hiển thị',
+    'of' => 'của',
+    'themes' => 'themes',
+    'delete confirm' => 'Bạn có chắc chắn muốn xóa theme này không? Theme sẽ bị xóa hoàn toàn khỏi hệ thống.',
+    'themes details' => 'Chi tiết theme',
+    'upload themes files' => 'Tải lên file theme',
+    'upload description' => 'Mô tả tải lên',
+    'drag drop themes files' => 'Kéo thả file theme vào đây',
+    'or click browse' => 'hoặc nhấp để duyệt',
+    'choose files' => 'Chọn file',
+    'supported formats' => 'Định dạng được hỗ trợ',
+    'selected files' => 'File đã chọn',
+    'upload all' => 'Tải lên tất cả',
+    'upload guidelines' => 'Hướng dẫn tải lên',
+    'guideline 1' => 'Hướng dẫn 1',
+    'guideline 2' => 'Hướng dẫn 2',
+    'guideline 3' => 'Hướng dẫn 3',
+    'open new tab' => 'Mở tab mới',
+    'success' => 'Thành công',
+    'error' => 'Lỗi',
+    'action failed' => 'Thao tác thất bại',
+    'error occurred' => 'Đã xảy ra lỗi',
+    'upload success' => 'Tải lên thành công',
+    'upload failed' => 'Tải lên thất bại',
+    'upload error' => 'Lỗi tải lên',
+    'themes exists' => 'Theme đã tồn tại',
+    'confirm overwrite' => 'Xác nhận ghi đè',
+    'previous' => 'Trước',
+    'next' => 'Tiếp',
+    'installed' => 'Đã cài đặt',
+    'update available' => 'Có cập nhật',
+
+    // Page titles and descriptions
+    'title themes' => 'Quản lý Themes',
+    'themes management' => 'Quản lý Themes',
+    'theme management description' => 'Quản lý và cài đặt themes cho website của bạn',
+
+    // Library Controller specific keys
+    'themes not found' => 'Không tìm thấy theme',
+    'themes already active' => 'Theme đã được kích hoạt',
+    'themes activated successfully' => 'Theme đã được kích hoạt thành công',
+    'themes not active' => 'Theme chưa được kích hoạt',
+    'themes deactivated successfully' => 'Theme đã được vô hiệu hóa thành công',
+    'themes deleted successfully' => 'Theme đã được xóa thành công',
+    'no file uploaded' => 'Không có file nào được tải lên',
+    'upload error' => 'Lỗi tải lên',
+    'only zip allowed' => 'Chỉ cho phép file ZIP',
+    'themes exists' => 'Theme đã tồn tại',
+    'failed extract zip' => 'Không thể giải nén file ZIP',
+    'themes invalid missing config' => 'Theme không hợp lệ hoặc thiếu file config',
+    'failed open zip' => 'Không thể mở file ZIP',
+    'themes upload success' => 'Theme đã được tải lên thành công',
+    'themes upload errors' => 'Lỗi tải lên',
+
+    'All types' => 'Tất cả loại',
+    'theme config not found' => 'Không tìm thấy file cấu hình theme',
+    'Are you sure you want to deactivate this theme?' => 'Bạn có chắc muốn vô hiệu hóa theme này?',
+    'Are you sure you want to activate this theme?' => 'Bạn có chắc muốn kích hoạt theme này?',
+    'themes cannot deactivate switch only' => 'Không thể tắt theme trống. Hãy kích hoạt theme khác cùng loại (WEB hoặc ADMIN) để đổi giao diện.',
+    'theme switch hint' => 'Đang dùng theme này. Kích hoạt một theme khác cùng loại (WEB/ADMIN) để chuyển — không tắt hẳn để tránh mất giao diện.',
+];

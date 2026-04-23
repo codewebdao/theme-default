@@ -1,0 +1,7 @@
+node_modules/
+.build-preview/
+.cache/
+*.log
+.DS_Store
+# Optional future: source maps emitted next to assets
+../assets/maps/

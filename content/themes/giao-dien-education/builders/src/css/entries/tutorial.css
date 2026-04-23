@@ -1,0 +1,5 @@
+/**
+ * PHP Tutorial / archive tutorial — cùng `index.css`.
+ * @page-url https://laragon.net/tutorial/
+ */
+ @import '../partials/_tailwind-standalone.css';

@@ -1,0 +1,8 @@
+User-agent: *
+
+Disallow: /admin/
+
+Allow: /*.js$
+Allow: /*.css$
+
+Sitemap: https://laragon.net/sitemap.xml

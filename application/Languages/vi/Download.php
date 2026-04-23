@@ -1,0 +1,67 @@
+<?php
+
+return [
+    'download.banner.badge'                    => 'Bản ổn định mới nhất: v6.0.0 (2026)',
+    'download.banner.title'                    => 'Tải Laragon',
+    'download.banner.subtitle_1'               => 'Cùng hàng triệu lập trình viên xây dựng ứng dụng web nhanh hơn trên Windows.',
+    'download.banner.subtitle_2'               => 'An toàn, bảo mật và luôn miễn phí.',
+
+    'download.editions.heading'                => 'Chọn phiên bản phù hợp',
+
+    'download.badge.recommended'               => 'Đề xuất',
+    'download.badge.business'                  => 'Doanh nghiệp',
+
+    'download.portable.title'                  => 'Laragon Portable',
+    'download.portable.desc'                   => 'Gói độc lập. Sao chép thư mục ra USB hoặc đám mây. Không cần cài đặt.',
+    'download.portable.btn'                    => 'Tải bản Portable',
+    'download.portable.includes'               => 'Dịch vụ bao gồm:',
+    'download.portable.includes_desktop'       => 'BẢN GỒM:',
+    'download.portable.li_1'                   => 'Cùng nội dung như bản Full',
+    'download.portable.li_2'                   => 'Không ghi registry',
+    'download.portable.li_3'                   => 'Dễ chuyển / sao lưu',
+    'download.portable.li_4'                   => 'Phù hợp học sinh / trường học',
+
+    'download.full.title'                      => 'Laragon-Install.exe',
+    'download.full.desc'                       => 'Gồm Apache 2.4, Nginx, MySQL 8/9, PHP 8.x, Node.js 22+, npm, git, yarn và Cmder.',
+    'download.full.btn'                        => 'Tải bản Full (173MB)',
+    'download.full.packages_heading'           => 'GÓI ĐI KÈM:',
+    'download.full.li_1'                       => 'Apache 2.4, Nginx, MySQL 8',
+    'download.full.li_2'                       => 'PHP 8.4, Node.js 23, npm',
+    'download.full.li_3'                       => 'git, yarn, Redis, Memcached',
+    'download.full.li_4'                       => 'HeidiSQL, Cmder, Notepad++',
+
+    'download.services.title'                  => 'Laragon Services',
+    'download.services.desc'                   => 'Phát triển và tối ưu tùy chỉnh bởi chuyên gia Laragon.',
+    'download.services.btn'                    => 'Chat với chúng tôi',
+    'download.services.includes'               => 'Dịch vụ bao gồm:',
+    'download.services.li_1'                   => 'Phát triển web tùy chỉnh',
+    'download.services.li_2'                   => 'Tối ưu hiệu năng',
+    'download.services.li_3'                   => 'Thiết kế kiến trúc máy chủ',
+    'download.services.li_4'                   => 'Hỗ trợ ưu tiên 24/7',
+
+    'download.sysreq.title'                    => 'Yêu cầu hệ thống',
+    'download.sysreq.os'                       => 'Hệ điều hành',
+    'download.sysreq.os_value'                 => 'Windows 7, 8, 10, 11',
+    'download.sysreq.arch'                     => 'Kiến trúc',
+    'download.sysreq.arch_value'               => '32-bit / 64-bit (khuyến nghị 64-bit)',
+    'download.sysreq.hardware'                 => 'Phần cứng',
+    'download.sysreq.hardware_line1'           => 'RAM tối thiểu 512MB, khuyến nghị 4GB+',
+    'download.sysreq.hardware_line2'           => '200MB dung trống (bản Full)',
+
+    'download.release.title'                   => 'Ghi chú phát hành',
+    'download.release.latest'                  => 'Mới nhất',
+    'download.release.version'                 => 'v6.0.0',
+    'download.release.date'                    => '03/01/2026',
+    'download.release.change_1'                => 'Hỗ trợ PHP 8.4',
+    'download.release.change_2'                => 'Cập nhật Node.js lên v23',
+    'download.release.change_3'                => 'Cải thiện tốc độ khởi động MySQL 8.0',
+    'download.release.change_4'                => 'Sửa lỗi tạo SSL trên Windows 11',
+
+    'download.faq.title'                       => 'Câu hỏi thường gặp khi tải xuống',
+    'download.faq.q1'                          => 'Tải xuống có an toàn không?',
+    'download.faq.a1'                          => 'Có. Tải từ trang chính thức đảm bảo không mã độc. Mỗi bản phát hành đều được quét.',
+    'download.faq.q2'                          => 'Nếu liên kết tải bị lỗi thì sao?',
+    'download.faq.a2'                          => 'Thử trình duyệt khác hoặc xem trang GitHub Releases để có mirror thay thế.',
+    'download.faq.q3'                          => 'Tôi có thể tải phiên bản cũ không?',
+    'download.faq.a3'                          => 'Có, vào mục "Releases" trên kho GitHub để tìm các phiên bản trước.',
+];

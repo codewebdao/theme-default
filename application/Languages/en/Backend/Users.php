@@ -1,0 +1,127 @@
+<?php
+return [
+    // Page titles and descriptions
+    'Users Management' => 'Users Management',
+    'Manage system users and their permissions' => 'Manage system users and their permissions',
+    'list user' => 'Users List',
+    'title_add_member' => 'Add New User',
+    'title_edit_member' => 'Edit User',
+    
+    // Form labels and fields
+    'Username' => 'Username',
+    'Full Name' => 'Full Name',
+    'Email' => 'Email',
+    'Phone' => 'Phone',
+    'Role' => 'Role',
+    'ID' => 'ID',
+    'username' => 'Username',
+    'fullname' => 'Full Name',
+    'email' => 'Email',
+    'phone' => 'Phone',
+    'role' => 'Role',
+    'password' => 'Password',
+    'password_repeat' => 'Confirm Password',
+    'change password' => 'Change Password',
+    'roles_permissions' => 'Roles & Permissions',
+    
+    // Placeholders
+    'placeholder_username' => 'Enter username',
+    'placeholder_fullname' => 'Enter full name',
+    'placeholder_email' => 'Enter email address',
+    'placeholder_phone' => 'Enter phone number',
+    'placeholder_password' => 'Enter password',
+    'placeholder_password_repeat' => 'Confirm password',
+    
+    // User roles
+    'Admin' => 'Admin',
+    'Moderator' => 'Moderator',
+    'Author' => 'Author',
+    'Member' => 'Member',
+    'All Roles' => 'All Roles',
+    
+    // Actions
+    'Add User' => 'Add User',
+    'Edit User' => 'Edit User',
+    'Delete User' => 'Delete User',
+    'Delete Selected' => 'Delete Selected',
+    'Deleting...' => 'Deleting...',
+    'back_to_list' => 'Back to List',
+    'submit_add' => 'Add User',
+    'submit_edit' => 'Update User',
+    
+    // Messages
+    'User added successfully' => 'User added successfully',
+    'User updated successfully' => 'User updated successfully',
+    'User deleted successfully' => 'User deleted successfully',
+    'Users deleted successfully' => 'Users deleted successfully',
+    'User not found' => 'User not found',
+    'Failed to add user' => 'Failed to add user',
+    'Failed to update user' => 'Failed to update user',
+    'Failed to update user status' => 'Failed to update user status',
+    'User status updated successfully' => 'User status updated successfully',
+    'No users found.' => 'No users found.',
+    'No users selected for deletion' => 'No users selected for deletion',
+    'Please select items to delete' => 'Please select items to delete',
+    'Are you sure you want to delete selected items?' => 'Are you sure you want to delete selected items?',
+    'Error deleting items' => 'Error deleting items',
+    'Network error occurred' => 'Network error occurred',
+    'Please fix the validation errors' => 'Please fix the validation errors',
+    
+    // Validation messages
+    'username_invalid' => 'Username must contain only letters, numbers and underscores',
+    'username_length' => 'Username must be between %d and %d characters',
+    'username_double' => 'Username "%s" already exists',
+    'fullname_length' => 'Full name must be between %d and %d characters',
+    'email_invalid' => 'Please enter a valid email address',
+    'email_length' => 'Email must be between %d and %d characters',
+    'email_double' => 'Email "%s" already exists',
+    'phone_invalid' => 'Please enter a valid phone number',
+    'phone_length' => 'Phone must be between %d and %d characters',
+    'password_length' => 'Password must be between %d and %d characters',
+    'password_repeat_invalid' => 'Passwords do not match',
+    'role_option' => 'Please select a valid role',
+    'permission_array_json' => 'Permissions must be a valid array',
+    'status_option' => 'Please select a valid status',
+    'active_account' => 'Account Activation',
+    
+    // Page titles and descriptions
+    'Add New User' => 'Add New User',
+    'Edit User' => 'Edit User',
+    'Create a new user account with roles and permissions' => 'Create a new user account with roles and permissions',
+    'Update user information and permissions' => 'Update user information and permissions',
+    'Basic Information' => 'Basic Information',
+    'Personal Information' => 'Personal Information',
+    'Roles Permission' => 'Roles Permission',
+    'Enter the user\'s basic information' => 'Enter the user\'s basic information',
+    
+    // Status values
+    'active' => 'Active',
+    'inactive' => 'Inactive',
+    'banned' => 'Banned',
+    
+    // JavaScript messages
+    'Switching role will reset permissions to default. Continue?' => 'Switching role will reset permissions to default. Continue?',
+    'Standard user role' => 'Standard user role',
+    'Permission access' => 'Permission access',
+    'Create new items' => 'Create new items',
+    'View and read items' => 'View and read items',
+    'Edit existing items' => 'Edit existing items',
+    'Remove items' => 'Remove items',
+    'Full management access' => 'Full management access',
+    'Publish content' => 'Publish content',
+    'Moderate content' => 'Moderate content',
+    
+    // Security & Roles section
+    'Configure user roles and permissions' => 'Configure user roles and permissions',
+    'Select Role' => 'Select Role',
+    'Choose a role to configure permissions' => 'Choose a role to configure permissions',
+    'Enable All' => 'Enable All',
+    'permissions available' => 'permissions available',
+    'Permissions' => 'Permissions',
+    'Access Level' => 'Access Level',
+    'Full Access' => 'Full Access',
+    'High Access' => 'High Access',
+    'Medium Access' => 'Medium Access',
+    'Low Access' => 'Low Access',
+    'Minimal Access' => 'Minimal Access',
+];

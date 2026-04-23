@@ -1,0 +1,877 @@
+<?php
+
+namespace App\Models;
+
+use System\Database\BaseModel;
+use System\Database\DB;
+
+/**
+ * PostsModel - Dynamic Post Type Model (NEW ARCHITECTURE)
+ * 
+ * Handles all post-related database operations using Query Builder and BaseModel methods
+ * Priority: Model methods > Query Builder > Raw SQL (never use raw SQL with user input)
+ * 
+ * @package App\Models
+ */
+class PostsModel extends BaseModel
+{
+    /** @var string Table name (set dynamically based on posttype) */
+    protected $table = '';
+
+    /** @var string Posttype table name */
+    protected $posttype_table = 'posttype';
+
+    /** @var string Primary key */
+    protected $primaryKey = 'id';
+
+    /** @var bool Enable timestamps */
+    public $timestamps = true;
+
+    /** @var array Fillable fields */
+    protected $fillable = [];
+
+    /** @var string Current language code */
+    protected $lang = APP_LANG;
+
+    /** @var string Current posttype slug */
+    protected $posttypeSlug = '';
+
+    /**
+     * Constructor - Set table dynamically based on posttype
+     * 
+     * @param string $posttype Posttype slug
+     * @param string|null $lang Language code
+     */
+    public function __construct($posttype = '', $lang = APP_LANG)
+    {
+        $this->lang = $lang;
+        $this->posttypeSlug = $posttype;
+
+        if (!empty($posttype)) {
+            $this->table = posttype_name($posttype, $lang);
+
+            if (empty($this->table)) {
+                error_log("PostsModel: Failed to get table name for posttype '{$posttype}' and lang '{$lang}'");
+            }
+        }
+
+        parent::__construct();
+    }
+
+    /**
+     * Validate that table is set before query
+     * 
+     * @throws \RuntimeException
+     */
+    protected function validateTable()
+    {
+        if (empty($this->table)) {
+            throw new \RuntimeException(
+                "PostsModel table is not set. Make sure to instantiate with a valid posttype: new PostsModel('posts', 'vi')"
+            );
+        }
+    }
+
+    // =========================================================================
+    // BASIC CRUD OPERATIONS (Using BaseModel & Query Builder)
+    // =========================================================================
+
+    /**
+     * Get post by ID from current table
+     * 
+     * @param int $id Post ID
+     * @param string|array $fields Fields to select (* or array)
+     * @return array|null
+     */
+    public function getById($id, $fields = "*")
+    {
+        $this->validateTable();
+
+        // Use static BaseModel method
+        if ($fields === '*') {
+            return static::find($id);
+        }
+
+        // With specific fields
+        if (is_string($fields)) {
+            $fieldsArray = array_map('trim', explode(',', $fields));
+        } else {
+            $fieldsArray = $fields;
+        }
+
+        return static::select(...$fieldsArray)->where('id', $id)->first();
+    }
+
+    /**
+     * Get post by slug from current table
+     * 
+     * @param string $slug Post slug
+     * @return array|null
+     */
+    public function getBySlug($slug)
+    {
+        $this->validateTable();
+        // Use static BaseModel method
+        return static::where('slug', $slug)->first();
+    }
+
+    /**
+     * Get posts with pagination
+     * 
+     * @param array $where WHERE conditions [['field', 'value'], ['field', '!=', 'value']]
+     * @param string $orderBy Order by field
+     * @param string $order Order direction (ASC/DESC)
+     * @param int $page Page number
+     * @param int $limit Items per page
+     * @return array ['data' => [], 'is_next' => bool, 'page' => int]
+     */
+    public function getPaginated($where = [], $orderBy = 'id', $order = 'DESC', $page = 1, $limit = 15)
+    {
+        $this->validateTable();
+
+        // Use static BaseModel query builder
+        $query = static::query();
+
+        // Apply WHERE conditions
+        if (!empty($where)) {
+            foreach ($where as $condition) {
+                if (count($condition) === 2) {
+                    $query->where($condition[0], $condition[1]);
+                } elseif (count($condition) === 3) {
+                    $query->where($condition[0], $condition[1], $condition[2]);
+                }
+            }
+        }
+
+        // Order by and paginate
+        return $query->orderBy($orderBy, $order)->paginate($page, $limit);
+    }
+
+    /**
+     * Insert post to current table
+     * 
+     * @param array $data Post data
+     * @return int Last insert ID
+     */
+    public function insert($data)
+    {
+        $this->validateTable();
+        // Use DB::table for insertGetId (BaseModel's create returns array)
+        return DB::table($this->table)->insertGetId($data);
+    }
+
+    /**
+     * Update post in current table
+     * 
+     * @param int $id Post ID
+     * @param array $data Post data
+     * @return int Affected rows
+     */
+    public function updatePost($id, $data)
+    {
+        $this->validateTable();
+        // Use static BaseModel update method
+        return static::where('id', $id)->update($data);
+    }
+
+    /**
+     * Delete post from current table
+     * 
+     * @param int $id Post ID
+     * @return int Affected rows
+     */
+    public function delete($id)
+    {
+        $this->validateTable();
+        // Use static BaseModel destroy method
+        return static::destroy($id);
+    }
+
+    /**
+     * Check if post exists by ID
+     * 
+     * @param int $id Post ID
+     * @return bool
+     */
+    public function existsPost($id)
+    {
+        $this->validateTable();
+        // Use static BaseModel method
+        return static::where('id', $id)->exists();
+    }
+
+    /**
+     * Check if slug is unique (excluding specific ID)
+     * 
+     * @param string $slug Slug to check
+     * @param int|null $excludeId ID to exclude from check
+     * @return bool True if unique, false if duplicate
+     */
+    public function isSlugUnique($slug, $excludeId = null)
+    {
+        $this->validateTable();
+
+        // Use static BaseModel methods
+        $query = static::where('slug', $slug);
+
+        if ($excludeId !== null) {
+            $query->where('id', '!=', $excludeId);
+        }
+
+        return !$query->exists();
+    }
+
+    /**
+     * Generate unique slug
+     * 
+     * @param string $slug Base slug
+     * @param int|null $excludeId ID to exclude from check
+     * @return string Unique slug
+     */
+    public function generateUniqueSlug($slug, $excludeId = null)
+    {
+        $this->validateTable();
+
+        $originalSlug = $slug;
+        $counter = 2;
+
+        while (!$this->isSlugUnique($slug, $excludeId)) {
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+
+        return $slug;
+    }
+
+    /**
+     * Check if field value is unique (excluding specific ID)
+     * 
+     * @param string $field Field name
+     * @param mixed $value Field value
+     * @param int|null $excludeId ID to exclude from check
+     * @return bool True if unique, false if duplicate
+     */
+    public function isFieldUnique($field, $value, $excludeId = null)
+    {
+        $this->validateTable();
+
+        // Use static BaseModel methods
+        $query = static::where($field, $value);
+
+        if ($excludeId !== null) {
+            $query->where('id', '!=', $excludeId);
+        }
+
+        return !$query->exists();
+    }
+
+    // =========================================================================
+    // SEARCH & FILTER OPERATIONS
+    // =========================================================================
+
+    /**
+     * Search posts by keyword
+     * 
+     * @param string $keyword Search keyword
+     * @param array $searchFields Fields to search in
+     * @param array $filters Additional filters
+     * @param int $page Page number
+     * @param int $limit Items per page
+     * @return array
+     */
+    public function search($keyword, $searchFields = ['title', 'search_string'], $filters = [], $page = 1, $limit = 15)
+    {
+        $this->validateTable();
+
+        // Use static BaseModel query
+        $query = static::query();
+
+        // Search in multiple fields
+        if (!empty($keyword) && !empty($searchFields)) {
+            $query->whereGroup(function ($q) use ($keyword, $searchFields) {
+                foreach ($searchFields as $field) {
+                    $q->orWhere($field, 'LIKE', '%' . $keyword . '%');
+                }
+            });
+        }
+
+        // Apply additional filters
+        foreach ($filters as $field => $value) {
+            if (is_array($value)) {
+                $query->whereIn($field, $value);
+            } else {
+                $query->where($field, $value);
+            }
+        }
+
+        return $query->orderBy('id', 'DESC')->paginate($page, $limit);
+    }
+
+    /**
+     * Count posts with filters
+     * 
+     * @param array $filters Filters
+     * @return int
+     */
+    public function counting($filters = [])
+    {
+        $this->validateTable();
+
+        // Use static BaseModel query
+        $query = static::query();
+
+        foreach ($filters as $field => $value) {
+            if (is_array($value)) {
+                $query->whereIn($field, $value);
+            } else {
+                $query->where($field, $value);
+            }
+        }
+
+        return $query->count();
+    }
+
+    // =========================================================================
+    // POSTTYPE OPERATIONS
+    // =========================================================================
+
+    /**
+     * Get posttype configuration by slug
+     * 
+     * @param string $slug Posttype slug
+     * @return array|null
+     */
+    public function getPosttypeBySlug($slug)
+    {
+        try {
+            if (empty($slug) || !is_string($slug)) {
+                return null;
+            }
+
+            return DB::table($this->posttype_table)
+                ->where('slug', $slug)
+                ->first();
+        } catch (\Exception $e) {
+            error_log("Error in getPosttypeBySlug: " . $e->getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Get all post types
+     * 
+     * @return array
+     */
+    public function getAllPosttypes()
+    {
+        try {
+            return DB::table($this->posttype_table)->get();
+        } catch (\Exception $e) {
+            error_log("Error in getAllPosttypes: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    /**
+     * Update posttype configuration
+     * 
+     * @param int $id Posttype ID
+     * @param array $data Posttype data
+     * @return int|bool Affected rows or false
+     */
+    public function updatePosttype($id, $data)
+    {
+        try {
+            if (!is_numeric($id) || empty($data)) {
+                return false;
+            }
+
+            return DB::table($this->posttype_table)
+                ->where('id', $id)
+                ->update($data);
+        } catch (\Exception $e) {
+            error_log("Error in updatePosttype: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    // =========================================================================
+    // TERMS RELATIONSHIP OPERATIONS (Using Query Builder)
+    // =========================================================================
+
+    /**
+     * Get term IDs by post ID and language
+     * 
+     * @param string $relationTable Relationship table name
+     * @param int $postId Post ID
+     * @param string $lang Language code
+     * @return array Array of term IDs
+     */
+    public function getTermIdsByPostId($relationTable, $postId, $lang)
+    {
+        try {
+            return DB::table($relationTable)
+                ->select(['rel_id'])
+                ->where('post_id', $postId)
+                ->whereGroup(function ($q) use ($lang) {
+                    $q->where('lang', $lang)->orWhere('lang', 'all');
+                })
+                ->whereNotNull('rel_id')
+                ->pluck('rel_id');
+        } catch (\Exception $e) {
+            error_log("Error in getTermIdsByPostId: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    /**
+     * Create term relationship
+     * 
+     * @param string $relationTable Relationship table name
+     * @param int $postId Post ID
+     * @param int $termId Term ID
+     * @param string $lang Language code
+     * @return int Last insert ID
+     */
+    public function createTermRelationship($relationTable, $postId, $termId, $lang)
+    {
+        return DB::table($relationTable)->insertGetId([
+            'post_id' => (int)$postId,
+            'rel_id' => (int)$termId,
+            'lang' => $lang
+        ]);
+    }
+
+    /**
+     * Delete term relationship
+     * 
+     * @param string $relationTable Relationship table name
+     * @param int $postId Post ID
+     * @param int $termId Term ID
+     * @param string|null $lang Language code (null = all languages)
+     * @return int Affected rows
+     */
+    public function deleteTermRelationship($relationTable, $postId, $termId, $lang = null)
+    {
+        $query = DB::table($relationTable)
+            ->where('post_id', $postId)
+            ->where('rel_id', $termId);
+
+        if ($lang !== null) {
+            $query->where('lang', $lang);
+        }
+
+        return $query->delete();
+    }
+
+    /**
+     * Delete all term relationships by post ID
+     * 
+     * @param string $relationTable Relationship table name
+     * @param int $postId Post ID
+     * @param string|null $lang Language code (null = all languages)
+     * @return int Affected rows
+     */
+    public function deleteAllTermRelationships($relationTable, $postId, $lang = null)
+    {
+        $query = DB::table($relationTable)
+            ->where('post_id', $postId)
+            ->whereNotNull('rel_id');
+
+        if ($lang !== null) {
+            $query->where('lang', $lang);
+        }
+
+        return $query->delete();
+    }
+
+    /**
+     * Get term IDs by post ID (without language filter)
+     * 
+     * @param string $relationTable Relationship table name
+     * @param int $postId Post ID
+     * @return array Array of term IDs
+     */
+    public function getTermIdsByPostIdAll($relationTable, $postId)
+    {
+        try {
+            return DB::table($relationTable)
+                ->select(['rel_id'])
+                ->where('post_id', $postId)
+                ->whereNotNull('rel_id')
+                ->pluck('rel_id');
+        } catch (\Exception $e) {
+            error_log("Error in getTermIdsByPostIdAll: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    /**
+     * Count posts with filters (compatibility method)
+     * 
+     * @param string $where WHERE clause
+     * @param array $params Parameters
+     * @return int
+     */
+    public function countPosts($where = '', $params = [])
+    {
+        $this->validateTable();
+
+        $query = static::query();
+
+        if (!empty($where)) {
+            $query->whereRaw($where, $params);
+        }
+
+        return $query->count();
+    }
+
+    /**
+     * Get posts list (compatibility method)
+     * 
+     * @param string $where WHERE clause
+     * @param array $params Parameters
+     * @param string $orderBy ORDER BY clause
+     * @param int|null $limit Limit
+     * @return array
+     */
+    public function getPostsList($where = '', $params = [], $orderBy = 'id DESC', $limit = null)
+    {
+        $this->validateTable();
+
+        $query = static::query();
+
+        if (!empty($where)) {
+            $query->whereRaw($where, $params);
+        }
+
+        // Parse orderBy
+        if (!empty($orderBy)) {
+            $parts = preg_split('/\s+/', trim($orderBy), 2);
+            $field = $parts[0];
+            $direction = isset($parts[1]) ? strtoupper($parts[1]) : 'ASC';
+
+            if (preg_match('/^[a-zA-Z0-9_]+$/', $field)) {
+                $query->orderBy($field, $direction);
+            }
+        }
+
+        if ($limit !== null) {
+            $query->limit($limit);
+        }
+
+        return $query->get();
+    }
+
+    // =========================================================================
+    // REFERENCE RELATIONSHIP OPERATIONS (Using Query Builder)
+    // =========================================================================
+
+    /**
+     * Get reference post IDs by post ID (for Reference fields)
+     * 
+     * @param string $relationTable Relationship table name
+     * @param int $postId Post ID
+     * @param string $posttypeSlug Referenced posttype slug
+     * @param int $fieldId Field ID
+     * @param string $lang Language code
+     * @return array Array of related post IDs
+     */
+    public function getReferenceIdsByPostId($relationTable, $postId, $posttypeSlug, $fieldId, $lang)
+    {
+        try {
+            return DB::table($relationTable)
+                ->select(['post_rel_id'])
+                ->where('post_id', $postId)
+                ->where('postype_slug', $posttypeSlug)
+                ->where('field_id', $fieldId)
+                ->whereGroup(function ($q) use ($lang) {
+                    $q->where('lang', $lang)->orWhere('lang', 'all');
+                })
+                ->pluck('post_rel_id');
+        } catch (\Exception $e) {
+            error_log("Error in getReferenceIdsByPostId: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    /**
+     * Get post IDs that reference this post (reverse lookup)
+     * 
+     * @param string $relationTable Relationship table name
+     * @param int $postRelId Related post ID (this post)
+     * @param string $posttypeSlug Posttype slug
+     * @param int $fieldId Field ID
+     * @param string $lang Language code
+     * @return array Array of post IDs
+     */
+    public function getPostIdsByReference($relationTable, $postRelId, $posttypeSlug, $fieldId, $lang)
+    {
+        try {
+            return DB::table($relationTable)
+                ->select(['post_id'])
+                ->where('post_rel_id', $postRelId)
+                ->where('postype_slug', $posttypeSlug)
+                ->where('field_id', $fieldId)
+                ->whereGroup(function ($q) use ($lang) {
+                    $q->where('lang', $lang)->orWhere('lang', 'all');
+                })
+                ->pluck('post_id');
+        } catch (\Exception $e) {
+            error_log("Error in getPostIdsByReference: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    /**
+     * Create reference relationship
+     * 
+     * @param string $relationTable Relationship table name
+     * @param int $postId Post ID
+     * @param string $posttypeSlug Referenced posttype slug
+     * @param int $fieldId Field ID
+     * @param int $postRelId Related post ID
+     * @param string $lang Language code
+     * @return int Last insert ID
+     */
+    public function createReferenceRelationship($relationTable, $postId, $posttypeSlug, $fieldId, $postRelId, $lang)
+    {
+        return DB::table($relationTable)->insertGetId([
+            'post_id' => (int)$postId,
+            'postype_slug' => $posttypeSlug,
+            'post_rel_id' => (int)$postRelId,
+            'field_id' => (int)$fieldId,
+            'lang' => $lang
+        ]);
+    }
+
+    /**
+     * Delete reference relationship
+     * 
+     * @param string $relationTable Relationship table name
+     * @param int $postId Post ID
+     * @param int $postRelId Related post ID
+     * @param string $posttypeSlug Posttype slug
+     * @param int $fieldId Field ID
+     * @param string|null $lang Language code
+     * @return int Affected rows
+     */
+    public function deleteReferenceRelationship($relationTable, $postId, $postRelId, $posttypeSlug, $fieldId, $lang = null)
+    {
+        $query = DB::table($relationTable)
+            ->where('post_id', $postId)
+            ->where('post_rel_id', $postRelId)
+            ->where('postype_slug', $posttypeSlug)
+            ->where('field_id', $fieldId);
+
+        if ($lang !== null) {
+            $query->where('lang', $lang);
+        }
+
+        return $query->delete();
+    }
+
+    /**
+     * Delete all reference relationships by post ID
+     * 
+     * @param string $relationTable Relationship table name
+     * @param int $postId Post ID
+     * @param string|null $lang Language code
+     * @return int Affected rows
+     */
+    public function deleteAllReferenceRelationships($relationTable, $postId, $lang = null)
+    {
+        $query = DB::table($relationTable)
+            ->where('post_id', $postId)
+            ->whereNotNull('post_rel_id');
+
+        if ($lang !== null) {
+            $query->where('lang', $lang);
+        }
+
+        return $query->delete();
+    }
+
+    // =========================================================================
+    // LANGUAGE OPERATIONS
+    // =========================================================================
+
+    /**
+     * Check if post exists in specific language
+     * 
+     * @param int $id Post ID
+     * @param string $lang Language code
+     * @return bool
+     */
+    public function existsInLanguage($id, $lang)
+    {
+        $tableName = posttype_name($this->posttypeSlug, $lang);
+
+        if (empty($tableName)) {
+            return false;
+        }
+
+        return DB::table($tableName)->where('id', $id)->exists();
+    }
+
+    /**
+     * Clone post to another language
+     * 
+     * @param int $id Post ID
+     * @param string $sourceLang Source language
+     * @param string $targetLang Target language
+     * @param array $overrideData Data to override
+     * @return int Last insert ID
+     */
+    public function cloneToLanguage($id, $sourceLang, $targetLang, $overrideData = [])
+    {
+        $sourceTable = posttype_name($this->posttypeSlug, $sourceLang);
+        $targetTable = posttype_name($this->posttypeSlug, $targetLang);
+
+        if (empty($sourceTable) || empty($targetTable)) {
+            return false;
+        }
+
+        // Get source post data
+        $sourcePost = DB::table($sourceTable)->where('id', $id)->first();
+
+        if (empty($sourcePost)) {
+            return false;
+        }
+
+        // Merge with override data
+        $targetData = array_merge($sourcePost, $overrideData);
+
+        // Update timestamps
+        $targetData['updated_at'] = date('Y-m-d H:i:s');
+
+        // Insert to target table
+        return DB::table($targetTable)->insertGetId($targetData);
+    }
+
+    // =========================================================================
+    // RELATIONSHIPS (for Eager Loading)
+    // =========================================================================
+
+    /**
+     * Terms relationship (BelongsToMany)
+     * 
+     * @return \System\Database\ModelRelations\BelongsToMany
+     */
+    public function terms()
+    {
+        $pivotTable = table_postrel($this->posttypeSlug);
+
+        return $this->belongsToMany(
+            'App\\Models\\TermsModel',
+            $pivotTable,
+            'post_id',
+            'rel_id',
+            'id',
+            'id_main'
+        );
+    }
+
+    /**
+     * Categories relationship
+     * 
+     * @return \System\Database\ModelRelations\BelongsToMany
+     */
+    public function categories()
+    {
+        $pivotTable = table_postrel($this->posttypeSlug);
+
+        return $this->belongsToMany(
+            'App\\Models\\TermsModel',
+            $pivotTable,
+            'post_id',
+            'rel_id',
+            'id',
+            'id_main'
+        )->where('type', 'categories');
+    }
+
+    /**
+     * Tags relationship
+     * 
+     * @return \System\Database\ModelRelations\BelongsToMany
+     */
+    public function tags()
+    {
+        $pivotTable = table_postrel($this->posttypeSlug);
+
+        return $this->belongsToMany(
+            'App\\Models\\TermsModel',
+            $pivotTable,
+            'post_id',
+            'rel_id',
+            'id',
+            'id_main'
+        )->where('type', 'tags');
+    }
+
+    /**
+     * Author relationship (BelongsTo)
+     * 
+     * @return \System\Database\ModelRelations\BelongsTo
+     */
+    public function author()
+    {
+        return $this->belongsTo(
+            'App\\Models\\UsersModel',
+            'author',
+            'id'
+        );
+    }
+
+    /**
+     * Comments relationship (HasMany)
+     * 
+     * @return \System\Database\ModelRelations\HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany(
+            '\App\\Models\\CommentsModel',
+            'post_id',
+            'id'
+        );
+    }
+
+    // =========================================================================
+    // UTILITY METHODS
+    // =========================================================================
+
+    /**
+     * Get current posttype slug
+     * 
+     * @return string
+     */
+    public function getPosttypeSlug()
+    {
+        return $this->posttypeSlug;
+    }
+
+    /**
+     * Get current language
+     * 
+     * @return string
+     */
+    public function getLang()
+    {
+        return $this->lang;
+    }
+
+    /**
+     * Set language dynamically
+     * 
+     * @param string $lang Language code
+     * @return $this
+     */
+    public function setLang($lang)
+    {
+        $this->lang = $lang;
+        $this->table = posttype_name($this->posttypeSlug, $lang);
+        return $this;
+    }
+}

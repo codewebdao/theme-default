@@ -1,0 +1,203 @@
+/**
+ * Trang 404 — màu theo token :root (--home-primary, …) từ index.css.
+ */
+.cmsfullform-404 {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  min-height: calc(100vh - 10rem);
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  .cmsfullform-404 {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+}
+
+.cmsfullform-404__bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    #f8fafc,
+    #ffffff,
+    color-mix(in srgb, var(--home-primary) 7%, white)
+  );
+  pointer-events: none;
+}
+
+.cmsfullform-404__blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(64px);
+  pointer-events: none;
+}
+
+.cmsfullform-404__blob--tr {
+  top: -8rem;
+  right: -5rem;
+  width: 28rem;
+  height: 28rem;
+  background: color-mix(in srgb, var(--home-primary) 28%, transparent);
+}
+
+.cmsfullform-404__blob--bl {
+  bottom: -6rem;
+  left: -4rem;
+  width: 22rem;
+  height: 22rem;
+  background: color-mix(in srgb, var(--home-primary-hover) 22%, transparent);
+}
+
+.cmsfullform-404__grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.cmsfullform-404__inner {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 42rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.cmsfullform-404__card {
+  border-radius: var(--home-radius-xl, 1rem);
+  border: 1px solid color-mix(in srgb, var(--home-border) 35%, transparent);
+  background: rgba(255, 255, 255, 0.7);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  box-shadow: 0 24px 80px -32px color-mix(in srgb, var(--home-primary) 22%, rgba(15, 23, 42, 0.35));
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .cmsfullform-404__card {
+    padding: 3.5rem 3rem;
+  }
+}
+
+.cmsfullform-404__kicker {
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--home-primary);
+}
+
+.cmsfullform-404__title {
+  font-size: 4.5rem;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -0.025em;
+  background: linear-gradient(
+    to bottom right,
+    var(--home-primary),
+    var(--home-primary-hover),
+    #0f172a
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@media (min-width: 768px) {
+  .cmsfullform-404__title {
+    font-size: 6rem;
+  }
+}
+
+.cmsfullform-404__lead {
+  margin-top: 1.5rem;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  color: var(--home-heading, #1e293b);
+}
+
+@media (min-width: 768px) {
+  .cmsfullform-404__lead {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+}
+
+.cmsfullform-404__desc {
+  margin-top: 0.75rem;
+  color: var(--home-body, #475569);
+  line-height: 1.625;
+  max-width: 28rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cmsfullform-404__actions {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .cmsfullform-404__actions {
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+  }
+}
+
+.cmsfullform-404__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 2rem;
+  border-radius: var(--home-radius-xl, 1rem);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.5;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, filter 0.2s, background 0.2s;
+}
+
+.cmsfullform-404__btn--primary {
+  color: var(--home-white, #fff);
+  background: linear-gradient(to right, var(--home-primary), var(--home-primary-hover));
+  box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--home-primary) 35%, transparent);
+}
+
+.cmsfullform-404__btn--primary:hover {
+  filter: brightness(1.06);
+  transform: translateY(-2px);
+  box-shadow: 0 20px 25px -5px color-mix(in srgb, var(--home-primary) 28%, transparent);
+}
+
+.cmsfullform-404__btn--ghost {
+  color: var(--home-body, #334155);
+  background: color-mix(in srgb, var(--home-surface) 85%, white);
+  border: 1px solid color-mix(in srgb, var(--home-border) 45%, transparent);
+}
+
+.cmsfullform-404__btn--ghost:hover {
+  background: var(--home-surface, rgba(226, 232, 240, 0.9));
+}
