@@ -615,6 +615,19 @@ return [
   'banner_home.button_view_community'     => 'Xem cộng đồng',
   'banner_home.button_view_support'       => 'Xem hỗ trợ',
 
+  // Banner home — blog-style hero + featured cards (theme-default partial)
+  'banner_home.hero_greeting'              => 'Xin chào, tôi là Cameron William',
+  'banner_home.hero_sub'                   => 'Blog của tôi nói về',
+  'banner_home.hero_headline'              => 'Website & Phát triển',
+  'banner_home.hero_avatar_alt'            => 'Chân dung',
+  'banner_home.featured_badge'             => 'NỔI BẬT',
+  'banner_home.card_1_title'               => 'Another Bricks in the Ad-Blocking',
+  'banner_home.card_1_meta'                => 'John Doe | 7/11/2019 | Hugo',
+  'banner_home.card_2_title'               => 'Apple\'s M1 ARM Pivot Step Int the Reality Field',
+  'banner_home.card_2_meta'                => 'John Doe | 7/11/2019 | Design Tools',
+  'banner_home.card_3_title'               => 'The power of using symbolism in design',
+  'banner_home.card_3_meta'                => 'Mark Dinn | 7/11/2019 | Hugo',
+
   // Home — Loved by developers (reviews)
   'home_loved.heading'                    => 'Được lập trình viên yêu thích',
   'home_loved.intro'                      => 'Cùng hàng nghìn developer hài lòng đã chuyển từ XAMPP/WAMP',

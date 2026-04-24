@@ -1,0 +1,9 @@
+/**
+ * Trang chỉ nạp một bundle Tailwind (không có `index.css` trước): cần preflight.
+ * Dùng cho: download, contact, blog archive, blog detail đơn lẻ, review-cms đơn lẻ, …
+ */
+@import './globals.css';
+
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';

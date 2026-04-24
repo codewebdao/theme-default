@@ -1,3 +1,3 @@
 <?php
 declare(strict_types=1);
-return ['pages'=>['id'=>3,'name'=>'Pages','slug'=>'pages','languages'=>['en','vi']],'customer'=>['id'=>4,'name'=>'Customer','slug'=>'customer','languages'=>['en','vi']],'blog'=>['id'=>5,'name'=>'Blog','slug'=>'blog','languages'=>['en','vi']],'reviews'=>['id'=>6,'name'=>'Reviews','slug'=>'reviews','languages'=>['en','vi']],'contact'=>['id'=>9,'name'=>'Contact','slug'=>'contact','languages'=>['en','vi']],'tutorial'=>['id'=>10,'name'=>'Tutorial','slug'=>'tutorial','languages'=>['en','vi']],'blogs'=>['id'=>47,'name'=>'Blogs','slug'=>'blogs','languages'=>['en','vi']]];
+return ['pages'=>['id'=>3,'name'=>'Pages','slug'=>'pages','languages'=>['en','vi']],'blogs'=>['id'=>47,'name'=>'Blogs','slug'=>'blogs','languages'=>['en','vi']]];
