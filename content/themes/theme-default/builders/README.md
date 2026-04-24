@@ -20,7 +20,7 @@
 
 CSS **thuần** (chưa qua Tailwind builders): `faq-accordion.css`, `features-scroll-reveal.css`, `see-how-yt.css`, `404-page.css`, …
 
-**Tham chiếu (read-only):** `tools/theme-assets/laragon/` — markup (`*.html`), `globals.css` / `styles.css` / `home-theme.css` dùng để **đồng bộ partial + Tailwind trong `builders/src/css/`**, rồi `npm run build`. **Không** sửa trực tiếp repo laragon trong quy trình theme; mọi thay đổi CSS chuẩn nằm dưới `builders/` (vd. `_usage-doc-globals.css` cắt từ tinh thần `globals.css` @layer base).
+**Tham chiếu (read-only):** `tools/theme-assets/theme-default/` — markup (`*.html`), `globals.css` / `styles.css` / `home-theme.css` dùng để **đồng bộ partial + Tailwind trong `builders/src/css/`**, rồi `npm run build`. **Không** sửa trực tiếp repo theme-default trong quy trình theme; mọi thay đổi CSS chuẩn nằm dưới `builders/` (vd. `_usage-doc-globals.css` cắt từ tinh thần `globals.css` @layer base).
 
 ---
 
@@ -61,7 +61,7 @@ npm run build
 Ví dụ build preview (site chạy local, URL tương đối trong `@page-url`):
 
 ```bash
-THEME_PREVIEW_BASE_URL=http://laragon.test npm run build
+THEME_PREVIEW_BASE_URL=http://theme-default.test npm run build
 ```
 
 ```bash

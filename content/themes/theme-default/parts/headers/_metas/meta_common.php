@@ -25,7 +25,7 @@ if (!function_exists('cmsfullform_meta_author_label')) {
 
 if (!defined('CMSFULLFORM_META_PRIMARY_HEX')) {
     /** Khớp :root --home-primary trong Frontend/assets/css/index.css (màu primary giao diện). */
-    define('CMSFULLFORM_META_PRIMARY_HEX', '#275cee');
+    define('CMSFULLFORM_META_PRIMARY_HEX', '#0d9488');
 }
 
 if (!function_exists('cmsfullform_meta_theme_color')) {

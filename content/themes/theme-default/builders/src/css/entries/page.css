@@ -1,0 +1,5 @@
+/**
+ * CMS page (`page.php`) — cùng `index.css`.
+ * @page-url https://theme-default.vn/pages/terms-of-service/
+ */
+ @import '../partials/_tailwind-standalone.css';

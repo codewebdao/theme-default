@@ -1,7 +1,7 @@
 </div>
 </main>
 
-<footer class="bg-gray-50 bg-white border-t border-gray-200 relative ">
+<footer class="relative border-t border-gray-200 bg-gray-50 bg-white dark:border-home-border dark:bg-home-surface">
   <div class="container mx-auto pt-12 sm:pt-24 pb-6 ">
     <!-- Main Footer Content -->
     <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-6 sm:gap-8 lg:gap-12 mb-8 sm:mb-12">
@@ -12,7 +12,7 @@
           <?php echo \System\Libraries\Render\View::include('parts/headers/logo'); ?>
         </div>
         <!-- Description: site_desc (Options) giống SEO/logo; fallback bản dịch theme -->
-        <p class="text-sm text-gray-600 leading-relaxed max-w-md font-plus">
+        <p class="max-w-md text-sm leading-relaxed text-gray-600 dark:text-home-body font-plus">
           <?php
           $footerDesc = function_exists('option')
             ? trim((string) option('site_desc', defined('APP_LANG') ? APP_LANG : ''))
@@ -26,13 +26,13 @@
       <div class="sm:col-span-2 lg:col-span-4 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-8 sm:gap-x-6 sm:gap-y-8 lg:gap-12 items-start">
         <!-- Product Column -->
         <div>
-          <h3 class="text-md font-semibold text-gray-900 mb-6 font-space"><?php echo e(__('theme_footer.col_product')); ?></h3>
+          <h3 class="text-md font-semibold text-gray-900 mb-6 font-space dark:text-home-heading"><?php echo e(__('theme_footer.col_product')); ?></h3>
           <ul class="space-y-4">
             <li><a href="<?php echo e(base_url('download')); ?>"
                 class="text-sm text-gray-600 hover:text-home-primary transition-colors font-plus"><?php echo e(__('Download')); ?></a></li>
             <li><a href="<?php echo e(base_url('features')); ?>"
                 class="text-sm text-gray-600 hover:text-home-primary transition-colors font-plus"><?php echo e(__('Features')); ?></a></li>
-            <li><a href="<?php echo e(base_url('laragon-pro')); ?>" class="text-sm text-gray-600 hover:text-home-primary transition-colors font-plus"><?php echo e(__('theme_footer.laragon_pro')); ?></a></li>
+            <li><a href="<?php echo e(base_url('theme-default-pro')); ?>" class="text-sm text-gray-600 hover:text-home-primary transition-colors font-plus"><?php echo e(__('theme_footer.theme-default_pro')); ?></a></li>
             <li><a href="<?php echo e(base_url('updates')); ?>"
                 class="text-sm text-gray-600 hover:text-home-primary transition-colors font-plus"><?php echo e(__('theme_footer.updates')); ?></a></li>
           </ul>

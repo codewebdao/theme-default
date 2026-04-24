@@ -1,0 +1,5 @@
+/**
+ * Trang Download — bundle độc lập (chỉ `download.css` + header/footer).
+ * @page-url https://theme-default.vn/download/
+ */
+ @import '../partials/_tailwind-standalone.css';

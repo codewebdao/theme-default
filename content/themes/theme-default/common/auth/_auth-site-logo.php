@@ -34,7 +34,7 @@ if (!function_exists('cmsfullform_auth_site_logo_url')) {
             }
         }
         if (function_exists('theme_assets')) {
-            return theme_assets('images/logo/logo-icon.webp');
+            return theme_assets('images/logo/blog-logo.svg');
         }
 
         return '';

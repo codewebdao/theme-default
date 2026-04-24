@@ -469,7 +469,7 @@ if (function_exists('add_filter')) {
         $siteLogo = option('site_logo', $lang);
         $logoUrl = $siteLogo ? _img_url($siteLogo, 'original') : '';
         if (!$logoUrl && function_exists('theme_assets')) {
-            $logoUrl = theme_assets('images/logo/logo-icon.webp');
+            $logoUrl = theme_assets('images/logo/blog-logo.svg');
         }
         $locale = (defined('APP_LANG') && APP_LANG === 'en') ? 'en_US' : 'vi_VN';
 

@@ -7,6 +7,9 @@ use System\Libraries\Render\View;
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+    (function(){try{var K='theme-color-pref';var v=localStorage.getItem(K);var sys=window.matchMedia('(prefers-color-scheme:dark)').matches;var dark=v==='dark'||(v!=='light'&&!!sys);document.documentElement.classList.toggle('dark',dark);}catch(e){}})();
+    </script>
     <?php
     $layout = $layout ?? '';
     // view_head() renders Head (title, meta, OG, Schema::get()), assets_head()
@@ -15,15 +18,16 @@ use System\Libraries\Render\View;
   </head>
 
 <body>
+  <script src="<?php echo (defined('APP_THEME_NAME') && function_exists('theme_assets')) ? theme_assets('js/theme-color-scheme.js') : ('/content/themes/' . basename(__DIR__) . '/assets/js/theme-color-scheme.js'); ?>"></script>
   <script src="<?php echo (defined('APP_THEME_NAME') && function_exists('theme_assets')) ? theme_assets('js/header.js') : (function_exists('public_url') ? public_url('content/themes/' . basename(__DIR__) . '/assets/js/header.js') : ('/content/themes/' . basename(__DIR__) . '/assets/js/header.js')); ?>"></script>
-  <!-- Header -->
-  <header class="bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm sticky top-0 z-50" x-data="headerComponent()">
+  <!-- Header: blog / tạp chí — màu & viền theo token theme -->
+  <header class="sticky top-0 z-50 border-b border-home-border/35 bg-home-white/95 shadow-sm backdrop-blur-md" x-data="headerComponent()" role="banner">
     <script src="<?php echo defined('APP_THEME_NAME') && function_exists('theme_assets') ? theme_assets('js/swiper-bundle.min.js') : '/assets/js/swiper-bundle.min.js'; ?>"></script>
     <!-- Main Header -->
     <div class="container">
       <div class="flex items-center justify-between h-20">
         <!-- Mobile Hamburger: luôn dùng JS thuần để mở menu (z-10 tránh bị logo đè) -->
-        <button type="button" id="mobileMenuToggle" class="lg:hidden relative z-10 min-w-[44px] min-h-[44px] p-2 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-home-md transition-colors cursor-pointer touch-manipulation" aria-label="Open menu">
+        <button type="button" id="mobileMenuToggle" class="lg:hidden relative z-10 min-w-[44px] min-h-[44px] p-2 text-[color:var(--home-body)] hover:bg-[color:var(--home-surface-light)] hover:text-[color:var(--home-heading)] rounded-home-md transition-colors cursor-pointer touch-manipulation" aria-label="Mở menu điều hướng">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="pointer-events-none">
             <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
@@ -39,9 +43,18 @@ use System\Libraries\Render\View;
         $current_lang = defined('APP_LANG') ? APP_LANG : 'en';
         $langs_mobi = ['en' => 'EN', 'vi' => 'VN'];
         $current_lang_mobi = $langs_mobi[$current_lang] ?? 'EN';
+        if (class_exists(\App\Libraries\Fastlang::class)) {
+          \App\Libraries\Fastlang::load('CMS', defined('APP_LANG') ? APP_LANG : 'en');
+        }
         ?>
-        <div class="lg:hidden relative lang-dropdown-js">
-          <button type="button" aria-haspopup="true" aria-expanded="false" aria-controls="lang-menu-mobi" class="lang-dropdown-btn flex items-center gap-2 px-3 h-[36px] bg-gray-100 rounded-home-md hover:bg-gray-200 transition">
+        <div class="flex items-center gap-2 lg:hidden">
+        <a href="<?php echo e(base_url('search')); ?>" class="flex h-[36px] w-[36px] shrink-0 items-center justify-center rounded-home-md bg-gray-100 text-home-body transition hover:bg-gray-200 dark:border dark:border-zinc-600 dark:bg-zinc-800 dark:hover:bg-zinc-700" aria-label="<?php echo e(__('theme.aria.search')); ?>">
+          <svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+        <div class="relative lang-dropdown-js">
+          <button type="button" aria-haspopup="true" aria-expanded="false" aria-controls="lang-menu-mobi" class="lang-dropdown-btn flex items-center gap-2 px-3 h-[36px] bg-gray-100 rounded-home-md hover:bg-gray-200 transition dark:border dark:border-zinc-600 dark:bg-zinc-800 dark:hover:bg-zinc-700">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <path d="M8.4538 7.43751H5.54641C5.57884 8.96143 5.77913 10.3179 6.07833 11.3076C6.24293 11.852 6.43017 12.2607 6.61808 12.5236C6.81215 12.7952 6.94672 12.8328 6.99885 12.8333L7.00004 12.8333C7.05124 12.8333 7.18648 12.7973 7.38212 12.5236C7.57004 12.2607 7.75728 11.852 7.92188 11.3075C8.22107 10.3179 8.42137 8.96143 8.4538 7.43751Z" fill="var(--home-body)" />
               <path d="M5.54641 6.56251H8.4538C8.42137 5.03859 8.22107 3.68211 7.92188 2.69246C7.75728 2.14801 7.57004 1.73927 7.38212 1.47637C7.18648 1.20267 7.05131 1.16667 7.0001 1.16667C6.9489 1.16667 6.81372 1.20267 6.61808 1.47638C6.43017 1.73928 6.24293 2.14801 6.07833 2.69247C5.77913 3.68211 5.57884 5.03859 5.54641 6.56251Z" fill="var(--home-body)" />
@@ -50,14 +63,18 @@ use System\Libraries\Render\View;
               <path d="M4.67122 6.56251L1.18286 6.56251C1.37386 3.98658 3.23767 1.87624 5.69186 1.31393C5.51904 1.63335 5.36888 2.0155 5.24077 2.43925C4.91205 3.52654 4.70368 4.9719 4.67122 6.56251Z" fill="var(--home-body)" />
               <path d="M4.67122 7.43751L1.18286 7.43751C1.37386 10.0134 3.23767 12.1238 5.69186 12.6861C5.51904 12.3667 5.36887 11.9845 5.24077 11.5608C4.91205 10.4735 4.70368 9.02812 4.67122 7.43751Z" fill="var(--home-body)" />
             </svg>
-            <span class="text-xs font-medium text-gray-700 font-plus"><?php echo e($current_lang_mobi); ?></span>
+            <span class="text-xs font-medium text-gray-700 font-plus dark:text-zinc-200"><?php echo e($current_lang_mobi); ?></span>
             <svg width="10" height="6" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1L5 5L9 1" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
           </button>
-          <div id="lang-menu-mobi" role="menu" class="lang-dropdown-panel absolute right-0 mt-2 w-full bg-white border border-gray-200 rounded-home-md shadow-md overflow-hidden z-50 hidden">
+          <div id="lang-menu-mobi" role="menu" class="lang-dropdown-panel absolute right-0 mt-2 w-full bg-white border border-gray-200 rounded-home-md shadow-md overflow-hidden z-50 hidden dark:border-zinc-600 dark:bg-zinc-900">
             <?php foreach ($langs_mobi as $code => $label): ?>
-              <a href="<?php echo e(function_exists('lang_url') ? lang_url($code) : (base_url() . '?lang=' . $code)); ?>" role="menuitem" class="block w-full text-left px-4 py-2 text-xs text-gray-700 hover:bg-gray-100 transition-colors font-plus"><?php echo e($label); ?></a>
+              <a href="<?php echo e(function_exists('lang_url') ? lang_url($code) : (base_url() . '?lang=' . $code)); ?>" role="menuitem" class="block w-full text-left px-4 py-2 text-xs text-gray-700 hover:bg-gray-100 transition-colors font-plus dark:text-zinc-200 dark:hover:bg-zinc-800"><?php echo e($label); ?></a>
             <?php endforeach; ?>
           </div>
+        </div>
+        <div class="flex h-[36px] shrink-0 items-center">
+          <?php echo View::include('parts/headers/theme-toggle', ['theme_toggle_id' => 'theme-toggle-mobi']); ?>
+        </div>
         </div>
 
         <!-- Desktop Menu -->
@@ -92,7 +109,7 @@ use System\Libraries\Render\View;
   })();
   </script>
   <main>
-    <div class="text-slate-800 min-h-screen bg-background">
+    <div class="site-root min-h-screen bg-background text-slate-800 dark:bg-home-surface dark:text-gray-100">
       <style>
         @keyframes shake {
 

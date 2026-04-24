@@ -1,6 +1,7 @@
 /**
- * CMS home — index.css entry.
- * JIT theo toàn bộ tailwind.config.cjs (PHP theme + file HTML trong builders/src).
- * Tránh marker page-url + URL ở đầu file: THEME_CSS_PREVIEW=1 sẽ fetch HTML đó và chỉ quét một file.
+ * CMS home — index.css.
+ * Không dùng marker page-url + URL ở đầu file: lệnh `npm run build` bật THEME_CSS_PREVIEW
+ * sẽ fetch HTML đó và Tailwind chỉ quét một file → mất class của theme (vd. parts/home/banner-home.php).
+ * Dùng `npm run build:wide` hoặc bỏ preview khi build entry này.
  */
-@import '../partials/tailwind.css';
+@import '../partials/_tailwind-standalone.css';

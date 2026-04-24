@@ -243,3 +243,18 @@
 [2026-04-23 16:04:03] ERROR: View rendering error for '404': Template not found: 404 (namespace: web)
 [2026-04-23 16:04:08] ERROR: View rendering error for '404': Template not found: 404 (namespace: web)
 [2026-04-23 16:04:08] ERROR: View rendering error for '404': Template not found: 404 (namespace: web)
+[2026-04-24 13:12:29] ERROR: View rendering error for 'index': Template not found: index (namespace: web)
+[2026-04-24 13:12:31] ERROR: View rendering error for 'index': Template not found: index (namespace: web)
+[2026-04-24 13:12:32] ERROR: View rendering error for 'index': Template not found: index (namespace: web)
+[2026-04-24 13:12:33] ERROR: View rendering error for 'index': Template not found: index (namespace: web)
+[2026-04-24 13:12:33] ERROR: View rendering error for 'index': Template not found: index (namespace: web)
+[2026-04-24 13:46:42] ERROR: View::include 'parts/documentation/documentation-tabs': Template 'parts/documentation/documentation-tabs' not found (namespace: web).
+[2026-04-24 13:46:43] ERROR: View::include 'parts/documentation/documentation-tabs': Template 'parts/documentation/documentation-tabs' not found (namespace: web).
+[2026-04-24 13:51:14] ERROR: View::include 'parts/documentation/documentation-tabs': Template 'parts/documentation/documentation-tabs' not found (namespace: web).
+[2026-04-24 13:51:21] ERROR: View::include 'parts/documentation/documentation-tabs': Template 'parts/documentation/documentation-tabs' not found (namespace: web).
+[2026-04-24 13:51:23] ERROR: View::include 'parts/documentation/documentation-tabs': Template 'parts/documentation/documentation-tabs' not found (namespace: web).
+[2026-04-24 13:51:24] ERROR: View::include 'parts/documentation/documentation-tabs': Template 'parts/documentation/documentation-tabs' not found (namespace: web).
+[2026-04-24 14:03:24] ERROR: View::include 'parts/documentation/documentation-tabs': Template 'parts/documentation/documentation-tabs' not found (namespace: web).
+[2026-04-24 14:03:26] ERROR: View::include 'parts/documentation/documentation-tabs': Template 'parts/documentation/documentation-tabs' not found (namespace: web).
+[2026-04-24 14:03:26] ERROR: View::include 'parts/documentation/documentation-tabs': Template 'parts/documentation/documentation-tabs' not found (namespace: web).
+[2026-04-24 14:53:20] ERROR: View::include 'parts/documentation/documentation-tabs': Template 'parts/documentation/documentation-tabs' not found (namespace: web).

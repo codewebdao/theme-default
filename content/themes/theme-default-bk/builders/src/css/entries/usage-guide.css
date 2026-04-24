@@ -1,5 +1,0 @@
-/**
- * Trang Usage Guide — cùng stack Tailwind với `index.css`.
- * (Tùy chọn) Ghim JIT theo HTML preview: marker page-url + URL tuyệt đối trong vài dòng đầu — xem build-page-css.cjs.
- */
-@import '../partials/tailwind.css';

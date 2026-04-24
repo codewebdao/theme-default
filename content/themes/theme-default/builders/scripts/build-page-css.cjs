@@ -51,7 +51,7 @@ function resolvePreviewUrl(spec) {
     const base = (process.env.THEME_PREVIEW_BASE_URL || '').replace(/\/+$/, '');
     if (!base) {
         throw new Error(
-            `URL preview tương đối "${spec}" cần biến môi trường THEME_PREVIEW_BASE_URL (vd. http://laragon.test)`,
+            `URL preview tương đối "${spec}" cần biến môi trường THEME_PREVIEW_BASE_URL (vd. http://theme-default.test)`,
         );
     }
     const pathPart = spec.startsWith('/') ? spec : `/${spec}`;

@@ -1,0 +1,222 @@
+/**
+ * Archive blog — bundle độc lập.
+ * @page-url https://theme-default.vn/blog/
+ */
+ @import '../partials/_tailwind-standalone.css';
+
+
+/* Featured + cards: sharp responsive srcset; round avatars (_imglazy outputs <picture>) */
+.blog-featured-row {
+    gap: 0;
+  }
+  @media (min-width: 1024px) {
+    .blog-featured-row {
+      gap: 1rem;
+    }
+    /* Hai cột từ lg: bo trái cột ảnh giống xl (override rounded-t-xl khi flex-row) */
+    .blog-featured-row .blog-featured-media {
+      border-top-left-radius: 0.75rem;
+      border-bottom-left-radius: 0.75rem;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    .blog-featured-row .blog-featured-content {
+      padding-bottom: 1.5rem;
+    }
+  }
+  @media (min-width: 1440px) {
+    .blog-featured-row {
+      gap: 1.75rem;
+    }
+  }
+  
+  .blog-featured-media {
+    min-width: 0;
+  }
+  .blog-featured-media picture {
+    display: block;
+    width: 100%;
+    line-height: 0;
+  }
+  /* <lg: ảnh full chiều ngang card (bleed qua padding hàng), khối 16/9 — bỏ max-height 14rem tránh cắt “nhỏ” */
+  @media (max-width: 1023px) {
+    .blog-featured-row .blog-featured-media {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      width: calc(100% + 2rem);
+      max-width: none;
+      margin-left: -1rem;
+      margin-right: -1rem;
+      border-radius: 0.75rem 0.75rem 0 0;
+    }
+    @media (min-width: 640px) {
+      .blog-featured-row .blog-featured-media {
+        width: calc(100% + 3rem);
+        margin-left: -1.5rem;
+        margin-right: -1.5rem;
+      }
+    }
+    .blog-featured-row .blog-featured-media picture {
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+    .blog-featured-row .blog-featured-media img.blog-featured-media-img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      max-height: none;
+      object-fit: cover;
+      object-position: center;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+  }
+  .blog-featured-media img.blog-featured-media-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    object-position: center;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  @media (min-width: 1024px) {
+    /* Cột ảnh có width cố định (picture absolute không tạo intrinsic width); stretch cao = cột chữ */
+    .blog-featured-row .blog-featured-media {
+      flex: 0 0 min(100%, 410px);
+      width: min(100%, 410px);
+      max-width: 410px;
+      align-self: stretch;
+      min-height: 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .blog-featured-row .blog-featured-media picture {
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      line-height: 0;
+    }
+    .blog-featured-row .blog-featured-media img.blog-featured-media-img {
+      width: 100%;
+      height: 100%;
+      max-height: none;
+      min-height: 0;
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+  @media (min-width: 1440px) {
+    .blog-featured-row .blog-featured-media {
+      flex: 0 0 min(100%, 580px);
+      width: min(100%, 580px);
+      max-width: 580px;
+    }
+  
+    .blog-featured-row .blog-featured-media img.blog-featured-media-img {
+      max-width: none;
+    }
+  
+    .blog-featured-content {
+      padding-left: 0;
+    }
+  }
+  
+  .blog-author-avatar {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 9999px;
+    overflow: hidden;
+    background-color: #d1d5db;
+  }
+  .blog-author-avatar picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    line-height: 0;
+  }
+  .blog-author-avatar img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 9999px;
+  }
+  
+  /* Thẻ lưới archive: cùng layout trang chủ — picture/_imglazy lấp khung 16/10 */
+  .blog-grid-card-media picture {
+    display: block;
+    height: 100%;
+    width: 100%;
+    line-height: 0;
+  }
+  .blog-grid-card-media picture img {
+    display: block;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  /* Listing hero: flex con là <picture> hoặc <img> — width phải gắn wrapper, img bên trong 100% */
+  .blog-hero-bg-deco > picture,
+  .blog-hero-bg-deco > img.blog-hero-bg-deco__left,
+  .blog-hero-bg-deco > img.blog-hero-bg-deco__right {
+    display: block;
+    flex-shrink: 0;
+    line-height: 0;
+  }
+  /* Mobile: to rõ — vw lớn, hơi tràn hai bên (section overflow-hidden) */
+  @media (max-width: 639px) {
+    .blog-hero-bg-deco > picture:first-of-type,
+    .blog-hero-bg-deco > img.blog-hero-bg-deco__left {
+      width: 58vw;
+      max-width: none;
+    }
+    .blog-hero-bg-deco > picture:last-of-type,
+    .blog-hero-bg-deco > img.blog-hero-bg-deco__right {
+      width: 52vw;
+      max-width: none;
+    }
+  }
+  .blog-hero-bg-deco > picture img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .blog-hero-bg-deco .blog-hero-bg-deco__left {
+    object-fit: cover;
+    object-position: left center;
+  }
+  .blog-hero-bg-deco .blog-hero-bg-deco__right {
+    object-fit: cover;
+    object-position: right center;
+  }
+  @media (min-width: 640px) {
+    .blog-hero-bg-deco > picture:first-of-type,
+    .blog-hero-bg-deco > img.blog-hero-bg-deco__left {
+      width: min(1120px, 54vw);
+      max-width: 51%;
+    }
+    .blog-hero-bg-deco > picture:last-of-type,
+    .blog-hero-bg-deco > img.blog-hero-bg-deco__right {
+      width: min(920px, 48vw);
+      max-width: 47%;
+    }
+  }
+  
+  

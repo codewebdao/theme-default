@@ -3,6 +3,7 @@ if (!function_exists('__')) {
     load_helpers(['languages']);
 }
 \App\Libraries\Fastlang::load('Blog', APP_LANG);
+\App\Libraries\Fastlang::load('Home', APP_LANG);
 require_once __DIR__ . '/_blog_category_badge.php';
 require_once __DIR__ . '/_blog_read_time.php';
 $blog_category_default_style = blog_category_badge_default();
@@ -682,7 +683,7 @@ foreach ($blog_nav_list as $nav) {
                 <?php endif; ?>
 
                 <!-- Articles Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  gap-4">
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-8" role="list">
                     <?php foreach ($blog_rest as $item): ?>
                         <?php echo \System\Libraries\Render\View::include('parts/blog/_blog_article_card', [
                             'item' => $item,
@@ -712,7 +713,7 @@ foreach ($blog_nav_list as $nav) {
                 $panelPosts = $blog_posts_by_tab[$panelKey] ?? [];
             ?>
                 <div data-blog-content="<?php echo e($panelKey); ?>" class="blog-tab-panel" hidden>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-8" role="list">
                         <?php foreach ($panelPosts as $item): ?>
                             <?php echo \System\Libraries\Render\View::include('parts/blog/_blog_article_card', [
                                 'item' => $item,

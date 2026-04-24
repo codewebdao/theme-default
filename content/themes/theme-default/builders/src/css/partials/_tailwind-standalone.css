@@ -1,0 +1,20 @@
+/**
+ * Trang chỉ nạp một bundle Tailwind (không có `index.css` trước): cần preflight.
+ * Dùng cho: download, contact, blog archive, blog detail đơn lẻ, review-cms đơn lẻ, …
+ */
+@import './_home-tokens.css';
+@import './_usage-doc-globals.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+ * .container — mobile + iPad (dưới breakpoint lg của theme = 1240px): full width.
+ * Ghi đè max-width 640px / 768px của plugin; từ 1240px+ không đụng → giữ 1240 / 1280 / 1536.
+ */
+@media (min-width: 640px) and (max-width: 1239.98px) {
+    .container {
+        max-width: 100%;
+    }
+}

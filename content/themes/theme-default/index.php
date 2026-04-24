@@ -80,17 +80,7 @@ view_header(['layout' => $layout ?? 'index']);
 
 <?php
 echo View::include('parts/home/banner-home');
-// echo View::include('parts/home/performance');
-// echo View::include('parts/home/features');
-// echo View::include('parts/home/supported');
-// echo View::include('parts/home/loved-by-developers', ['reviews' => $reviewsData]);
-// echo View::include('parts/home/get-started');
-// echo View::include('parts/home/see-how-works');
-// echo View::include('parts/home/tutorials', ['tutorials' => $tutorialsData, 'categories' => $tutorialCategoriesData]);
-// echo View::include('parts/home/laragon-academy');
-// echo View::include('parts/home/frequently-asked-questions');
-// echo View::include('parts/home/choose-your-edition');
-
+echo View::include('parts/home/section-home-featured-blog');
 ?>
 
 <?php view_footer(); ?>

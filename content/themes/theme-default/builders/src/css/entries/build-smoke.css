@@ -1,0 +1,15 @@
+/**
+ * Starter entry → built artifact: ../assets/css/build-smoke.css
+ * @see builders/README.md (registry)
+ */
+@import '../partials/_smoke.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .tw-build-smoke-marker {
+        @apply sr-only;
+    }
+}

@@ -1,6 +1,0 @@
-/**
- * CMS home — index.css entry.
- * JIT theo toàn bộ tailwind.config.cjs (PHP theme + file HTML trong builders/src).
- * Tránh marker page-url + URL ở đầu file: THEME_CSS_PREVIEW=1 sẽ fetch HTML đó và chỉ quét một file.
- */
-@import '../partials/tailwind.css';

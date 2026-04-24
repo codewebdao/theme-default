@@ -100,7 +100,8 @@ return [
 
       // header
   // Laragon theme — nav / mobile drawer / footer  
-    'theme_nav.features'                     => 'Tính năng',  
+    'theme_nav.home'                         => 'Trang chủ',
+    'theme_nav.features'                     => 'Tính năng',
     'theme_nav.usage_guide'                  => 'Tài liệu',
     'theme_nav.php_tutorial'                 => 'Học PHP',
     'theme_nav.review_cms'                   => 'Đánh giá CMS',
@@ -111,6 +112,8 @@ return [
     'php_tutorial.coming_soon'          => ' Sắp ra mắt.',
     'php_tutorial.coming_soon_detail'          => 'Nội dung bài học này sẽ được cập nhật trong CMS (trường content).',
     'theme.search_placeholder'               => 'Tìm kiếm…',
+    'theme.color_scheme_toggle'              => 'Tối',
+    'theme.aria.toggle_color_scheme'         => 'Bật/tắt chế độ tối',
     'theme.aria.close_menu'                  => 'Đóng menu',
     'theme.aria.facebook'                    => 'Facebook',
     'theme.aria.instagram'                   => 'Instagram',
@@ -135,6 +138,11 @@ return [
     'theme_footer.cookies'                   => 'Cookie',
     'theme_footer.social_visit'              => 'Ghé thăm chúng tôi trên %1%',
     'theme.aria.scroll_to_top'               => 'Cuộn lên đầu trang',
+    'theme.aria.search'                      => 'Tìm kiếm',
+    'theme.nav.mobile_search_posts'          => 'Tìm bài viết…',
+    'theme.nav.drawer_tagline'               => 'Blog — bài dài, hướng dẫn và ghi chú từ đội ngũ.',
+    'theme.nav.view_all_blog'                => 'Xem tất cả bài viết',
+    'theme.nav.drawer_copyright'             => '© %1% — Bản quyền nội dung theo chủ sở hữu trang.',
 
     // Default CMS page template (page.php)
     'page.empty_content'                     => 'Trang này chưa có nội dung.',

@@ -1,0 +1,11 @@
+/**
+ * Lát cắt ý `tools/theme-assets/theme-default/src/assets/css/globals.css` (base):
+ * màu viền mặc định gray-200 — không dùng `@layer base` vì entry `usage-guide` không có `@tailwind base`.
+ *
+ * Tham chiếu theme-default read-only; chỉnh builder tại đây.
+ */
+*,
+::before,
+::after {
+    border-color: #e5e7eb; /* tailwind gray-200 — tương đương theme('colors.gray.200') */
+}

@@ -99,6 +99,7 @@ return [
     // Laragon theme — nav / mobile drawer / footer (header & footer parts)
 
     // header
+    'theme_nav.home'                         => 'Home',
     'theme_nav.features'                     => 'Features',
     'theme_nav.usage_guide'                  => 'Usage Guide',
     'theme_nav.php_tutorial'                 => 'PHP Tutorial',
@@ -110,6 +111,8 @@ return [
     'php_tutorial.coming_soon'          => ' Coming Soon.',
     'php_tutorial.coming_soon_detail'          => 'This lesson content will be updated in the CMS (content field).',
     'theme.search_placeholder'               => 'Search…',
+    'theme.color_scheme_toggle'              => 'Dark',
+    'theme.aria.toggle_color_scheme'         => 'Toggle dark mode',
     'theme.aria.close_menu'                  => 'Close menu',
     'theme.aria.facebook'                    => 'Facebook',
     'theme.aria.instagram'                   => 'Instagram',
@@ -134,6 +137,11 @@ return [
     'theme_footer.cookies'                   => 'Cookies',
     'theme_footer.social_visit'              => 'Visit us on %1%',
     'theme.aria.scroll_to_top'               => 'Scroll to top',
+    'theme.aria.search'                      => 'Search',
+    'theme.nav.mobile_search_posts'          => 'Search posts…',
+    'theme.nav.drawer_tagline'               => 'Blog — long reads, guides, and notes from the team.',
+    'theme.nav.view_all_blog'                => 'View all posts',
+    'theme.nav.drawer_copyright'             => '© %1% — Content copyright belongs to the site owner.',
 
     // Default CMS page template (page.php)
     'page.empty_content'                     => 'This page has no content yet.',

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none" role="img" aria-labelledby="siteLogoMarkTitle">
+  <title id="siteLogoMarkTitle">Site logo</title>
+  <defs>
+    <linearGradient id="blogLogoMarkGrad" x1="5" y1="5" x2="37" y2="37" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2dd4bf"/>
+      <stop offset="0.55" stop-color="#0d9488"/>
+      <stop offset="1" stop-color="#115e59"/>
+    </linearGradient>
+  </defs>
+  <rect width="40" height="40" rx="11" fill="url(#blogLogoMarkGrad)"/>
+  <!-- cửa sổ bài / trình đọc -->
+  <rect x="9" y="11" width="22" height="20" rx="2.25" fill="#ffffff"/>
+  <rect x="9" y="11" width="22" height="5.5" rx="2.25" fill="#0d9488" fill-opacity="0.22"/>
+  <rect x="12" y="19.5" width="16" height="1.35" rx="0.67" fill="#0f766e" opacity="0.55"/>
+  <rect x="12" y="22.8" width="11" height="1.35" rx="0.67" fill="#0f766e" opacity="0.42"/>
+  <rect x="12" y="26.1" width="13.5" height="1.35" rx="0.67" fill="#0f766e" opacity="0.32"/>
+  <!-- accent -->
+  <circle cx="29" cy="9.5" r="4.25" fill="#05df85"/>
+</svg>

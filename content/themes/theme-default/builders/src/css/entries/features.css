@@ -1,5 +1,5 @@
 /**
  * Trang Features — cùng `index.css`.
- * @page-url https://laragon.net/features/
+ * @page-url https://theme-default.vn/features/
  */
- @import '../partials/tailwind.css';
+ @import '../partials/_tailwind-standalone.css';

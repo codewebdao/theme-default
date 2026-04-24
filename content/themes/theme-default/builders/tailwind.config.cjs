@@ -7,6 +7,7 @@ const path = require('path');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+    darkMode: 'class',
     content: [
         path.join(__dirname, '../*.php'),
         path.join(__dirname, '../parts/**/*.php'),

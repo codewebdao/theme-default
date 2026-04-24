@@ -15,7 +15,7 @@ define('CMSFULLFORM_AUTH_LOGIN_CARD_STYLES', true);
  * Gọn, sạch, hiện đại, hợp login / register / forgot password / dashboard auth.
  */
 .auth-portal {
-  --auth-primary: #275cee;
+  --auth-primary: #0d9488;
   --auth-primary-rgb: 39, 92, 238;
   --auth-primary-strong: #1d4ed8;
   --auth-primary-soft: rgba(var(--auth-primary-rgb), 0.18);

@@ -1,14 +1,12 @@
 <?php
-use System\Libraries\Render\View;
-if (!defined('PATH_ROOT')) {
-    exit('No direct access allowed.');
-}
+
+namespace System\Libraries;
 
 use App\Libraries\Fastlang as Flang;
-
-View::addCss('page-css-css-files-timeline-css', 'css/files_timeline.css', [], null, 'all', false);
-View::addJs('page-js-iMagify-2-0-js', 'js/iMagify.2.0.js', [], null, false, false, false, false);
-View::addJs('page-js-files-timeline', 'js/files_timeline.js', [], (string) time(), false, false, false, false);
+//Render::block('Backend\Head', ['layout' => 'default', 'title' => $title ?? 'Files']);
+Render::asset('css', 'css/files_timeline.css', ['area' => 'backend', 'location' => 'head']);
+Render::asset('js', 'js/iMagify.2.0.js', ['area' => 'backend', 'location' => 'head']);
+Render::asset('js', 'js/files_timeline.js?t=' . time(), ['area' => 'backend', 'location' => 'head']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -18,10 +16,11 @@ View::addJs('page-js-files-timeline', 'js/files_timeline.js', [], (string) time(
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><?= $title ?? 'Files' ?></title>
 
-  <?php echo view_css('head'); echo view_js('head'); ?>
+  <?= \System\Libraries\Render::renderAsset('head', 'backend') ?>
   <script type="text/javascript">
     // JS Global
-    const FILES_URL = '<?= files_url() ?>';
+    var urlfiles_tmp = '<?= config('files', 'Uploads')['files_url'] ?? '/uploads' ?>';
+    const FILES_URL = urlfiles_tmp.replace(/\/$/, '') + '/';
     const FILES_API = "<?= base_url('/api/v2/files/'); ?>";
     const PUBLIC_URL = '<?= public_url() ?>';
     const BASE_URL = '<?= base_url() ?>';
