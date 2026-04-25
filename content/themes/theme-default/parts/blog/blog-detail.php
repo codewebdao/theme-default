@@ -395,12 +395,12 @@ $bp_share_url = ($bp_slug !== '')
             </div>
         </div>
 
-        <!-- Article content: lg flex — cột share sticky lg:top-20 (dưới header h-20), không absolute -->
+        <!-- Article content: lg flex — sticky offset .blog-detail__sticky-top (nhỏ hơn top-20) -->
         <div
             class="relative w-full py-12 lg:flex lg:flex-row lg:items-start lg:gap-9">
 
             <div
-                class="hidden lg:flex lg:sticky lg:top-20 lg:self-start shrink-0 flex-col items-center gap-0 w-11 z-10">
+                class="blog-detail__sticky-top hidden lg:flex lg:sticky lg:self-start shrink-0 flex-col items-center gap-0 w-11 z-10">
 
                 <!-- <button type="button" aria-label="<?php echo e('Like article'); ?>"
                     class="w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-100 transition">
@@ -511,7 +511,7 @@ $bp_share_url = ($bp_slug !== '')
                 </div>
                 </div>
                 <?php if (!empty($blog_sidebar_featured)): ?>
-                <aside class="blog-detail__body-aside mt-10 w-full shrink-0 rounded-home-lg border border-gray-200/90 bg-gray-50/90 p-4 shadow-sm dark:border-zinc-700 dark:bg-zinc-900/80 lg:mt-0 lg:shrink-0 lg:sticky lg:top-20 lg:self-start"
+                <aside class="blog-detail__body-aside blog-detail__sticky-top mt-10 w-full shrink-0 rounded-home-lg border border-gray-200/90 bg-gray-50/90 p-4 shadow-sm dark:border-zinc-700 dark:bg-zinc-900/80 lg:mt-0 lg:shrink-0 lg:sticky lg:self-start"
                     aria-label="<?php echo e(function_exists('__') ? __('blog_sidebar_featured') : 'Featured posts'); ?>">
                     <h3 class="border-b border-gray-200 pb-3 text-sm font-bold uppercase tracking-wider text-home-heading dark:border-zinc-600 font-space">
                         <?php echo e(function_exists('__') ? __('blog_sidebar_featured') : 'Featured posts'); ?>

@@ -149,4 +149,11 @@
     }
   }
 
+  /* Sticky cột share + sidebar: top > header (h-20) để không sát mép trên */
+  @media (min-width: 1024px) {
+    .blog-detail__sticky-top {
+      top: 6.25rem;
+    }
+  }
+
   
