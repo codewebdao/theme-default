@@ -26,17 +26,17 @@ return [
     'Kết nối'                                                                => 'Kết nối',
     'Theo dõi chúng tôi trên mạng xã hội để cập nhật tin tức mới nhất.'      => 'Theo dõi chúng tôi trên mạng xã hội để cập nhật tin tức mới nhất.',
     'Copyright © CMS Full Form.'                                             => 'Bản quyền thuộc về CMS Full Form.',
-    'A next-generation AI-powered CMS solution, delivering unparalleled speed, flexibility, and security for your website.'                     => 'Giải pháp CMS thế hệ mới tích hợp AI, mang lại tốc độ, linh hoạt và bảo mật vượt trội cho website của bạn.',
+    'A next-generation AI-powered CMS solution, delivering unparalleled speed, flexibility, and security for your website.'                     => 'Tạp chí blog: bài viết sâu, hướng dẫn thực tế và góc nhìn từ đội ngũ — đọc mọi lúc, mọi nơi.',
 
 
     // Kêu gọi hành động
-    'Ready to Experience the Difference?'                        => 'Sẵn sàng trải nghiệm sự khác biệt?',
-    'Join thousands of developers and businesses using CMS Full Form to build faster, stronger, and more secure websites.'                  => 'Tham gia cùng hàng ngàn lập trình viên và doanh nghiệp đang sử dụng CMS Full Form để xây dựng website nhanh hơn, mạnh hơn và an toàn hơn.',
+    'Ready to Experience the Difference?'                        => 'Muốn đọc thêm bài hay?',
+    'Join thousands of developers and businesses using CMS Full Form to build faster, stronger, and more secure websites.'                  => 'Khám phá chuyên mục, theo dõi chuỗi bài hướng dẫn và cập nhật mới nhất trên blog của chúng tôi.',
     'Download Now'                       => 'Tải ngay',
     'View Documentation'                          => 'Xem tài liệu',
 
     // Tìm kiếm
-    'Search for themes, plugins, blogs...'   => 'Tìm kiếm themes, plugins, blogs...',
+    'Search for themes, plugins, blogs...'   => 'Tìm bài viết, chủ đề, từ khóa…',
     'Tìm kiếm'                               => 'Tìm kiếm',
     'Kết quả tìm kiếm'                       => 'Kết quả tìm kiếm',
     'search.results_for'                     => 'Kết quả tìm kiếm cho "%s"',
@@ -70,7 +70,7 @@ return [
     // Review CMS — hero banner
     'cms_review_banner.badge'                => 'BẢNG XẾP HẠNG CMS 2025',
     'cms_review_banner.title'                => 'CMS tốt nhất năm 2025.',
-    'cms_review_banner.subtitle'             => 'Đánh giá chuyên sâu và benchmark hiệu năng. Kiểm thử kỹ trên môi trường Laragon.',
+    'cms_review_banner.subtitle'             => 'Bài phân tích, so sánh công cụ và kinh nghiệm thực chiến — biên tập cho người làm web.',
     'cms_review_banner.image_alt'            => 'Nền banner đánh giá CMS',
 
     // So sánh CMS (trang review CMS)
@@ -80,28 +80,28 @@ return [
     'cms_comparison_pro'                     => 'Ưu điểm',
     'cms_comparison_cons'                    => 'Nhược điểm',
     'cms_comparison_open_link'               => 'Mở liên kết',
-    'Try on Laragon'                         => 'Dùng trên Laragon',
+    'Try on Laragon'                         => 'Xem trên blog',
     'cms_comparison_empty_all'               => 'Chưa có mục CMS để so sánh.',
     'cms_comparison_category_empty_named'    => 'Chưa có CMS trong danh mục %s.',
     'cms_comparison_filters_heading'         => 'Lọc theo danh mục',
 
     // So sánh hiệu năng (trang review CMS)
     'cms_performance_showdown.title'         => 'So sánh hiệu năng',
-    'cms_performance_showdown.subtitle'      => 'Chúng tôi đo thời gian tải trang "Hello World" trên Laragon (thấp hơn là tốt hơn).',
+    'cms_performance_showdown.subtitle'      => 'Chúng tôi tổng hợp số liệu và trải nghiệm thực tế khi dùng các CMS phổ biến (thấp hơn thường tốt hơn).',
     'cms_performance_showdown.col_cms'       => 'CMS',
     'cms_performance_showdown.col_ttfb'      => 'Time to First Byte (ms)',
     'cms_performance_showdown.col_time'      => 'Thời gian',
 
     // Banner CTA
-    'cms_cta_banner.title'                   => 'Chạy mọi CMS chỉ với một cú nhấp',
-    'cms_cta_banner.body'                    => 'Laragon giúp tạo, quản lý và chuyển đổi dự án cực kỳ dễ. Không cần cấu hình phức tạp.',
-    'cms_cta_banner.download'                => 'Tải Laragon miễn phí',
-    'cms_cta_banner.requirements'            => 'Yêu cầu hệ thống: Windows 7/8/10/11 (64-bit)',
+    'cms_cta_banner.title'                   => 'Đọc blog, cập nhật kiến thức mỗi tuần',
+    'cms_cta_banner.body'                    => 'Chọn chuyên mục bạn quan tâm — từ hướng dẫn ngắn đến bài phân tích dài, đều được biên tập rõ ràng.',
+    'cms_cta_banner.download'                => 'Xem tất cả bài viết',
+    'cms_cta_banner.requirements'            => 'Bài mới theo tuần — lưu trang hoặc theo dõi kênh bạn thích.',
 
       // header
-  // Laragon theme — nav / mobile drawer / footer  
+  // Theme blog — nav / drawer / footer
     'theme_nav.home'                         => 'Trang chủ',
-    'theme_nav.features'                     => 'Tính năng',
+    'theme_nav.features'                     => 'Chuyên mục',
     'theme_nav.usage_guide'                  => 'Tài liệu',
     'theme_nav.php_tutorial'                 => 'Học PHP',
     'theme_nav.review_cms'                   => 'Đánh giá CMS',
@@ -115,18 +115,21 @@ return [
     'theme.color_scheme_toggle'              => 'Tối',
     'theme.aria.toggle_color_scheme'         => 'Bật/tắt chế độ tối',
     'theme.aria.close_menu'                  => 'Đóng menu',
+    'theme.aria.mobile_menu_nav'             => 'Điều hướng trang',
     'theme.aria.facebook'                    => 'Facebook',
     'theme.aria.instagram'                   => 'Instagram',
     'theme.aria.x'                           => 'X',
-    'theme_footer.performance_note'          => 'Hiệu năng: 100/100 trên Desktop — laragon.org được build local bằng Laragon — nơi các dự án hiện đại bắt đầu.',
-    'theme_footer.download_v84'              => 'Tải xuống v8.4',
-    'theme_footer.copyright'                 => '© %1% Laragon. Mọi quyền được bảo lưu.',
-    'theme_footer.description'               => 'Được chăm chút, làm bằng đam mê và dành cho mọi người, Laragon là lựa chọn tối ưu cho doanh nhân và lập trình viên trân trọng thời gian. Laragon mang đến môi trường phát triển gọn nhẹ, chạy là dùng được, bỏ qua rắc rối cấu hình phức tạp — để bạn tập trung tạo, xây dựng và đổi mới thay vì mất thời gian vào cài đặt.',
+    'theme_footer.performance_note'          => 'Trải nghiệm đọc tối ưu: bố cục rõ ràng, ảnh nhẹ, chế độ tối dễ chịu — blog được thiết kế để đọc lâu không mỏi.',
+    'theme_footer.download_v84'              => 'Bài đọc nhiều nhất',
+    'theme_footer.copyright'                 => '© %1% Blog. Mọi quyền được bảo lưu.',
+    'theme_footer.description'               => 'Chúng tôi viết về phát triển web, công cụ và quy trình làm việc hiện đại. Mỗi bài là một góc nhìn thực tế — ngắn gọn để áp dụng, đủ sâu để suy ngẫm.',
     'theme_footer.col_product'               => 'Sản phẩm',
     'theme_footer.col_resources'             => 'Tài nguyên',
     'theme_footer.col_community'             => 'Cộng đồng',
+    'theme_footer.col_legal'                => 'Chính sách',
     'theme_footer.col_contact'               => 'Liên hệ',
-    'theme_footer.laragon_pro'               => 'Laragon Pro',
+    'theme_footer.laragon_pro'               => 'Góc chuyên gia',
+    'theme_footer.theme_default_pro'         => 'Theme Default Pro',
     'theme_footer.updates'                   => 'Cập nhật',
     'theme_footer.guides'                    => 'Hướng dẫn',
     'theme_footer.faq'                       => 'FAQ',
@@ -139,6 +142,8 @@ return [
     'theme_footer.social_visit'              => 'Ghé thăm chúng tôi trên %1%',
     'theme.aria.scroll_to_top'               => 'Cuộn lên đầu trang',
     'theme.aria.search'                      => 'Tìm kiếm',
+    'theme.nav.drawer_social'                => 'Mạng xã hội',
+    'theme.nav.drawer_social_empty'        => 'Chưa có liên kết mạng xã hội. Thêm trong Admin → Tuỳ chọn site (social), giống phần chân trang.',
     'theme.nav.mobile_search_posts'          => 'Tìm bài viết…',
     'theme.nav.drawer_tagline'               => 'Blog — bài dài, hướng dẫn và ghi chú từ đội ngũ.',
     'theme.nav.view_all_blog'                => 'Xem tất cả bài viết',

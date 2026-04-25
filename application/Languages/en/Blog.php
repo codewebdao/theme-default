@@ -217,6 +217,7 @@ return [
 
     // Related Blogs
     'related_blogs'                 => 'Related Posts',
+    'blog_sidebar_featured'         => 'Featured posts',
     'discover_similar_blogs'        => 'Discover similar posts with helpful content and valuable information',
     'view_details'                  => 'View Details',
     'view_all_blogs'                => 'View All Posts',
@@ -347,6 +348,8 @@ return [
     'listing_hero_subtitle'               => 'News, tutorials, and deep dives into modern web development.',
     'listing_read_article'                => 'Read Article',
     'listing_read_short'                  => 'Read',
+    'listing_post_list_heading'           => 'Articles on this page',
+    'listing_post_list_count'             => '%d article(s) on this page.',
     'listing_cta_title'                   => 'Ready to code faster?',
     'listing_cta_body'                    => 'Join thousands of developers using Laragon to speed up their web development workflow every day.',
     'listing_cta_download'                => 'Start Download',

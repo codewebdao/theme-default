@@ -25,16 +25,9 @@ use System\Libraries\Render\View;
     <script src="<?php echo defined('APP_THEME_NAME') && function_exists('theme_assets') ? theme_assets('js/swiper-bundle.min.js') : '/assets/js/swiper-bundle.min.js'; ?>"></script>
     <!-- Main Header -->
     <div class="container">
-      <div class="flex items-center justify-between h-20">
-        <!-- Mobile Hamburger: luôn dùng JS thuần để mở menu (z-10 tránh bị logo đè) -->
-        <button type="button" id="mobileMenuToggle" class="lg:hidden relative z-10 min-w-[44px] min-h-[44px] p-2 text-[color:var(--home-body)] hover:bg-[color:var(--home-surface-light)] hover:text-[color:var(--home-heading)] rounded-home-md transition-colors cursor-pointer touch-manipulation" aria-label="Mở menu điều hướng">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="pointer-events-none">
-            <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </button>
-
-        <!-- Logo (flex-1 có thể đè lên vùng trái, nên hamburger đã z-10) -->
-        <div class="flex-1 flex justify-center lg:justify-start lg:flex-none min-w-0">
+      <div class="flex h-20 items-center justify-between gap-2">
+        <!-- Logo: căn trái mọi breakpoint (mobile + desktop) -->
+        <div class="flex min-w-0 flex-1 justify-start lg:flex-none">
           <?php echo View::include('parts/headers/logo'); ?>
         </div>
 
@@ -48,13 +41,8 @@ use System\Libraries\Render\View;
         }
         ?>
         <div class="flex items-center gap-2 lg:hidden">
-        <a href="<?php echo e(base_url('search')); ?>" class="flex h-[36px] w-[36px] shrink-0 items-center justify-center rounded-home-md bg-gray-100 text-home-body transition hover:bg-gray-200 dark:border dark:border-zinc-600 dark:bg-zinc-800 dark:hover:bg-zinc-700" aria-label="<?php echo e(__('theme.aria.search')); ?>">
-          <svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </a>
         <div class="relative lang-dropdown-js">
-          <button type="button" aria-haspopup="true" aria-expanded="false" aria-controls="lang-menu-mobi" class="lang-dropdown-btn flex items-center gap-2 px-3 h-[36px] bg-gray-100 rounded-home-md hover:bg-gray-200 transition dark:border dark:border-zinc-600 dark:bg-zinc-800 dark:hover:bg-zinc-700">
+          <button type="button" aria-haspopup="true" aria-expanded="false" aria-controls="lang-menu-mobi" class="lang-dropdown-btn flex h-[36px] items-center gap-2 rounded-full bg-gradient-to-b from-neutral-100 to-neutral-300 px-3 ring-1 ring-black/[0.06] shadow-[inset_0_2px_6px_rgba(0,0,0,0.1)] transition hover:brightness-[0.98] dark:from-zinc-800 dark:to-zinc-950 dark:shadow-[inset_0_2px_10px_rgba(0,0,0,0.4)] dark:ring-white/10 dark:hover:from-zinc-700 dark:hover:to-zinc-900">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <path d="M8.4538 7.43751H5.54641C5.57884 8.96143 5.77913 10.3179 6.07833 11.3076C6.24293 11.852 6.43017 12.2607 6.61808 12.5236C6.81215 12.7952 6.94672 12.8328 6.99885 12.8333L7.00004 12.8333C7.05124 12.8333 7.18648 12.7973 7.38212 12.5236C7.57004 12.2607 7.75728 11.852 7.92188 11.3075C8.22107 10.3179 8.42137 8.96143 8.4538 7.43751Z" fill="var(--home-body)" />
               <path d="M5.54641 6.56251H8.4538C8.42137 5.03859 8.22107 3.68211 7.92188 2.69246C7.75728 2.14801 7.57004 1.73927 7.38212 1.47637C7.18648 1.20267 7.05131 1.16667 7.0001 1.16667C6.9489 1.16667 6.81372 1.20267 6.61808 1.47638C6.43017 1.73928 6.24293 2.14801 6.07833 2.69247C5.77913 3.68211 5.57884 5.03859 5.54641 6.56251Z" fill="var(--home-body)" />
@@ -64,7 +52,7 @@ use System\Libraries\Render\View;
               <path d="M4.67122 7.43751L1.18286 7.43751C1.37386 10.0134 3.23767 12.1238 5.69186 12.6861C5.51904 12.3667 5.36887 11.9845 5.24077 11.5608C4.91205 10.4735 4.70368 9.02812 4.67122 7.43751Z" fill="var(--home-body)" />
             </svg>
             <span class="text-xs font-medium text-gray-700 font-plus dark:text-zinc-200"><?php echo e($current_lang_mobi); ?></span>
-            <svg width="10" height="6" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1L5 5L9 1" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            <svg class="shrink-0 text-neutral-400 dark:text-zinc-400" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="none" d="M1 1.25L5 4.75L9 1.25" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" /></svg>
           </button>
           <div id="lang-menu-mobi" role="menu" class="lang-dropdown-panel absolute right-0 mt-2 w-full bg-white border border-gray-200 rounded-home-md shadow-md overflow-hidden z-50 hidden dark:border-zinc-600 dark:bg-zinc-900">
             <?php foreach ($langs_mobi as $code => $label): ?>
@@ -75,16 +63,19 @@ use System\Libraries\Render\View;
         <div class="flex h-[36px] shrink-0 items-center">
           <?php echo View::include('parts/headers/theme-toggle', ['theme_toggle_id' => 'theme-toggle-mobi']); ?>
         </div>
+        <button type="button" id="mobileMenuToggle" class="flex h-[36px] w-[36px] shrink-0 cursor-pointer items-center justify-center rounded-full bg-gradient-to-b from-neutral-100 to-neutral-300 text-neutral-700 ring-1 ring-black/[0.06] shadow-[inset_0_2px_6px_rgba(0,0,0,0.1)] transition hover:brightness-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-home-primary dark:from-zinc-800 dark:to-zinc-950 dark:text-zinc-200 dark:shadow-[inset_0_2px_10px_rgba(0,0,0,0.4)] dark:ring-white/10 dark:hover:from-zinc-700 dark:hover:to-zinc-900 lg:hidden touch-manipulation" aria-label="Mở menu điều hướng">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="pointer-events-none" aria-hidden="true">
+            <path d="M4 7H20M4 12H20M4 17H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
         </div>
 
         <!-- Desktop Menu -->
         <?php echo View::include('parts/headers/menu-pc', ['layout' => $layout]); ?>
       </div>
     </div>
-
-    <!-- Mobile Menu: jModal (include menu-mobi) -->
-    <?php echo \System\Libraries\Render\View::include('parts/headers/menu-mobi', ['layout' => $layout]); ?>
   </header>
+  <?php echo View::include('parts/headers/menu-mobi', ['layout' => $layout]); ?>
   <script>
   (function() {
     function initMobileMenuModal() {

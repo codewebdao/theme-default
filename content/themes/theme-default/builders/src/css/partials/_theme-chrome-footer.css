@@ -1,10 +1,7 @@
 /**
- * Footer — bundle riêng (nạp sau home-index.css; dùng biến --home-* đã có trong bundle chính).
- * @page-url https://theme-default.vn/
- */
-/**
  * Chrome footer — biến --home-* đã có trong `home-index.css` (nạp trước file này).
  */
+
 /*
  * Footer 3 cột: độ rộng cột 2fr + 1fr + 1fr (~50% / 25% / 25%).
  * Khoảng cách *giữa* các cột = một giá trị column-gap (đều nhau theo CSS Grid), không phải 3 cột cùng rộng.
@@ -14,17 +11,19 @@
   gap: 2.5rem;
   grid-template-columns: minmax(0, 1fr);
 }
+
 @media (min-width: 768px) {
   .theme-footer-grid {
     grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
-    -moz-column-gap: 2rem;
-         column-gap: 2rem;
+    column-gap: 2rem;
     row-gap: 2.5rem;
   }
 }
+
 .theme-footer-grid > * {
   min-width: 0;
 }
+
 /* Bản quyền + social: 2 cột (sm+) — trái chữ, phải icon; CSS tường minh */
 .theme-footer-bottom {
   display: flex;
@@ -33,10 +32,12 @@
   gap: 1rem;
   width: 100%;
 }
+
 .theme-footer-bottom__copy {
   margin: 0;
   text-align: center;
 }
+
 .theme-footer-bottom__social {
   display: flex;
   flex-wrap: wrap;
@@ -44,6 +45,7 @@
   justify-content: center;
   gap: 0.75rem;
 }
+
 @media (min-width: 640px) {
   .theme-footer-bottom {
     flex-direction: row;
@@ -60,11 +62,13 @@
     justify-content: flex-end;
   }
 }
+
 /* Nút scroll-top: an toàn vùng cằm (mobile) */
 #scrollToTop {
   bottom: max(2rem, env(safe-area-inset-bottom, 0px));
   right: max(0.75rem, env(safe-area-inset-right, 0px));
 }
+
 @media (min-width: 640px) {
   #scrollToTop {
     right: max(2rem, env(safe-area-inset-right, 0px));

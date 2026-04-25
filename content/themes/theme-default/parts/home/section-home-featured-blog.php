@@ -19,7 +19,7 @@ if (!isset($__featured) || !is_array($__featured)) {
     $__featured = [];
     if (function_exists('get_posts')) {
         $res = get_posts([
-            'posttype'        => 'blogs',
+            'posttype'        => 'blog',
             'perPage'         => 3,
             'post_status'     => 'active',
             'lang'            => $lang,

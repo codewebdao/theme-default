@@ -10,11 +10,25 @@ $bp = isset($blog_post) && is_array($blog_post) ? $blog_post : [];
 $bp_title = html_entity_decode((string) ($bp['title'] ?? ''), ENT_QUOTES | ENT_HTML5, 'UTF-8');
 $bp_content = (string) ($bp['content'] ?? '');
 $bp_desc = (string) ($bp['description_title'] ?? '');
-$authorRow = isset($bp['author']) && is_array($bp['author']) ? $bp['author'] : [];
-$bp_author_name = trim((string) ($authorRow['fullname'] ?? $authorRow['username'] ?? $bp['username'] ?? ''));
-if ($bp_author_name === '') {
-    $bp_author_name = '—';
+$authorRow = $bp['author'] ?? [];
+if (is_object($authorRow) && method_exists($authorRow, 'toArray')) {
+    $authorRow = $authorRow->toArray();
 }
+if (!is_array($authorRow)) {
+    $authorRow = [];
+}
+$bp_author_name = trim((string) (
+    $authorRow['fullname']
+    ?? $authorRow['Fullname']
+    ?? $authorRow['name']
+    ?? $authorRow['display_name']
+    ?? $authorRow['username']
+    ?? $authorRow['user_login']
+    ?? $bp['username']
+    ?? $bp['author_name']
+    ?? $bp['author_username']
+    ?? ''
+));
 $bp_avatar_raw = $authorRow['avatar'] ?? null;
 if ($bp_avatar_raw === null || $bp_avatar_raw === '') {
     $bp_avatar_raw = $bp['avatar'] ?? null;
@@ -32,12 +46,59 @@ $bp_parse_img = static function ($val) {
     }
     return $val;
 };
+
+/** ID user từ bài + (nếu thiếu) một lần get_posts theo id bài để lấy cột user_id/author_id; sau đó UsersModel để tên & avatar chuẩn */
+$bp_post_id_for_author = (int) ($bp['id'] ?? $bp['id_main'] ?? 0);
+$bp_author_user_id = (int) ($bp['user_id'] ?? $bp['author_id'] ?? $bp['created_by'] ?? $bp['creator_id'] ?? 0);
+if ($bp_author_user_id < 1 && $authorRow !== [] && isset($authorRow['id'])) {
+    $bp_author_user_id = (int) $authorRow['id'];
+}
+if ($bp_author_user_id < 1 && $bp_post_id_for_author > 0 && function_exists('get_posts')) {
+    $bp_ref_status = (function_exists('HAS_GET') && HAS_GET('preview')) ? '' : 'active';
+    $bp_ref = get_posts([
+        'posttype'    => 'blog',
+        'post__in'    => [$bp_post_id_for_author],
+        'post_status' => $bp_ref_status,
+        'lang'        => defined('APP_LANG') ? APP_LANG : '',
+        'perPage'     => 1,
+    ]);
+    $bp_ref_rows = is_array($bp_ref) ? ($bp_ref['data'] ?? []) : [];
+    $bp_ref_row = isset($bp_ref_rows[0]) && is_array($bp_ref_rows[0]) ? $bp_ref_rows[0] : null;
+    if ($bp_ref_row !== null) {
+        $bp_author_user_id = (int) (
+            $bp_ref_row['user_id']
+            ?? $bp_ref_row['author_id']
+            ?? $bp_ref_row['created_by']
+            ?? $bp_ref_row['creator_id']
+            ?? 0
+        );
+        if ($bp_author_name === '' && trim((string) ($bp_ref_row['username'] ?? '')) !== '') {
+            $bp_author_name = trim((string) $bp_ref_row['username']);
+        }
+    }
+}
+if ($bp_author_user_id > 0 && class_exists(\App\Models\UsersModel::class)) {
+    $bp_user_row = (new \App\Models\UsersModel())->getUserById($bp_author_user_id);
+    if (is_array($bp_user_row) && $bp_user_row !== []) {
+        $bp_u_name = trim((string) ($bp_user_row['fullname'] ?? $bp_user_row['username'] ?? ''));
+        if ($bp_u_name !== '') {
+            $bp_author_name = $bp_u_name;
+        }
+        if (!empty($bp_user_row['avatar'])) {
+            $bp_avatar_raw = $bp_user_row['avatar'];
+        }
+    }
+}
+if ($bp_author_name === '') {
+    $bp_author_name = '—';
+}
+$bp_author_img_alt = ($bp_author_name !== '' && $bp_author_name !== '—') ? $bp_author_name : '';
+
 $bp_feature = $bp_parse_img($bp['feature'] ?? null);
 $bp_avatar = $bp_parse_img($bp_avatar_raw);
 $bp_created = (string) ($bp['created_at'] ?? '');
 $bp_ts = blog_created_at_to_unix($bp_created);
 $bp_date_label = $bp_ts > 0 ? date('M j, Y', $bp_ts) : '';
-$bp_mins_label = $bp_ts > 0 ? blog_mins_only_label($bp_ts) : '';
 $bp_home_url = base_url('', defined('APP_LANG') ? APP_LANG : '');
 $bp_blog_url = base_url('blog', defined('APP_LANG') ? APP_LANG : '');
 /* URL đã lẫn entity &amp; (double-encode) → không dùng href, tránh link hỏng */
@@ -130,7 +191,8 @@ foreach ($bp_cats as $bp_rel_c) {
     }
 }
 $bp_rel_cat_ids = array_values(array_unique($bp_rel_cat_ids));
-$bp_detail_post_id = (int) ($bp['id'] ?? 0);
+$bp_detail_post_id = (int) ($bp['id'] ?? $bp['id_main'] ?? 0);
+$bp_slug_early = trim((string) ($bp['slug'] ?? ''));
 $bp_rel_categories_list = [];
 if (function_exists('get_terms')) {
     $bp_rel_tc = get_terms([
@@ -208,24 +270,69 @@ if ($bp_rel_cat_ids !== [] && $bp_detail_post_id > 0 && function_exists('get_pos
 }
 $blog_related_items = array_slice($blog_related_items, 0, 8);
 
-$bp_slug = trim((string) ($bp['slug'] ?? ''));
+/** Cột phải (lg+): bài mới nhất trừ bài hiện tại — cùng logic “nổi bật” editorial như strip trang chủ */
+$blog_sidebar_featured = [];
+if (function_exists('get_posts')) {
+    $bf_q = [
+        'posttype'        => 'blog',
+        'post_status'     => 'active',
+        'lang'            => defined('APP_LANG') ? APP_LANG : '',
+        'perPage'         => 6,
+        'orderby'         => 'created_at',
+        'order'           => 'DESC',
+        'with_categories' => true,
+    ];
+    if ($bp_detail_post_id > 0) {
+        $bf_q['post__not_in'] = [$bp_detail_post_id];
+    }
+    $bf_raw = get_posts($bf_q);
+    $bf_res = is_array($bf_raw) && ($bf_raw === [] || isset($bf_raw['data'])) ? $bf_raw : ['data' => []];
+    $bf_rows = $bf_res['data'] ?? [];
+    if (!is_array($bf_rows)) {
+        $bf_rows = [];
+    }
+    $bf_lang = defined('APP_LANG') ? APP_LANG : '';
+    $bf_date_fmt = ($bf_lang === 'vi') ? 'd/m/Y' : 'M j, Y';
+    foreach ($bf_rows as $bf_row) {
+        if (!is_array($bf_row)) {
+            continue;
+        }
+        $bf_rid = (int) ($bf_row['id'] ?? $bf_row['id_main'] ?? 0);
+        if ($bp_detail_post_id > 0 && $bf_rid === $bp_detail_post_id) {
+            continue;
+        }
+        $bf_slug = trim((string) ($bf_row['slug'] ?? ''));
+        if ($bp_slug_early !== '' && $bf_slug !== '' && $bf_slug === $bp_slug_early) {
+            continue;
+        }
+        $bf_cats = $bp_rel_cats_norm($bf_row['categories'] ?? []);
+        $bf_first = $bf_cats[0] ?? null;
+        $bf_fc = $bf_first !== null ? $bp_rel_term_to_array($bf_first) : [];
+        $bf_cat = trim((string) ($bf_fc['name'] ?? $bf_fc['title'] ?? $bf_fc['label'] ?? ''));
+        $bf_ca = (string) ($bf_row['created_at'] ?? '');
+        $bf_ts = is_numeric($bf_ca) ? (int) $bf_ca : (strtotime($bf_ca) ?: 0);
+        $bf_date_label = $bf_ts > 0 ? date($bf_date_fmt, $bf_ts) : '';
+        $blog_sidebar_featured[] = [
+            'title'   => (string) ($bf_row['title'] ?? ''),
+            'url'     => $bf_slug !== '' ? (string) link_posts($bf_slug, 'blog', $bf_lang) : '#',
+            'feature' => $bp_parse_img($bf_row['feature'] ?? null),
+            'cat'     => $bf_cat,
+            'date'    => $bf_date_label,
+        ];
+        if (count($blog_sidebar_featured) >= 5) {
+            break;
+        }
+    }
+}
+
+$bp_slug = $bp_slug_early;
 $bp_share_url = ($bp_slug !== '')
     ? rtrim((string) link_posts($bp_slug, 'blog', defined('APP_LANG') ? APP_LANG : ''), '/')
     : '';
-$blog_copy_toast_i18n = [
-    'ok'        => function_exists('__') ? __('toast_link_copied') : 'Link copied to clipboard',
-    'fail'      => function_exists('__') ? __('toast_copy_failed') : 'Could not copy link',
-    'titleOk'   => function_exists('__') ? __('link_copied') : 'Success',
-    'titleFail' => function_exists('__') ? __('copy_link') : 'Copy',
-];
-$blog_copy_toast_json = json_encode($blog_copy_toast_i18n, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
-if ($blog_copy_toast_json === false) {
-    $blog_copy_toast_json = '{}';
-}
 ?>
 <section class=" pt-12">
     <div class="container mx-auto  ">
-        <div class="sm:mb-12 mb-6">
+        <div class="">
             <nav
                 class="flex flex-wrap items-center justify-center gap-2 gap-y-1 text-sm text-gray-500 font-plus"
                 aria-label="<?php echo e(function_exists('__') ? __('listing_banner_nav_aria') : 'Breadcrumb'); ?>">
@@ -258,16 +365,16 @@ if ($blog_copy_toast_json === false) {
         </p>
         <div class="flex sm:flex-row items-center justify-center gap-4 sm:gap-12 sm:mt-12 mt-6 text-sm text-gray-500">
 
-            <!-- Author -->
-            <div class="flex items-center">
-                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden bg-gray-300">
+            <!-- Author (tên/ảnh: quan hệ bài + get_posts lấy user_id + bảng users) -->
+            <div class="flex min-w-0 max-w-full items-center">
+                <div class="h-8 w-8 shrink-0 overflow-hidden rounded-full bg-gray-300 dark:bg-zinc-600 sm:h-10 sm:w-10">
                     <?php if (!empty($bp_avatar)): ?>
-                        <img src="<?php echo e(_img_url($bp_avatar, 'thumbnail')); ?>" alt="" class="w-full h-full object-cover">
+                        <img src="<?php echo e(_img_url($bp_avatar, 'thumbnail')); ?>" alt="<?php echo e($bp_author_img_alt); ?>" class="h-full w-full object-cover">
                     <?php else: ?>
-                    <img src="<?php echo theme_assets('images/user1.png'); ?>" alt="" class="w-full h-full object-cover">
+                    <img src="<?php echo theme_assets('images/user1.png'); ?>" alt="<?php echo e($bp_author_img_alt); ?>" class="h-full w-full object-cover">
                     <?php endif; ?>
                 </div>
-                <span class="text-xs sm:text-sm font-medium text-gray-900 ml-2">
+                <span class="ml-2 min-w-0 truncate text-sm font-medium text-home-heading font-plus">
                     <?php echo e($bp_author_name); ?>
                 </span>
             </div>
@@ -285,37 +392,8 @@ if ($blog_copy_toast_json === false) {
                     <span><?php echo e($bp_date_label !== '' ? $bp_date_label : '—'); ?></span>
                 </div>
 
-                <div class="flex items-center gap-2">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M9.99935 4.99999V9.99999L13.3327 11.6667M18.3327 9.99999C18.3327 14.6024 14.6017 18.3333 9.99935 18.3333C5.39698 18.3333 1.66602 14.6024 1.66602 9.99999C1.66602 5.39762 5.39698 1.66666 9.99935 1.66666C14.6017 1.66666 18.3327 5.39762 18.3327 9.99999Z"
-                            stroke="#97A4B2" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-
-                    <span><?php echo e($bp_mins_label !== '' ? $bp_mins_label : '—'); ?></span>
-                </div>
-
             </div>
         </div>
-    
-            <div
-                class="relative w-full rounded-home-md overflow-hidden mt-6 sm:mt-12 aspect-[16/9] sm:aspect-[16/6] rounded-home-md lg:px-0">
-                <?php echo _imglazy($bp_feature, [
-                    'alt' => $bp_title,
-                    'class' => 'w-full h-full object-cover brightness-110 contrast-115 rounded-home-md',
-                    'loading' => 'eager',
-                    'fetchpriority' => 'high',
-                    'decoding' => 'sync',
-                    'sizes' => [
-                        'mobile' => 'thumbnail',
-                        'tablet' => 'medium',
-                        'desktop' => 'large',
-                        'large' => 'large',
-                    ],
-                ]); ?>
-        </div>
-
-
 
         <!-- Article content: lg flex — cột share sticky lg:top-20 (dưới header h-20), không absolute -->
         <div
@@ -365,31 +443,10 @@ if ($blog_copy_toast_json === false) {
                 ]);
                 ?>
                 </div>
-                <button type="button"
-                    class="js-blog-copy-link mt-[48px] w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-100 transition"
-                    aria-label="<?php echo e(function_exists('__') ? __('copy_link') : 'Copy article link'); ?>"
-                    data-url="<?php echo e($bp_share_url); ?>">
-                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"
-                        aria-hidden="true" focusable="false">
-                        <rect x="0.421053" y="0.421053" width="31.1579" height="31.1579" rx="15.5789" stroke="#F3F4F6"
-                            stroke-width="0.842105" />
-                        <circle cx="16" cy="16" r="15.5789" fill="white" stroke="#F3F4F6" stroke-width="0.842105" />
-                        <g clip-path="url(#clip0_blog_detail_copy_desktop)">
-                            <path
-                                d="M10.6673 18.6667C9.93398 18.6667 9.33398 18.0667 9.33398 17.3334V10.6667C9.33398 9.93337 9.93398 9.33337 10.6673 9.33337H17.334C18.0673 9.33337 18.6673 9.93337 18.6673 10.6667M14.6673 13.3334H21.334C22.0704 13.3334 22.6673 13.9303 22.6673 14.6667V21.3334C22.6673 22.0698 22.0704 22.6667 21.334 22.6667H14.6673C13.9309 22.6667 13.334 22.0698 13.334 21.3334V14.6667C13.334 13.9303 13.9309 13.3334 14.6673 13.3334Z"
-                                stroke="var(--home-body)" stroke-width="1.33333" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </g>
-                        <defs>
-                            <clipPath id="clip0_blog_detail_copy_desktop">
-                                <rect width="16" height="16" fill="white" transform="translate(8 8)" />
-                            </clipPath>
-                        </defs>
-                    </svg>
-                </button>
             </div>
 
-            <div class="w-full min-w-0 flex-1 font-plus">
+            <div class="blog-detail__body-row min-w-0 flex-1 font-plus">
+                <div class="blog-detail__body-main w-full min-w-0">
 
                 <div class="blog-post-body text-[16px] leading-[24px] font-normal text-home-body font-plus
                     [&_h1]:text-[28px] [&_h1]:sm:text-[32px] [&_h1]:font-semibold [&_h1]:text-home-heading [&_h1]:mb-4 [&_h1]:mt-10 [&_h1]:font-plus
@@ -428,9 +485,9 @@ if ($blog_copy_toast_json === false) {
                     </div>
                 </div>
                     <?php endif; ?>
-                <!-- Mobile: social một cụm, copy tách xuống dưới 48px -->
-                <div class="flex lg:hidden flex-col w-full mt-8 gap-0">
-                    <div class="flex flex-row flex-wrap items-center justify-center gap-2 sm:gap-4">
+                <!-- Mobile: social -->
+                <div class="flex lg:hidden w-full mt-8">
+                    <div class="flex flex-row flex-wrap items-center justify-center gap-2 sm:gap-4 w-full">
                         <?php
                         echo \System\Libraries\Render\View::include('parts/social/social-links', [
                             'social_links_variant' => 'blog_share',
@@ -438,31 +495,6 @@ if ($blog_copy_toast_json === false) {
                             'social_share_title'   => $bp_title,
                         ]);
                         ?>
-                    </div>
-                    <div class="mt-[48px] flex justify-center w-full">
-                        <button type="button"
-                            class="js-blog-copy-link w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-100 transition"
-                            aria-label="<?php echo e(function_exists('__') ? __('copy_link') : 'Copy article link'); ?>"
-                            data-url="<?php echo e($bp_share_url); ?>">
-                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
-                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-                                <rect x="0.421053" y="0.421053" width="31.1579" height="31.1579" rx="15.5789"
-                                    stroke="#F3F4F6" stroke-width="0.842105" />
-                                <circle cx="16" cy="16" r="15.5789" fill="white" stroke="#F3F4F6"
-                                    stroke-width="0.842105" />
-                                <g clip-path="url(#clip0_blog_detail_copy_mobile)">
-                                    <path
-                                        d="M10.6673 18.6667C9.93398 18.6667 9.33398 18.0667 9.33398 17.3334V10.6667C9.33398 9.93337 9.93398 9.33337 10.6673 9.33337H17.334C18.0673 9.33337 18.6673 9.93337 18.6673 10.6667M14.6673 13.3334H21.334C22.0704 13.3334 22.6673 13.9303 22.6673 14.6667V21.3334C22.6673 22.0698 22.0704 22.6667 21.334 22.6667H14.6673C13.9309 22.6667 13.334 22.0698 13.334 21.3334V14.6667C13.334 13.9303 13.9309 13.3334 14.6673 13.3334Z"
-                                        stroke="var(--home-body)" stroke-width="1.33333" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                </g>
-                                <defs>
-                                    <clipPath id="clip0_blog_detail_copy_mobile">
-                                        <rect width="16" height="16" fill="white" transform="translate(8 8)" />
-                                    </clipPath>
-                                </defs>
-                            </svg>
-                        </button>
                     </div>
                 </div>
                     <?php if ($bp_tag_labels !== []): ?>
@@ -476,6 +508,51 @@ if ($blog_copy_toast_json === false) {
                             <?php endforeach; ?>
                     </div>
                     <?php endif; ?>
+                </div>
+                </div>
+                <?php if (!empty($blog_sidebar_featured)): ?>
+                <aside class="blog-detail__body-aside mt-10 w-full shrink-0 rounded-home-lg border border-gray-200/90 bg-gray-50/90 p-4 shadow-sm dark:border-zinc-700 dark:bg-zinc-900/80 lg:mt-0 lg:shrink-0 lg:sticky lg:top-20 lg:self-start"
+                    aria-label="<?php echo e(function_exists('__') ? __('blog_sidebar_featured') : 'Featured posts'); ?>">
+                    <h3 class="border-b border-gray-200 pb-3 text-sm font-bold uppercase tracking-wider text-home-heading dark:border-zinc-600 font-space">
+                        <?php echo e(function_exists('__') ? __('blog_sidebar_featured') : 'Featured posts'); ?>
+                    </h3>
+                    <ul class="mt-4 space-y-4" role="list">
+                        <?php foreach ($blog_sidebar_featured as $bf): ?>
+                            <?php
+                            $bf_t = trim((string) ($bf['title'] ?? ''));
+                            if ($bf_t === '') {
+                                continue;
+                            }
+                            $bf_h = trim((string) ($bf['url'] ?? ''));
+                            ?>
+                        <li>
+                            <a href="<?php echo e($bf_h !== '' ? $bf_h : '#'); ?>"
+                                class="group flex gap-3 rounded-home-md p-1 -m-1 transition-colors hover:bg-white/80 dark:hover:bg-zinc-800/80">
+                                <div class="relative h-16 w-24 shrink-0 overflow-hidden rounded-home-md bg-gray-200 dark:bg-zinc-700">
+                                    <?php if (!empty($bf['feature'])): ?>
+                                        <img src="<?php echo e(_img_url($bf['feature'], 'thumbnail')); ?>" alt=""
+                                            class="h-full w-full object-cover transition-transform group-hover:scale-[1.03]"
+                                            loading="lazy" decoding="async" width="96" height="64">
+                                    <?php else: ?>
+                                        <img src="<?php echo e(theme_assets('images/banner_cms.webp')); ?>" alt=""
+                                            class="h-full w-full object-cover opacity-90" loading="lazy" decoding="async" width="96" height="64">
+                                    <?php endif; ?>
+                                </div>
+                                <div class="min-w-0 flex-1 py-0.5">
+                                    <?php if (trim((string) ($bf['cat'] ?? '')) !== ''): ?>
+                                        <span class="mb-0.5 block truncate text-[11px] font-medium uppercase tracking-wide text-home-primary/90"><?php echo e((string) $bf['cat']); ?></span>
+                                    <?php endif; ?>
+                                    <span class="line-clamp-2 text-sm font-medium leading-snug text-home-heading group-hover:text-home-primary dark:text-zinc-100 font-plus"><?php echo e($bf_t); ?></span>
+                                    <?php if (trim((string) ($bf['date'] ?? '')) !== ''): ?>
+                                        <span class="mt-1 block text-xs text-gray-500 dark:text-zinc-400"><?php echo e((string) $bf['date']); ?></span>
+                                    <?php endif; ?>
+                                </div>
+                            </a>
+                        </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </aside>
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -672,55 +749,3 @@ if ($blog_copy_toast_json === false) {
     </div>
   </div>
 </section>
-<script>
-(function () {
-    var t = <?php echo $blog_copy_toast_json; ?>;
-    function onCopyClick(ev) {
-        var btn = ev.target.closest && ev.target.closest('.js-blog-copy-link');
-        if (!btn) {
-            return;
-        }
-        ev.preventDefault();
-        var url = (btn.getAttribute('data-url') || '').trim() || (typeof window.location !== 'undefined' ? window.location.href : '');
-        function toastOk() {
-            if (typeof FastNotice !== 'undefined' && FastNotice.success) {
-                FastNotice.success(t.ok || '', { title: t.titleOk || '' });
-            }
-        }
-        function toastFail() {
-            if (typeof FastNotice !== 'undefined' && FastNotice.error) {
-                FastNotice.error(t.fail || '', { title: t.titleFail || '' });
-            }
-        }
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(url).then(toastOk).catch(toastFail);
-            return;
-        }
-        var ta = document.createElement('textarea');
-        ta.value = url;
-        ta.setAttribute('readonly', '');
-        ta.style.position = 'fixed';
-        ta.style.left = '-9999px';
-        document.body.appendChild(ta);
-        ta.select();
-        try {
-            if (document.execCommand('copy')) {
-                toastOk();
-            } else {
-                toastFail();
-            }
-        } catch (e) {
-            toastFail();
-        }
-        document.body.removeChild(ta);
-    }
-    function bind() {
-        document.addEventListener('click', onCopyClick);
-    }
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', bind);
-    } else {
-        bind();
-    }
-})();
-</script>

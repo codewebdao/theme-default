@@ -107,5 +107,46 @@
       flex: 0 0 calc((100cqi - 4.5rem) / 4);
     }
   }
-  
+
+  /* Chi tiết blog: cột nội dung + sidebar — tránh w-full + flex-1 gây cột hẹp / sidebar chồng chữ */
+  .blog-detail__body-row {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    min-width: 0;
+    width: 100%;
+  }
+
+  @media (min-width: 1024px) {
+    .blog-detail__body-row {
+      flex-direction: row;
+      align-items: flex-start;
+      column-gap: 2rem;
+    }
+
+    .blog-detail__body-main {
+      flex: 1 1 0%;
+      min-width: 0;
+      width: auto;
+      max-width: 100%;
+    }
+
+    .blog-detail__body-aside {
+      flex: 0 0 320px;
+      width: 320px;
+      max-width: none;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .blog-detail__body-row {
+      column-gap: 2.5rem;
+    }
+
+    .blog-detail__body-aside {
+      flex-basis: 360px;
+      width: 360px;
+    }
+  }
+
   

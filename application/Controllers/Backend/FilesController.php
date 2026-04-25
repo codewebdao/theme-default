@@ -56,7 +56,6 @@ class FilesController extends BackendController {
             define('APP_DEBUGBAR_SKIP', true);
         }
         $this->data('title', 'Files List - Timeline');
-        View::addJs('files-timeline-imagify', 'js/iMagify.2.0.js', [], (string) time(), false, false, false, false);
         echo View::make('files_timeline', $this->data)->render();
     }
 

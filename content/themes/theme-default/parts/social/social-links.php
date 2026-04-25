@@ -52,9 +52,13 @@ $social_share_url = isset($social_share_url) ? trim((string) $social_share_url) 
 $social_share_title = isset($social_share_title) ? trim((string) $social_share_title) : '';
 
 $isBlogShare = ($social_links_variant === 'blog_share');
-$iconWrapperClass = $isBlogShare
-    ? 'w-9 h-9 shrink-0 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-100 transition'
-    : 'text-sm text-gray-600 hover:text-home-primary transition-colors font-plus';
+$isDrawer = ($social_links_variant === 'drawer');
+$isFooter = !$isBlogShare && !$isDrawer;
+/** Cùng footer: nền gradient + icon trắng (blog cột share dùng chung) */
+$iconClassFooterOrBlog = 'inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-0 bg-gradient-to-br from-cyan-400 via-teal-500 to-teal-800 text-white shadow-[0_0_14px_rgba(45,212,191,0.45),inset_0_1px_0_rgba(255,255,255,0.2)] ring-1 ring-cyan-200/40 transition hover:from-cyan-300 hover:via-teal-400 hover:to-teal-700 hover:shadow-[0_0_18px_rgba(45,212,191,0.55)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400/80 dark:from-cyan-500 dark:via-teal-600 dark:to-teal-950 dark:shadow-[0_0_16px_rgba(34,211,238,0.35)] dark:ring-cyan-400/20 dark:hover:from-cyan-400 dark:hover:via-teal-500 [&_svg]:block [&_svg]:h-6 [&_svg]:w-6 [&_svg]:max-w-[1.5rem] [&_svg]:max-h-[1.5rem] [&_svg]:text-white';
+$iconWrapperClass = $isDrawer
+    ? 'flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-0 bg-gradient-to-br from-cyan-400 via-teal-500 to-teal-800 text-white shadow-[0_0_16px_rgba(45,212,191,0.5),inset_0_1px_0_rgba(255,255,255,0.2)] ring-1 ring-cyan-200/40 transition hover:from-cyan-300 hover:via-teal-400 hover:to-teal-700 hover:shadow-[0_0_20px_rgba(45,212,191,0.6),inset_0_1px_0_rgba(255,255,255,0.25)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400/80 dark:from-cyan-500 dark:via-teal-600 dark:to-teal-950 dark:shadow-[0_0_18px_rgba(34,211,238,0.4),inset_0_1px_0_rgba(255,255,255,0.1)] dark:ring-cyan-400/25 dark:hover:from-cyan-400 dark:hover:via-teal-500 dark:hover:to-teal-900 [&_svg]:block [&_svg]:h-6 [&_svg]:w-6 [&_svg]:max-w-[1.5rem] [&_svg]:max-h-[1.5rem] [&_svg]:text-white'
+    : $iconClassFooterOrBlog;
 
 foreach ($items as $row) {
     $url = $row['url'];
@@ -72,9 +76,51 @@ foreach ($items as $row) {
         }
     }
 
-    $net = $row['network'];
+    $net = strtolower(trim((string) $row['network']));
     if ($net === 'twitter') {
         $net = 'x';
+    }
+    if ($net === 'pin') {
+        $net = 'pinterest';
+    }
+    $aliasNet = [
+        'ig' => 'instagram', 'insta' => 'instagram', 'fb' => 'facebook', 'yt' => 'youtube',
+        'tt' => 'tiktok', 'twit' => 'x', 'tw' => 'x', 'in' => 'linkedin', 'gh' => 'github',
+        'thread' => 'threads', 'tele' => 'telegram', 'pint' => 'pinterest', 'x_twitter' => 'x',
+    ];
+    if (isset($aliasNet[$net])) {
+        $net = $aliasNet[$net];
+    }
+    if ($href !== '' && $href !== '#') {
+        $host = strtolower((string) (parse_url($href, PHP_URL_HOST) ?? ''));
+        if ($host !== '') {
+            $hostToNet = [
+                // Tên miền có chứa ".me" phải khai trước "m.me" (zalo.me / wa.me chứa chuỗi m.me)
+                ['zalo.me', 'zalo'], ['oa.zalo.me', 'zalo'],
+                ['liff.line.me', 'line'], ['line.me', 'line'],
+                ['wa.me', 'whatsapp'],
+                ['instagr', 'instagram'],
+                ['facebook.com', 'facebook'], ['fb.com', 'facebook'], ['l.facebook', 'facebook'],
+                ['m.me', 'messenger'], ['l.messenger', 'messenger'],
+                ['youtube.com', 'youtube'], ['youtu.be', 'youtube'], ['m.youtube', 'youtube'],
+                ['linkedin.com', 'linkedin'], ['lnkd', 'linkedin'],
+                ['tiktok.com', 'tiktok'],
+                ['pinterest', 'pinterest'], ['pin.it', 'pinterest'],
+                ['t.me', 'telegram'], ['telegram.org', 'telegram'], ['web.telegram', 'telegram'],
+                ['github.com', 'github'],
+                ['x.com', 'x'], ['twitter.com', 'x'], ['t.co', 'x'],
+                ['threads.net', 'threads'], ['www.threads', 'threads'],
+                ['whatsapp.com', 'whatsapp'], ['web.whatsapp', 'whatsapp'], ['api.whatsapp', 'whatsapp'], ['chat.whatsapp', 'whatsapp'],
+                ['discord.com', 'discord'], ['discord.gg', 'discord'],
+                ['zalo', 'zalo'],
+            ];
+            foreach ($hostToNet as [$sub, $nkey]) {
+                if (str_contains($host, (string) $sub)) {
+                    $net = $nkey;
+                    break;
+                }
+            }
+        }
     }
 
     switch ($net) {
@@ -107,6 +153,21 @@ foreach ($items as $row) {
             break;
         case 'telegram':
             $labelKey = 'Telegram';
+            break;
+        case 'zalo':
+            $labelKey = 'Zalo';
+            break;
+        case 'whatsapp':
+            $labelKey = 'WhatsApp';
+            break;
+        case 'discord':
+            $labelKey = 'Discord';
+            break;
+        case 'messenger':
+            $labelKey = 'Messenger';
+            break;
+        case 'line':
+            $labelKey = 'LINE';
             break;
         default:
             $labelKey = ucfirst($net);
@@ -180,59 +241,15 @@ foreach ($items as $row) {
     ?>
   <a href="<?php echo e($href); ?>"<?php echo $external ? ' target="_blank" rel="noopener noreferrer"' : ''; ?> class="<?php echo e($iconWrapperClass); ?>"
     aria-label="<?php echo e($aria); ?>">
-    <?php if ($net === 'facebook'): ?>
-    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <rect x="0.421053" y="0.421053" width="31.1579" height="31.1579" rx="15.5789" stroke="#F3F4F6" stroke-width="0.842105" />
-      <circle cx="16" cy="16" r="15.5789" fill="white" stroke="#F3F4F6" stroke-width="0.842105" />
-      <path d="M17.1919 12.1546V14.1284H19.4994L19.134 16.7872H17.1919V22.913C16.8025 22.9702 16.4041 23 15.9997 23C15.5329 23 15.0745 22.9606 14.6281 22.8845V16.7872H12.5V14.1284H14.6281V11.7134C14.6281 10.2151 15.7759 9 17.1925 9V9.00127C17.1967 9.00127 17.2003 9 17.2045 9H19.5V11.2995H18C17.5543 11.2995 17.1925 11.6823 17.1925 12.154L17.1919 12.1546Z" fill="var(--home-body)" />
-    </svg>
-    <?php elseif ($net === 'instagram'): ?>
-    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <rect x="0.421053" y="0.421053" width="31.1579" height="31.1579" rx="15.5789" stroke="#F3F4F6" stroke-width="0.842105" />
-      <circle cx="16" cy="16" r="15.5789" fill="white" stroke="#F3F4F6" stroke-width="0.842105" />
-      <path d="M19.6509 9H12.3495C10.3324 9 8.69141 10.6415 8.69141 12.6592V19.3408C8.69141 21.3585 10.3324 23 12.3495 23H19.6509C21.668 23 23.309 21.3585 23.309 19.3408V12.6592C23.309 10.6415 21.668 9 19.6509 9ZM9.98187 12.6592C9.98187 11.3535 11.0442 10.2908 12.3495 10.2908H19.6509C20.9562 10.2908 22.0185 11.3535 22.0185 12.6592V19.3408C22.0185 20.6465 20.9562 21.7092 19.6509 21.7092H12.3495C11.0442 21.7092 9.98187 20.6465 9.98187 19.3408V12.6592Z" fill="var(--home-body)" />
-      <path d="M16.0003 19.402C17.8761 19.402 19.403 17.8755 19.403 15.9984C19.403 14.1212 17.8769 12.5947 16.0003 12.5947C14.1237 12.5947 12.5977 14.1212 12.5977 15.9984C12.5977 17.8755 14.1237 19.402 16.0003 19.402ZM16.0003 13.8864C17.1651 13.8864 18.1125 14.8341 18.1125 15.9992C18.1125 17.1644 17.1651 18.112 16.0003 18.112C14.8355 18.112 13.8881 17.1644 13.8881 15.9992C13.8881 14.8341 14.8355 13.8864 16.0003 13.8864Z" fill="var(--home-body)" />
-      <path d="M19.7176 13.1437C20.2227 13.1437 20.6344 12.7327 20.6344 12.2266C20.6344 11.7206 20.2235 11.3096 19.7176 11.3096C19.2116 11.3096 18.8008 11.7206 18.8008 12.2266C18.8008 12.7327 19.2116 13.1437 19.7176 13.1437Z" fill="var(--home-body)" />
-    </svg>
-    <?php elseif ($net === 'x'): ?>
-    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <rect x="0.421053" y="0.421053" width="31.1579" height="31.1579" rx="15.5789" stroke="#F3F4F6" stroke-width="0.842105" />
-      <circle cx="16" cy="16" r="15.5789" fill="white" stroke="#F3F4F6" stroke-width="0.842105" />
-      <path d="M8.55941 9L14.3332 16.7217L8.52344 23H9.83136L14.9183 17.5036L19.028 23H23.4781L17.3797 14.8439L22.7877 9H21.4798L16.7955 14.0621L13.0104 9H8.56027H8.55941ZM10.4822 9.96348H12.5261L21.5535 22.0365H19.5096L10.4822 9.96348Z" fill="var(--home-body)" />
-    </svg>
-    <?php elseif ($net === 'youtube'): ?>
-    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <rect x="0.421053" y="0.421053" width="31.1579" height="31.1579" rx="15.5789" stroke="#F3F4F6" stroke-width="0.842105" />
-      <circle cx="16" cy="16" r="15.5789" fill="white" stroke="#F3F4F6" stroke-width="0.842105" />
-      <!-- TV bo góc + tam giác trắng (lỗ play), cùng phong cách đơn sắc như Facebook/IG -->
-      <rect x="10.75" y="11.25" width="10.5" height="9.5" rx="2.35" ry="2.35" fill="var(--home-body)" />
-      <path fill="white" d="M13.45 13.55L18.95 16l-5.5 2.45v-4.9z" />
-    </svg>
-    <?php elseif ($net === 'linkedin'): ?>
-    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <rect x="0.421053" y="0.421053" width="31.1579" height="31.1579" rx="15.5789" stroke="#F3F4F6" stroke-width="0.842105" />
-      <circle cx="16" cy="16" r="15.5789" fill="white" stroke="#F3F4F6" stroke-width="0.842105" />
-      <path d="M12.2 22.5h-2.9V13.4h2.9v9.1zM10.7 12.1c-.9 0-1.7-.7-1.7-1.7 0-.9.8-1.7 1.7-1.7s1.7.8 1.7 1.7c0 1-.8 1.7-1.7 1.7zM23.5 22.5h-2.9v-4.4c0-1.1 0-2.5-1.5-2.5-1.5 0-1.7 1.2-1.7 2.4v4.5h-2.9V13.4h2.8v1.2h.1c.4-.8 1.4-1.6 2.9-1.6 3.1 0 3.7 2 3.7 4.7v4.8z" fill="var(--home-body)" />
-    </svg>
-    <?php elseif ($net === 'github'): ?>
-    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <rect x="0.421053" y="0.421053" width="31.1579" height="31.1579" rx="15.5789" stroke="#F3F4F6" stroke-width="0.842105" />
-      <circle cx="16" cy="16" r="15.5789" fill="white" stroke="#F3F4F6" stroke-width="0.842105" />
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M16 9.2c-3.7 0-6.8 3-6.8 6.8 0 3 1.9 5.5 4.6 6.4.3.1.5-.1.5-.3v-1.2c-1.9.4-2.3-.9-2.3-.9-.3-.8-.8-1-.8-1-.7-.4 0-.4 0-.4.7.1 1.1.8 1.1.8.7 1.2 1.8.9 2.2.7.1-.5.3-.9.5-1.1-1.5-.2-3.1-.8-3.1-3.5 0-.8.3-1.4.7-1.9-.1-.2-.3-.9.1-1.8 0 0 .6-.2 1.9.7.5-.2 1.1-.3 1.6-.3.5 0 1.1.1 1.6.3 1.3-.9 1.9-.7 1.9-.7.4.9.2 1.6.1 1.8.5.5.7 1.1.7 1.9 0 2.7-1.6 3.3-3.1 3.5.3.2.5.7.5 1.4v2.1c0 .2.2.4.5.3 2.7-.9 4.5-3.4 4.5-6.4 0-3.8-3-6.8-6.8-6.8z" fill="var(--home-body)" />
-    </svg>
-    <?php elseif ($net === 'telegram'): ?>
-    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <rect x="0.421053" y="0.421053" width="31.1579" height="31.1579" rx="15.5789" stroke="#F3F4F6" stroke-width="0.842105" />
-      <circle cx="16" cy="16" r="15.5789" fill="white" stroke="#F3F4F6" stroke-width="0.842105" />
-      <path d="M22.35 9.65c.35.09.59.4.55.76l-1.65 15.52c-.03.28-.22.52-.49.6a.68.68 0 0 1-.76-.28l-4.42-5.98-2.82 2.72c-.13.12-.3.19-.48.19a.75.75 0 0 1-.75-.75v-3.86l8.38-7.75-10.32 6.32-3.82-1.19c-.33-.1-.55-.41-.52-.75.03-.35.3-.62.65-.68l16.5-3.05z" fill="var(--home-body)" />
-    </svg>
-    <?php else: ?>
-    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <rect x="0.421053" y="0.421053" width="31.1579" height="31.1579" rx="15.5789" stroke="#F3F4F6" stroke-width="0.842105" />
-      <circle cx="16" cy="16" r="15.5789" fill="white" stroke="#F3F4F6" stroke-width="0.842105" />
-      <path d="M12 14h-2v8h8v-2h-6v-6zm4-6v2h6v6h2V8h-8z" fill="var(--home-body)" />
-    </svg>
-    <?php endif; ?>
+    <?php
+    require __DIR__ . '/social-icon-drawer.php';
+    ?>
   </a>
+    <?php
+}
+
+if (($isDrawer || $isFooter || $isBlogShare) && $items === []) {
+    ?>
+  <span class="sr-only"><?php echo e(__('theme.nav.drawer_social_empty')); ?></span>
     <?php
 }

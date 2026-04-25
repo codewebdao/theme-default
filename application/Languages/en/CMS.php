@@ -25,16 +25,16 @@ return [
     'Connect'                         => 'Connect',
     'Follow us on social media for the latest updates.'                       => 'Follow us on social media for the latest updates.',
     'Copyright © CMS Full Form.'                          => 'Copyright © CMS Full Form.',
-    'A next-generation AI-powered CMS solution, delivering unparalleled speed, flexibility, and security for your website.'                     => 'A next-generation AI-powered CMS solution, delivering unparalleled speed, flexibility, and security for your website.',
+    'A next-generation AI-powered CMS solution, delivering unparalleled speed, flexibility, and security for your website.'                     => 'A blog magazine: in-depth articles, practical guides, and notes from the team — read anytime, anywhere.',
 
     // Call to Action
-    'Ready to Experience the Difference?'                        => 'Ready to Experience the Difference?',
-    'Join thousands of developers and businesses using CMS Full Form to build faster, stronger, and more secure websites.'                  => 'Join thousands of developers and businesses using CMS Full Form to build faster, stronger, and more secure websites.',
+    'Ready to Experience the Difference?'                        => 'Want more great reads?',
+    'Join thousands of developers and businesses using CMS Full Form to build faster, stronger, and more secure websites.'                  => 'Browse topics, follow tutorial series, and catch the latest posts on our blog.',
     'Download Now'                       => 'Download Now',
     'View Documentation'                          => 'View Documentation',
 
     // Search
-    'Search for themes, plugins, blogs...'                     => 'Search for themes, plugins, blogs...',
+    'Search for themes, plugins, blogs...'                     => 'Search posts, topics, keywords…',
     'Search'                   => 'Search',
     'Search Results'                      => 'Search Results',
     'search.results_for'                     => 'Search results for "%s"',
@@ -68,7 +68,7 @@ return [
     // Review CMS — hero banner
     'cms_review_banner.badge'                => 'CMS CHARTS 2025',
     'cms_review_banner.title'                => 'Best CMS for 2025.',
-    'cms_review_banner.subtitle'             => 'Expert reviews and performance benchmarks. Tested thoroughly on Laragon environment.',
+    'cms_review_banner.subtitle'             => 'Analysis, tool comparisons, and hands-on experience — edited for people who build the web.',
     'cms_review_banner.image_alt'            => 'CMS review banner background',
 
     // CMS comparison (review CMS page)
@@ -78,29 +78,29 @@ return [
     'cms_comparison_pro'                     => 'Pro',
     'cms_comparison_cons'                    => 'Cons',
     'cms_comparison_open_link'               => 'Open link',
-    'Try on Laragon'                         => 'Try on Laragon',
+    'Try on Laragon'                         => 'Read on the blog',
     'cms_comparison_empty_all'               => 'No CMS entries to compare yet.',
     'cms_comparison_category_empty_named'    => 'No CMS in the %s category yet.',
     'cms_comparison_filters_heading'         => 'Filter by category',
 
     // Performance showdown (review CMS)
     'cms_performance_showdown.title'         => 'Performance Showdown',
-    'cms_performance_showdown.subtitle'      => 'We measured the \'Hello World\' load time on Laragon (lower is better).',
+    'cms_performance_showdown.subtitle'      => 'We summarize real-world numbers and experience with popular CMS setups (lower is usually better).',
     'cms_performance_showdown.col_cms'       => 'CMS',
     'cms_performance_showdown.col_ttfb'      => 'Time to First Byte (ms)',
     'cms_performance_showdown.col_time'      => 'Time',
 
     // CTA banner (review CMS / shared)
-    'cms_cta_banner.title'                   => 'Run any CMS in 1-Click',
-    'cms_cta_banner.body'                    => 'Laragon makes it incredibly easy to create, manage, and switch between projects. No complex setup required.',
-    'cms_cta_banner.download'                => 'Download Laragon Free',
-    'cms_cta_banner.requirements'            => 'System Requirements: Windows 7/8/10/11 (64-bit)',
+    'cms_cta_banner.title'                   => 'Read the blog, level up every week',
+    'cms_cta_banner.body'                    => 'Pick the topics you care about — from quick tips to long-form breakdowns, all edited for clarity.',
+    'cms_cta_banner.download'                => 'Browse all posts',
+    'cms_cta_banner.requirements'            => 'Fresh posts weekly — bookmark the site or follow your favorite channel.',
 
-    // Laragon theme — nav / mobile drawer / footer (header & footer parts)
+    // Blog theme — nav / mobile drawer / footer (header & footer parts)
 
     // header
     'theme_nav.home'                         => 'Home',
-    'theme_nav.features'                     => 'Features',
+    'theme_nav.features'                     => 'Topics',
     'theme_nav.usage_guide'                  => 'Usage Guide',
     'theme_nav.php_tutorial'                 => 'PHP Tutorial',
     'theme_nav.review_cms'                   => 'Review CMS',
@@ -114,18 +114,21 @@ return [
     'theme.color_scheme_toggle'              => 'Dark',
     'theme.aria.toggle_color_scheme'         => 'Toggle dark mode',
     'theme.aria.close_menu'                  => 'Close menu',
+    'theme.aria.mobile_menu_nav'             => 'Site navigation',
     'theme.aria.facebook'                    => 'Facebook',
     'theme.aria.instagram'                   => 'Instagram',
     'theme.aria.x'                           => 'X',
-    'theme_footer.performance_note'          => 'Performance: 100/100 on Desktop — laragon.org is built locally with Laragon — where modern projects begin.',
-    'theme_footer.download_v84'              => 'Download v8.4',
-    'theme_footer.copyright'                 => '© %1% Laragon. All rights reserved.',
-    'theme_footer.description'               => 'Crafted with care, driven by passion, and built for everyone, Laragon is the ultimate solution for entrepreneurs and developers who value their time. Laragon offers a streamlined development environment that works out-of-the-box, eliminating the hassle of complex setups. It is the perfect solution to help you focus on what matters most: creating, building, and innovating without wasting time on configuration.',
+    'theme_footer.performance_note'          => 'A reading-first layout: clear typography, lean images, and a comfortable dark mode — built for long sessions.',
+    'theme_footer.download_v84'              => 'Most-read posts',
+    'theme_footer.copyright'                 => '© %1% Blog. All rights reserved.',
+    'theme_footer.description'               => 'We write about modern web development, tools, and workflows. Each post offers a practical angle — short enough to apply, deep enough to think about.',
     'theme_footer.col_product'               => 'Product',
     'theme_footer.col_resources'             => 'Resources',
     'theme_footer.col_community'             => 'Community',
+    'theme_footer.col_legal'                => 'Legal',
     'theme_footer.col_contact'               => 'Contact',
-    'theme_footer.laragon_pro'               => 'Laragon Pro',
+    'theme_footer.laragon_pro'               => 'Expert picks',
+    'theme_footer.theme_default_pro'         => 'Theme Default Pro',
     'theme_footer.updates'                   => 'Updates',
     'theme_footer.guides'                    => 'Guides',
     'theme_footer.faq'                       => 'FAQ',
@@ -138,6 +141,8 @@ return [
     'theme_footer.social_visit'              => 'Visit us on %1%',
     'theme.aria.scroll_to_top'               => 'Scroll to top',
     'theme.aria.search'                      => 'Search',
+    'theme.nav.drawer_social'                => 'Social',
+    'theme.nav.drawer_social_empty'        => 'No social links yet. Add them in Admin → Site options (social), same as the footer.',
     'theme.nav.mobile_search_posts'          => 'Search posts…',
     'theme.nav.drawer_tagline'               => 'Blog — long reads, guides, and notes from the team.',
     'theme.nav.view_all_blog'                => 'View all posts',

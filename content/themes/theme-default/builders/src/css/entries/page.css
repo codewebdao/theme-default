@@ -3,3 +3,69 @@
  * @page-url https://theme-default.vn/pages/terms-of-service/
  */
  @import '../partials/_tailwind-standalone.css';
+
+/* Nội dung CMS: tránh ảnh / video / iframe tràn ngang */
+.cms-page-body img,
+.cms-page-body video {
+  max-width: 100%;
+  height: auto;
+}
+
+.cms-page-body iframe {
+  max-width: 100%;
+}
+
+.cms-page-body table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* HTML nội dung tự do từ CMS — bổ sung màu khi .dark (không bọc prose) */
+.dark .cms-page-body {
+  color: rgb(209 213 219);
+}
+
+.dark .cms-page-body h1,
+.dark .cms-page-body h2,
+.dark .cms-page-body h3,
+.dark .cms-page-body h4 {
+  color: rgb(249 250 251);
+}
+
+.dark .cms-page-body a {
+  color: var(--home-primary);
+}
+
+.dark .cms-page-body a:hover {
+  text-decoration: underline;
+}
+
+.dark .cms-page-body strong,
+.dark .cms-page-body b {
+  color: rgb(243 244 246);
+}
+
+.dark .cms-page-body blockquote {
+  border-left-color: rgb(75 85 99);
+  color: rgb(156 163 175);
+}
+
+.dark .cms-page-body code {
+  background-color: rgb(39 39 42);
+  color: rgb(228 228 231);
+}
+
+.dark .cms-page-body pre {
+  background-color: rgb(24 24 27);
+  color: rgb(228 228 231);
+  border: 1px solid rgb(63 63 70);
+}
+
+.dark .cms-page-body hr {
+  border-color: rgb(63 63 70);
+}
+
+.dark .cms-page-body th,
+.dark .cms-page-body td {
+  border-color: rgb(63 63 70);
+}

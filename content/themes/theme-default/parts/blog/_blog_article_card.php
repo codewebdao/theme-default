@@ -68,7 +68,7 @@ if (!empty($item['feature']) && function_exists('_imglazy')) {
             <span class="mb-2 inline-flex w-fit shrink-0 rounded bg-home-primary/10 py-0.5 pl-0 pr-2 text-[10px] font-bold uppercase tracking-wide text-home-primary font-plus">
                 <?php echo e($badgeNew); ?>
             </span>
-            <h3 class="line-clamp-2 font-space text-lg font-bold leading-snug text-home-heading">
+            <h3 class="line-clamp-2 font-space text-lg font-bold leading-snug text-home-heading dark:text-gray-100">
                 <?php echo e($__title); ?>
             </h3>
             <p class="mt-3 font-plus text-sm text-home-body/90">

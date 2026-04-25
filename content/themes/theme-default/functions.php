@@ -27,7 +27,31 @@ if (function_exists('add_filter')) {
 use System\Libraries\Render\View;
 
 View::addCss('fonts', 'css/fonts.css', [], null, 'all', false, false, false);
-View::addCss('home-index', 'css/home-index.css', [], null, 'all', false, false, false);
+View::addCss('home-index', 'css/home-index.css', ['fonts'], null, 'all', false, false, false);
+
+$__theme_assets_css = __DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'css';
+$__header_css_fs = $__theme_assets_css . DIRECTORY_SEPARATOR . 'header.css';
+$__footer_css_fs = $__theme_assets_css . DIRECTORY_SEPARATOR . 'footer.css';
+View::addCss(
+    'theme-header',
+    'css/header.css',
+    ['home-index'],
+    is_file($__header_css_fs) ? (string) filemtime($__header_css_fs) : null,
+    'all',
+    false,
+    false,
+    false
+);
+View::addCss(
+    'theme-footer',
+    'css/footer.css',
+    ['home-index'],
+    is_file($__footer_css_fs) ? (string) filemtime($__footer_css_fs) : null,
+    'all',
+    false,
+    false,
+    false
+);
 // Mobile menu (menu-mobi.php): header.php gọi window.jModal — phải có trước script inline trong body
 View::addJs('jmodal', 'js/jmodal.js', [], null, false, false, false, false);
 // Bỏ đăng ký các file không tồn tại (thêm file vào assets/js/ rồi bật lại nếu cần):

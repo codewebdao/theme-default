@@ -447,11 +447,25 @@ class Builder
         $extra = [];
         $publisher = option('og_publisher', defined('APP_LANG') ? APP_LANG : '') ?: $baseUrl;
         $extra['article:publisher'] = $publisher;
-        $author = self::payloadGet($payload, ['author_url', 'author_link', 'author']);
+        $author = self::payloadGet($payload, ['author_url', 'author_link']);
+        if ($author === '' && is_array($payload) && !empty($payload['author']) && is_array($payload['author'])) {
+            $a = $payload['author'];
+            $author = self::payloadScalarString([
+                $a['author_url'] ?? null,
+                $a['url'] ?? null,
+                $a['link'] ?? null,
+            ]);
+        }
         if ($author) {
             $extra['article:author'] = $author;
         }
-        $section = self::payloadGet($payload, ['category', 'section', 'term_name']);
+        $section = self::payloadGet($payload, ['section', 'term_name']);
+        if ($section === '' && is_array($payload)) {
+            $section = self::sectionFromCategoryPayload($payload['category'] ?? null);
+        }
+        if ($section === '') {
+            $section = self::payloadGet($payload, ['category']);
+        }
         if ($section) {
             $extra['article:section'] = $section;
         }
@@ -506,11 +520,30 @@ class Builder
         if ($imageUrl) {
             $tw['image'] = $imageUrl;
         }
-        $creator = self::payloadGet($payload, ['author_twitter', 'twitter', 'author']);
+        $creator = self::payloadGet($payload, ['author_twitter', 'twitter']);
+        if ($creator === '' && is_array($payload) && !empty($payload['author']) && is_array($payload['author'])) {
+            $a = $payload['author'];
+            $creator = self::payloadScalarString([
+                $a['twitter'] ?? null,
+                $a['author_twitter'] ?? null,
+                $a['x'] ?? null,
+                $a['username'] ?? null,
+            ]);
+        }
         if ($creator !== '') {
             $tw['creator'] = (strpos($creator, '@') === 0) ? $creator : ('@' . preg_replace('/\s+/', '', $creator));
         }
-        $authorName = self::payloadGet($payload, ['author_name', 'author']);
+        $authorName = self::payloadGet($payload, ['author_name']);
+        if ($authorName === '' && is_array($payload) && !empty($payload['author']) && is_array($payload['author'])) {
+            $a = $payload['author'];
+            $authorName = self::payloadScalarString([
+                $a['fullname'] ?? null,
+                $a['Fullname'] ?? null,
+                $a['name'] ?? null,
+                $a['display_name'] ?? null,
+                $a['username'] ?? null,
+            ]);
+        }
         if ($authorName !== '') {
             $tw['label1'] = __('Written by', defined('APP_LANG') ? APP_LANG : null);
             $tw['data1'] = $authorName;
@@ -521,6 +554,80 @@ class Builder
             $tw['data2'] = $readingTime;
         }
         return $tw;
+    }
+
+    /**
+     * Chuỗi scalar an toàn cho meta/OG (tránh Array to string khi payload có author[], category[], …).
+     *
+     * @param mixed $v
+     */
+    private static function payloadScalarString($v): string
+    {
+        if ($v === null) {
+            return '';
+        }
+        if (is_string($v)) {
+            return $v;
+        }
+        if (is_int($v) || is_float($v)) {
+            return (string) $v;
+        }
+        if (is_bool($v)) {
+            return $v ? '1' : '';
+        }
+        if (is_array($v)) {
+            foreach ($v as $one) {
+                $s = self::payloadScalarString($one);
+                if ($s !== '') {
+                    return $s;
+                }
+            }
+
+            return '';
+        }
+        if (is_object($v)) {
+            if (method_exists($v, '__toString')) {
+                try {
+                    return (string) $v;
+                } catch (\Throwable $e) {
+                    return '';
+                }
+            }
+
+            return '';
+        }
+
+        return '';
+    }
+
+    /**
+     * @param mixed $raw category từ post (string | list term | một term array)
+     */
+    private static function sectionFromCategoryPayload($raw): string
+    {
+        if ($raw === null || $raw === '') {
+            return '';
+        }
+        if (is_string($raw)) {
+            return trim($raw);
+        }
+        if (!is_array($raw)) {
+            return '';
+        }
+        $first = $raw[0] ?? null;
+        if (is_array($first)) {
+            return self::payloadScalarString([
+                $first['name'] ?? null,
+                $first['title'] ?? null,
+                $first['label'] ?? null,
+                $first['slug'] ?? null,
+            ]);
+        }
+        if (is_string($first)) {
+            return trim($first);
+        }
+
+        return '';
     }
 
     /**
@@ -535,13 +642,16 @@ class Builder
         foreach ($keys as $key) {
             if (is_array($payload) && array_key_exists($key, $payload)) {
                 $v = $payload[$key];
-                return is_string($v) ? $v : (string) $v;
+
+                return self::payloadScalarString($v);
             }
             if (is_object($payload) && isset($payload->$key)) {
                 $v = $payload->$key;
-                return is_string($v) ? $v : (string) $v;
+
+                return self::payloadScalarString($v);
             }
         }
+
         return '';
     }
 

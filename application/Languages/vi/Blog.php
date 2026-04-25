@@ -218,6 +218,7 @@ return [
 
     // Related Blogs
     'related_blogs'                 => 'Bài viết liên quan',
+    'blog_sidebar_featured'         => 'Bài viết nổi bật',
     'discover_similar_blogs'        => 'Khám phá những bài viết tương tự với nội dung hữu ích và thông tin bổ ích',
     'view_details'                  => 'Xem chi tiết',
     'view_all_blogs'                => 'Xem tất cả bài viết',
@@ -348,6 +349,8 @@ return [
     'listing_hero_subtitle'               => 'Tin tức, hướng dẫn và bài phân tích chuyên sâu về phát triển web hiện đại.',
     'listing_read_article'                => 'Đọc bài viết',
     'listing_read_short'                  => 'Đọc',
+    'listing_post_list_heading'           => 'Danh sách bài viết (trang này)',
+    'listing_post_list_count'             => '%d bài trên trang này.',
     'listing_cta_title'                   => 'Sẵn sàng code nhanh hơn?',
     'listing_cta_body'                    => 'Cùng hàng nghìn lập trình viên dùng Laragon để tăng tốc quy trình phát triển web mỗi ngày.',
     'listing_cta_download'                => 'Tải xuống ngay',

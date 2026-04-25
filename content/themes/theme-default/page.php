@@ -51,22 +51,24 @@ $layout = $layout ?? 'page';
 view_header(['layout' => $layout]);
 ?>
 
-<main class="min-h-screen bg-white w-full">
+<main class="min-h-screen w-full bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100">
     <?php echo View::include('parts/page/page-hero-banner', ['page' => $page]); ?>
-    <div class="site-container min-h-screen">
-        <div id="main-content" class="content-seo sr sr--fade-up" role="article" style="--sr-delay: 0ms">
+    <div class="border-t border-gray-100 bg-white dark:border-zinc-800 dark:bg-gray-950">
+        <div class="container mx-auto px-4 py-10 sm:px-6 sm:py-12 md:py-16 lg:px-8">
+            <div id="main-content" class="content-seo cms-page-body sr sr--fade-up mx-auto w-full max-w-4xl overflow-x-auto text-balance" role="article" style="--sr-delay: 0ms">
             <?php
             $raw = (string) ($page['content'] ?? $page['post_content'] ?? '');
             if ($raw !== '') {
                 echo html_entity_decode($raw, ENT_QUOTES | ENT_HTML5, 'UTF-8');
             } else {
                 ?>
-                <p class="page-empty-msg text-gray-600 font-plus text-sm sm:text-base">
+                <p class="page-empty-msg font-plus text-sm text-gray-600 sm:text-base dark:text-gray-400">
                     <?php echo e(__('page.empty_content')); ?>
                 </p>
                 <?php
             }
             ?>
+            </div>
         </div>
     </div>
 </main>

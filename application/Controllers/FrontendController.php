@@ -268,7 +268,8 @@ class FrontendController extends BaseController
                     'slug' => $slug,
                     'post_type' => $posttype,
                     'post_status' => HAS_GET('preview') ? '' : 'active',
-                    'with_terms' => true
+                    'with_terms' => true,
+                    'with_author' => true,
                 ]);
 
                 if ($post) {
@@ -608,7 +609,8 @@ class FrontendController extends BaseController
             'slug' => $firstSegment,
             'post_type' => $defaultPosttype,
             'post_status' => HAS_GET('preview') ? '' : 'active',
-            'with_terms' => true
+            'with_terms' => true,
+            'with_author' => true,
         ]);
         if ($post) {
             return $this->getSingleTemplate($defaultPosttype, $firstSegment, $post);

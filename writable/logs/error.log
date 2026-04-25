@@ -258,3 +258,16 @@
 [2026-04-24 14:03:26] ERROR: View::include 'parts/documentation/documentation-tabs': Template 'parts/documentation/documentation-tabs' not found (namespace: web).
 [2026-04-24 14:03:26] ERROR: View::include 'parts/documentation/documentation-tabs': Template 'parts/documentation/documentation-tabs' not found (namespace: web).
 [2026-04-24 14:53:20] ERROR: View::include 'parts/documentation/documentation-tabs': Template 'parts/documentation/documentation-tabs' not found (namespace: web).
+[2026-04-25 10:47:57] ERROR: View::include 'parts/headers/menu-mobi': syntax error, unexpected token "elseif"
+[2026-04-25 10:47:57] ERROR: View::includeIf error for 'footer': syntax error, unexpected token "elseif"
+[2026-04-25 10:48:00] ERROR: View::include 'parts/headers/menu-mobi': syntax error, unexpected token "elseif"
+[2026-04-25 10:48:00] ERROR: View::includeIf error for 'footer': syntax error, unexpected token "elseif"
+[2026-04-25 13:56:27] ERROR: View::include 'parts/headers/menu-mobi': syntax error, unexpected token "<"
+[2026-04-25 13:56:27] ERROR: View::include 'parts/social/social-links': syntax error, unexpected token "<"
+[2026-04-25 13:56:27] ERROR: View::include 'parts/social/social-links': syntax error, unexpected token "<"
+[2026-04-25 13:56:27] ERROR: View::includeIf error for 'footer': syntax error, unexpected token "<"
+[2026-04-25 13:56:40] ERROR: View::include 'parts/headers/menu-mobi': syntax error, unexpected token "<"
+[2026-04-25 13:56:40] ERROR: View::include 'parts/social/social-links': syntax error, unexpected token "<"
+[2026-04-25 13:56:40] ERROR: View::include 'parts/social/social-links': syntax error, unexpected token "<"
+[2026-04-25 13:56:40] ERROR: View::includeIf error for 'footer': syntax error, unexpected token "<"
+[2026-04-25 14:51:11] ERROR: View::includeIf error for 'header': Call to undefined method System\Libraries\Render\Head\Builder::sectionFromCategoryPayload()

@@ -218,5 +218,13 @@
       max-width: 47%;
     }
   }
+
+  /* Dark: hạ độ chói ảnh trang trí hai bên */
+  .dark .blog-hero-bg-deco > picture,
+  .dark .blog-hero-bg-deco > img.blog-hero-bg-deco__left,
+  .dark .blog-hero-bg-deco > img.blog-hero-bg-deco__right {
+    opacity: 0.38;
+  }
+
   
   

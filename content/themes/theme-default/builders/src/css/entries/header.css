@@ -1,0 +1,5 @@
+/**
+ * Header — bundle riêng (nạp sau home-index.css; dùng biến --home-* đã có trong bundle chính).
+ * @page-url https://theme-default.vn/
+ */
+@import '../partials/_theme-chrome-header.css';
